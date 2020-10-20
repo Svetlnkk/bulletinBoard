@@ -1,5 +1,5 @@
 ### SPA (доска объявления) на фреймворке Vue.
-## <a href="https://github.com/BigPinkRoom/Bulletin-board">Ссылка на SPA</a>
+## <a href="https://itc-ads-33610.web.app/">Ссылка на SPA</a>
 ![alt text](screenshots/bulletin-board-mockup-pc.jpg)
 ## Bulletin-board SPA
 
