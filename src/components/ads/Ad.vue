@@ -47,9 +47,9 @@
                     </v-col>
                     <v-divider></v-divider>
                     <v-col class="d-flex justify-end">
-                        <app-delete-ad-modal :ad="ad" v-if="isOwner"></app-delete-ad-modal>
-                        <app-edit-ad-modal :ad="ad" v-if="isOwner"></app-edit-ad-modal>
-                        <app-buy-modal :ad="ad" v-if="!isOwner"></app-buy-modal>
+                        <app-ad-modal-delete :ad="ad" v-if="isOwner"></app-ad-modal-delete>
+                        <app-ad-modal-delete :ad="ad" v-if="isOwner"></app-ad-modal-delete>
+                        <app-ad-modal-buy :ad="ad" v-if="!isOwner"></app-ad-modal-buy>
                     </v-col>
                 </v-row>
 
@@ -74,8 +74,8 @@
 </template>
 
 <script>
-import EditAdModal from './editAdModal'
-import DeleteAdModal from './deleteAdModal'
+import AdModalEdit from './AdModalEdit'
+import AdModalDelete from './AdModalDelete'
 
 export default {
 
@@ -99,8 +99,8 @@ export default {
         },
     },
     components: {
-        appEditAdModal: EditAdModal,
-        appDeleteAdModal: DeleteAdModal,
+        AppAdModalEdit: AdModalEdit,
+        AppAdModalDelete: AdModalDelete,
     },
     beforeUpdate () {
         if (!this.ad) {
