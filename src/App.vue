@@ -118,7 +118,8 @@ export default {
 				return [
 					{title: "Orders", icon: "mdi-bookmark-multiple-outline", url: "/orders"},
 					{title: "New ad", icon: "mdi-file-plus", url: "/new"},
-					{title: "My ad", icon: "mdi-format-list-bulleted-square", url: "/list"},
+					{title: "My ads", icon: "mdi-format-list-bulleted-square", url: "/list"},
+					{title: "Account", icon: "mdi-face", url: "/account"},
 				]
 			} else {
 				return [
@@ -135,6 +136,7 @@ export default {
 		},
 		onLogout () {
 			this.$store.dispatch('logoutUser')
+			if (this.$route.path !== '/') this.$router.push('/')
 		}
 	}
 };

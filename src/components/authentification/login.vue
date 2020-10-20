@@ -25,7 +25,7 @@
                         v-model="email"
                         validate-on-blur
                         >
-                        </v-text-field>
+                    </v-text-field>
                     <v-text-field 
                         prepend-icon="mdi-lock" 
                         :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
@@ -92,7 +92,6 @@ export default {
     },
     methods: {
         onSubmit() {
-            console.log(this.$store)
             if (this.$refs.form.validate()) {
                 const user = {
                     email: this.email,

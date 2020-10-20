@@ -1,6 +1,17 @@
 <template>
     <v-container>
-        <v-row>
+        <v-row v-if="loading">
+            <v-col class='col-sm-8 col-lg-6 mx-auto pt-5'>
+                <v-progress-circular
+                    :size="50"
+                    :width="4"
+                    color="teal"
+                    indeterminate
+                    >
+                    </v-progress-circular>
+            </v-col>
+        </v-row>
+        <v-row v-else-if="!loading && orders.length !== 0">
             <v-col class='col-sm-8 col-lg-6 mx-auto'>
                 <h1 class="text--secondary mb-3">Orders</h1>
                 <v-list
@@ -17,12 +28,12 @@
                             <v-list-item-action>
                             <v-checkbox
                                 success
-                                input-value="orders.done"
+                                :disabled="order.done"
+                                :input-value="order.done"
                                 @change="markDone(order)"
                             >
                             </v-checkbox>
                             </v-list-item-action>
-
                             <v-list-item-content>
                             <v-list-item-title>{{ order.name }}</v-list-item-title>
                             <v-list-item-subtitle>{{ order.phone }}</v-list-item-subtitle>
@@ -40,28 +51,33 @@
                 </v-list>
             </v-col>
         </v-row>
+        <v-row v-else>
+            <v-col>
+                <h1 class="text--secondary">You have no orders</h1>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
 <script>
 export default {
-    data () {
-        return {
-            orders: [
-                {
-                    id: 'dsfa',
-                    name: 'List',
-                    phone: '8-900-121-12-85',
-                    adId: '12312',
-                    done: false,
-                }
-            ]
+    computed: {
+        loading () {
+            return this.$store.getters.loading
+        },
+        orders () {
+            return this.$store.getters.orders
         }
     },
     methods: {
         markDone (order) {
-            order.done = true
+            this.$store.dispatch('markOrderDone', order.id)
+                .then( () => order.done = true )
+                .catch( () => {} )
         }
+    },
+    created() {
+        this.$store.dispatch('fetchOrders')
     }
 }
 </script>

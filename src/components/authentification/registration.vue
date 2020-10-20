@@ -13,9 +13,20 @@
                     ref="form"
                     v-model="valid"
                     >
-    
                     <v-text-field
                         prepend-icon="mdi-account"
+                        name="name" 
+                        label="Your name"
+                        type="text" 
+                        color="teal"
+                        :rules="nameRules"
+                        counter="30"
+                        v-model="name"
+                        validate-on-blur
+                        >
+                    </v-text-field>
+                    <v-text-field
+                        prepend-icon="mdi-email"
                         name="email" 
                         label="Email"
                         type="email" 
@@ -25,7 +36,7 @@
                         v-model="email"
                         validate-on-blur
                         >
-                        </v-text-field>
+                    </v-text-field>
                     <v-text-field 
                         prepend-icon="mdi-lock" 
                         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -82,6 +93,7 @@ export default {
         return {
             email: '',
             password: '',
+            name: '',
             showPassword: false,
             confirmPassword: '',
             showConfirmPassword: false,
@@ -102,6 +114,10 @@ export default {
             confirmPasswordRules: [
                 v => !!v || 'Password is required',
                 v => v === this.password || 'Password must match'
+            ],
+            nameRules: [
+                v => !!v || 'Name is required',
+                v => (v && v.length <= 30) || 'Name must be equal or less than 30 characters',
             ]
         }
     },
@@ -116,6 +132,7 @@ export default {
                 const user = {
                     email: this.email,
                     password: this.password,
+                    name: this.name
                 }
                 
                 this.$store.dispatch('registerUser', user)

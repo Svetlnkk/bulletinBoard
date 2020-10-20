@@ -1,20 +1,36 @@
 <template>
-    <div>
-        <v-container fluid>
+    <div v-if="!loading">
+        <v-container fluid class="pt-0">
             <v-row>
-                <v-col class="col-md-12">
-                    <v-carousel>
+                <v-col class="col-md-12 pt-3">
+                    <v-carousel
+                        continuous
+                        height="auto"
+                        cycle interval="5000"
+                        :show-arrows="false"
+                        hide-delimiters
+                        class="carousel__home">
                         <v-carousel-item
+                            contain
+                            :to="'/ad/' + ad.id"
                             v-for="ad in promoAds"
                             :key="ad.id"
                             :src="ad.imageSrc"
                             >
+                            <div
+                                class="carousel__background"
+                                :style="{ backgroundImage: `url('${ad.imageSrc}')`}"
+                            >
+                            </div>
                             <div class="carousel__link">
                                 <v-btn
-                                text 
-                                :to="'/ad/' + ad.id"
+                                    class="carousel__button"
+                                    rounded
+                                    large
+                                    text 
+                                    :to="'/ad/' + ad.id"
                                 >
-                                {{ ad.title }}</v-btn>
+                                Open</v-btn>
                             </div>
                         </v-carousel-item>
                     </v-carousel>
@@ -29,23 +45,21 @@
                     :key="ad.id"
                 >
                     <v-card
-                        class="mx-auto"
+                        class="d-flex flex-column mx-auto"
+                        height="100%"
                         max-width="400"
                     >
                         <v-img
                         class="white--text align-end"
-                        height="200px"
+                        height="270px"
                         :src="ad.imageSrc"
                         >
                         </v-img>
-                        <v-card-title>
-                            {{ ad.title }}
+
+                        <v-card-title class="mb-auto">
+                            <h2 class="text-h6">{{ ad.title }}</h2>
                         </v-card-title>
 
-                        <v-card-text class="text--primary">
-                            <p>{{ ad.description }}</p>
-                        </v-card-text>
-                        
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn
@@ -55,16 +69,24 @@
                             >
                                 Open
                             </v-btn>
-
-                            <v-btn
-                                color="teal"
-                                class="white--text"
-                                raised
-                            >
-                                Buy
-                            </v-btn>
+                            <app-buy-modal :ad="ad"></app-buy-modal>
                         </v-card-actions>
                     </v-card>
+                </v-col>
+            </v-row>
+        </v-container>
+    </div>
+    <div v-else>
+        <v-container>
+            <v-row>
+                <v-col class="col-xs-12 text-center pt-5">
+                    <v-progress-circular
+                    :size="50"
+                    :width="4"
+                    color="teal"
+                    indeterminate
+                    >
+                    </v-progress-circular>
                 </v-col>
             </v-row>
         </v-container>
@@ -80,23 +102,56 @@ export default {
         ads () {
             return this.$store.getters.ads
         },
+        loading () {
+            return this.$store.getters.loading
+        },
     }
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+    .v-carousel__item .v-image__image {
+        z-index: 1;
+    }
+
+    .v-carousel__item {
+        height: 500px !important;
+
+        border: 1px solid rgba(0, 0, 0, .12);
+        border-radius: 4px;
+
+        @media (max-width: 599px) {
+            height: 270px !important;
+        }
+    }
+</style>
+
+<style scoped lang="scss">
     .carousel__link {
         position: absolute;
-        bottom: 50px;
+        bottom: 10px;
         left: 50%;
-
-        padding: 7px 25px 0;
-        border-radius: 35px;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-
-        background: rgba(0, 150, 136, .4);
+        z-index: 1;
 
         transform: translate(-50%, 0);
+    }
+
+    .carousel__button {
+        background: rgba(0, 150, 136, .7);
+    }
+
+    .carousel__home .carousel__background {
+        z-index: 0;
+
+        display: block;
+        width: 100%;
+        height: 100%;
+        
+        background-position: center center;
+        background-size: cover;
+        
+        filter: blur(14px);
+        opacity: 0.7;
+        transform: scale(1.15);
     }
 </style>

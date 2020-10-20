@@ -8,6 +8,8 @@ import NewAd from '@/components/ads/newAd'
 import Login from '@/components/authentification/login'
 import Registration from '@/components/authentification/registration'
 import Orders from '@/components/user/orders'
+import Account from '@/components/user/account'
+import PageNotFound from '@/components/common/404'
 
 Vue.use(VueRouter)
 
@@ -51,6 +53,15 @@ const router = new VueRouter({
       name: 'orders',
       component: Orders,
       beforeEnter: AuthGuard,
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: Account,
+      beforeEnter: AuthGuard,
+    },
+    { path: "*",
+      component: PageNotFound,
     }
   ],
   mode: 'history',

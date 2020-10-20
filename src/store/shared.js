@@ -1,11 +1,15 @@
 export default {
     state: {
         loading: false,
+        loadingUser: false,
         error: null,
     },
     mutations: {
         setLoading (state, payload) {
             state.loading = payload;
+        },
+        setLoadingUser (state, payload) {
+            state.loadingUser = payload
         },
         setError (state, payload) {
             state.error = payload;
@@ -18,6 +22,9 @@ export default {
         setLoading ({commit}, payload) {
             commit('setLoading', payload)
         },
+        setLoadingUser ({commit}, payload) {
+            commit('setLoadingUser', payload)
+        },
         setError ({commit}, payload) {
             commit('setError', payload)
         },
@@ -26,6 +33,9 @@ export default {
         }
     },
     getters: {
+        loadingUser (state) {
+            return state.loadingUser
+        },
         loading (state) {
             return state.loading
         },
