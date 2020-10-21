@@ -30,7 +30,7 @@ export default {
     createAd(state, payload) {
       state.ads.push(payload);
     },
-    loadAds(state, payload) {
+    getAds(state, payload) {
       state.ads = payload;
     },
     updateAd(state, { title, description, id, price }) {
@@ -153,7 +153,7 @@ export default {
           );
         });
 
-        commit('loadAds', resultAds);
+        commit('getAds', resultAds);
         commit('setLoading', false);
       } catch (error) {
         commit('setError', error.message);

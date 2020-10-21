@@ -108,6 +108,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import AdModalEdit from './AdModalEdit';
 import AdModalDelete from './AdModalDelete';
 
@@ -120,12 +121,12 @@ export default {
     id: String,
   },
   computed: {
+    ...mapState({
+      loading: 'loading',
+    }),
     ad() {
       const id = this.id;
       return this.$store.getters.adById(id);
-    },
-    loading() {
-      return this.$store.getters.loading;
     },
     isOwner() {
       if (!this.$store.getters.user.id) return;

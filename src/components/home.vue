@@ -100,6 +100,9 @@
 <script>
 export default {
   computed: {
+    ads() {
+      return this.$store.getters.ads;
+    },
     promoAds() {
       return this.$store.getters.promoAds;
     },
