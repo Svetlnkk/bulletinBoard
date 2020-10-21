@@ -4,12 +4,14 @@
             <v-col class="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-6 mx-auto">
                 <h1 class="text--secondary mb-3 ml-3">Ad List</h1>
                 <v-row>
+                    <!-- ad -->
                     <v-col
                         v-for="ad in myAds"
                         :key="ad.id"
-                        class="ad-list__item d-flex col-11 flex-column flex-sm-row mb-5 mx-auto py-0"
+                        class="ad-list__item col-11 d-flex flex-column flex-sm-row mb-5 mx-auto py-0"
                     >
                         <v-row>
+                            <!-- image -->
                             <v-col class="ad-list__wrapper col-auto mr-2 pa-0">
                                 <img
                                     :alt="ad.title"
@@ -17,61 +19,77 @@
                                     class="ad-list__image"
                                 />
                                 <div
-                                    class="ad-list__background"
                                     :style="{
                                         backgroundImage: `url('${ad.imageSrc}')`,
                                     }"
+                                    class="ad-list__background"
                                 ></div>
                             </v-col>
+
+                            <!-- content -->
                             <v-col
                                 class="ad-list__content d-flex flex-column justify-space-between pa-3"
                             >
+                                <!-- text -->
                                 <div class="ad-list__text mb-2">
+                                    <!-- title -->
                                     <h2
                                         class="ad-list__title mb-2 text--primary text-subtitle-1 text-lg-h6 font-weight-bold"
                                     >
                                         {{ ad.title }}
                                     </h2>
+
+                                    <!-- date -->
                                     <div
                                         class="ad-list__date mb-1 text-body-2 text-sm-subtitle-1"
                                     >
                                         <v-icon
                                             class="ad-list__icon pr-1 mb-1"
                                             color="teal"
-                                            >mdi-calendar-clock</v-icon
-                                        >Ad created:
-                                        <span
-                                            class="text--secondary text-subtitle-2"
-                                            >{{ ad.dateAdded }}</span
                                         >
+                                            mdi-calendar-clock
+                                        </v-icon>
+                                        Ad created:
+                                        <span
+                                            class="text--secondary text-subtitle-2"
+                                        >
+                                            {{ ad.dateAdded }}
+                                        </span>
                                     </div>
+
+                                    <!-- price -->
                                     <div
                                         class="ad-list__date mb-1 text-body-2 text-sm-subtitle-1"
                                     >
                                         <v-icon
                                             class="ad-list__icon pr-1 mb-1"
                                             color="teal"
-                                            >mdi-currency-usd</v-icon
-                                        >Price:
+                                        >
+                                            mdi-currency-usd
+                                        </v-icon>
+                                        Price:
                                         <span
                                             class="text--secondary text-subtitle-2"
-                                            >{{
+                                        >
+                                            {{
                                                 ad.price
                                                     ? ad.price
                                                     : "not specified"
-                                            }}</span
-                                        >
+                                            }}
+                                        </span>
                                     </div>
                                 </div>
+
+                                <!-- actions -->
                                 <v-col
                                     class="ad-list__buttons d-flex justify-end"
                                 >
                                     <v-btn
-                                        class="ad-list__button teal white--text mr-sm-2"
                                         :to="'/ad/' + ad.id"
+                                        class="ad-list__button teal white--text mr-sm-2"
                                     >
-                                        Open</v-btn
-                                    >
+                                        Open
+                                    </v-btn>
                                 </v-col>
                             </v-col>
                         </v-row>
@@ -80,11 +98,14 @@
             </v-col>
         </v-row>
 
+        <!-- if no ads -->
         <v-row v-else-if="!loading && myAds.length === 0">
             <v-col class="col-12 col-sm-8 mx-auto">
                 <h1 class="text--secondary">You have no ads</h1>
             </v-col>
         </v-row>
+
+        <!-- in loading process -->
         <v-row v-else>
             <v-col class="col-xs-12 text-center pt-5">
                 <v-progress-circular
@@ -129,9 +150,9 @@ export default {
     position: relative;
     z-index: 1;
 
+    align-items: center;
     display: flex;
     justify-content: center;
-    align-items: center;
 
     overflow: hidden;
 
@@ -150,8 +171,8 @@ export default {
     height: 200px;
     width: 200px;
 
-    background: no-repeat center;
     background-size: cover;
+    background: no-repeat center;
 
     filter: blur(14px);
     opacity: 0.4;

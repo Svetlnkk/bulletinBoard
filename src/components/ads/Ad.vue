@@ -116,6 +116,7 @@
                     </v-col>
                 </v-row>
 
+                <!-- in loading process -->
                 <v-container v-else>
                     <v-row>
                         <v-col class="col-xs-12 text-center pt-5">
