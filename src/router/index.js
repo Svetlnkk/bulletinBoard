@@ -28,7 +28,7 @@ const router = new VueRouter({
     },
     {
       path: '/list',
-      name: 'list',
+      name: 'AdList',
       component: AdList,
       beforeEnter: AuthGuard,
     },
@@ -39,23 +39,23 @@ const router = new VueRouter({
       beforeEnter: AuthGuard,
     },
     {
-      path: '/Login',
+      path: '/login',
       name: 'Login',
       component: Login,
     },
     {
-      path: '/Registration',
+      path: '/registration',
       name: 'Registration',
       component: Registration,
     },
     {
-      path: '/UserOrders',
+      path: '/orders',
       name: 'UserOrders',
       component: UserOrders,
       beforeEnter: AuthGuard,
     },
     {
-      path: '/UserAccount',
+      path: '/account',
       name: 'UserAccount',
       component: UserAccount,
       beforeEnter: AuthGuard,
