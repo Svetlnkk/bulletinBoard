@@ -33,6 +33,7 @@
                     <v-col class="col-xs-12">
                         <v-card-text>
                             <v-form ref="formEdit" v-model="valid">
+                                <!-- title -->
                                 <v-text-field
                                     v-model="editedTitle"
                                     :rules="editedTitleRules"
@@ -45,6 +46,8 @@
                                     validate-on-blur
                                 >
                                 </v-text-field>
+
+                                <!-- description -->
                                 <v-textarea
                                     v-model="editedDescription"
                                     :rules="editedDescriptionRules"
@@ -56,6 +59,8 @@
                                     validate-on-blur
                                 >
                                 </v-textarea>
+
+                                <!-- price -->
                                 <v-text-field
                                     v-model="editedPrice"
                                     :rules="priceRules"
@@ -104,6 +109,8 @@ export default {
             modal: false,
             valid: false,
             editedTitle: this.ad.title,
+            editedDescription: this.ad.description,
+            editedPrice: this.ad.price,
             editedTitleRules: [
                 (v) => !!v || "Title is required",
                 (v) =>
@@ -113,7 +120,6 @@ export default {
                     (v && v.length <= 60) ||
                     "Title must be equal or less than 60 characters",
             ],
-            editedDescription: this.ad.description,
             editedDescriptionRules: [
                 (v) => !!v || "Description is required",
                 (v) =>
@@ -123,7 +129,6 @@ export default {
                     (v && v.length <= 1000) ||
                     "Description must be equal or less than 1000 characters",
             ],
-            editedPrice: this.ad.price,
             priceRules: [
                 (v) =>
                     (String(v) && String(v).length <= 20) ||
