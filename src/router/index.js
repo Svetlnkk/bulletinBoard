@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import AuthGuard from './auth-guard'
-import Home from '@/components/home'
+import Home from '@/components/Home'
 import Ad from '@/components/ads/ad'
-import AdList from '@/components/ads/adList'
+import AdList from '@/components/ads/AdList'
 import AdNew from '@/components/ads/AdNew'
-import Login from '@/components/authentification/login'
-import Registration from '@/components/authentification/registration'
-import Orders from '@/components/user/orders'
+import Login from '@/components/authentification/Login'
+import Registration from '@/components/authentification/Registration'
+import UserOrders from '@/components/user/UserOrders'
 import UserAccount from '@/components/user/UserAccount'
 import PageNotFound from '@/components/common/404'
 
@@ -17,7 +17,7 @@ const router = new VueRouter({
   routes: [
     {
       path: '',
-      name: 'home',
+      name: 'Home',
       component: Home,
     },
     {
@@ -39,19 +39,19 @@ const router = new VueRouter({
       beforeEnter: AuthGuard,
     },
     {
-      path: '/login',
-      name: 'login',
+      path: '/Login',
+      name: 'Login',
       component: Login,
     },
     {
-      path: '/registration',
-      name: 'registration',
+      path: '/Registration',
+      name: 'Registration',
       component: Registration,
     },
     {
-      path: '/orders',
-      name: 'orders',
-      component: Orders,
+      path: '/UserOrders',
+      name: 'UserOrders',
+      component: UserOrders,
       beforeEnter: AuthGuard,
     },
     {

@@ -116,7 +116,7 @@ export default {
 		links () {
 			if(this.isUserLoggedIn) {
 				return [
-					{title: "Orders", icon: "mdi-bookmark-multiple-outline", url: "/orders"},
+					{title: "Orders", icon: "mdi-bookmark-multiple-outline", url: "/UserOrders"},
 					{title: "New ad", icon: "mdi-file-plus", url: "/new"},
 					{title: "My ads", icon: "mdi-format-list-bulleted-square", url: "/list"},
 					{title: "Account", icon: "mdi-face", url: "/account"},
