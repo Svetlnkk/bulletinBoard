@@ -1,177 +1,172 @@
 <template>
-    <v-dialog width="400" v-model="modal">
-        <!-- activator -->
-        <template v-slot:activator="{ on, attrs }">
-            <v-btn
-                v-if="!isOwner"
-                v-bind="attrs"
-                class="primary white--text"
+  <v-dialog width="400" v-model="modal">
+    <!-- activator -->
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        v-if="!isOwner"
+        v-bind="attrs"
+        class="primary white--text"
+        depressed
+        v-on="on"
+      >
+        Buy</v-btn
+      >
+      <v-btn v-else disabled>Your Ad</v-btn>
+    </template>
+
+    <!-- dialog body -->
+    <v-card>
+      <v-container>
+        <!-- title -->
+        <v-row>
+          <v-col class="col-xs-12 py-0 primary">
+            <v-card-title>
+              <h2 class="white--text modal__title">
+                Do you want to buy it?
+              </h2>
+            </v-card-title>
+          </v-col>
+        </v-row>
+        <v-divider></v-divider>
+
+        <!-- form -->
+        <v-row>
+          <v-col class="col-xs-12">
+            <v-card-text>
+              <v-form ref="formEdit" v-model="valid">
+                <!-- name -->
+                <v-text-field
+                  v-model="name"
+                  :rules="nameRules"
+                  color="teal"
+                  counter="60"
+                  label="Your name"
+                  name="name"
+                  required
+                  type="text"
+                  validate-on-blur
+                >
+                </v-text-field>
+
+                <!-- phone -->
+                <v-text-field
+                  v-model="phone"
+                  :rules="phoneRules"
+                  color="teal"
+                  counter
+                  label="Your phone"
+                  name="phone"
+                  type="text"
+                  validate-on-blur
+                >
+                </v-text-field>
+              </v-form>
+            </v-card-text>
+          </v-col>
+        </v-row>
+        <v-divider></v-divider>
+
+        <!-- actions -->
+        <v-row>
+          <v-col class="col-xs-12">
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <!-- cancel -->
+              <v-btn :disabled="localLoading" class="" text @click="onCancel"
+                >Close</v-btn
+              >
+
+              <!-- save -->
+              <v-btn
+                :disabled="localLoading"
+                :loading="localLoading"
+                class="primary"
                 depressed
-                v-on="on"
-            >
-                Buy</v-btn
-            >
-            <v-btn v-else disabled>Your Ad</v-btn>
-        </template>
-
-        <!-- dialog body -->
-        <v-card>
-            <v-container>
-                <!-- title -->
-                <v-row>
-                    <v-col class="col-xs-12 py-0 primary">
-                        <v-card-title>
-                            <h2 class="white--text modal__title">
-                                Do you want to buy it?
-                            </h2>
-                        </v-card-title>
-                    </v-col>
-                </v-row>
-                <v-divider></v-divider>
-
-                <!-- form -->
-                <v-row>
-                    <v-col class="col-xs-12">
-                        <v-card-text>
-                            <v-form ref="formEdit" v-model="valid">
-                                <!-- name -->
-                                <v-text-field
-                                    v-model="name"
-                                    :rules="nameRules"
-                                    color="teal"
-                                    counter="60"
-                                    label="Your name"
-                                    name="name"
-                                    required
-                                    type="text"
-                                    validate-on-blur
-                                >
-                                </v-text-field>
-
-                                <!-- phone -->
-                                <v-text-field
-                                    v-model="phone"
-                                    :rules="phoneRules"
-                                    color="teal"
-                                    counter
-                                    label="Your phone"
-                                    name="phone"
-                                    type="text"
-                                    validate-on-blur
-                                >
-                                </v-text-field>
-                            </v-form>
-                        </v-card-text>
-                    </v-col>
-                </v-row>
-                <v-divider></v-divider>
-
-                <!-- actions -->
-                <v-row>
-                    <v-col class="col-xs-12">
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-
-                            <!-- cancel -->
-                            <v-btn
-                                :disabled="localLoading"
-                                class=""
-                                text
-                                @click="onCancel"
-                                >Close</v-btn
-                            >
-
-                            <!-- save -->
-                            <v-btn
-                                :disabled="localLoading"
-                                :loading="localLoading"
-                                class="primary"
-                                depressed
-                                @click="onSave"
-                                >Buy it</v-btn
-                            >
-                        </v-card-actions>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-card>
-    </v-dialog>
+                @click="onSave"
+                >Buy it</v-btn
+              >
+            </v-card-actions>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
 export default {
-    props: {
-        ad: String,
+  props: {
+    ad: String,
+  },
+  data() {
+    return {
+      valid: false,
+      modal: false,
+      localLoading: false,
+      name: '',
+      phone: '',
+      nameRules: [
+        (v) => !!v || 'Name is required',
+        (v) =>
+          (v && v.length >= 2) ||
+          'Name must be equal or more than 2 characters',
+        (v) =>
+          (v && v.length <= 60) ||
+          'Name must be equal or less than 60 characters',
+      ],
+      phoneRules: [
+        (v) => !!v || 'Phone is required',
+        (v) =>
+          (v && v.length >= 5) ||
+          'Phone must be equal or more than 5 characters',
+        (v) =>
+          (v && v.length <= 30) ||
+          'Phone must be equal or less than 30 characters',
+        (v) => !/\s/.test(v) || 'No spaces are allowed',
+        (v) =>
+          /^[0-9 +]+$/.test(v) || 'Phone can only contain digits and  + sign',
+      ],
+    };
+  },
+  computed: {
+    isOwner() {
+      if (!this.$store.getters.user.id) return;
+      return this.ad.ownerId === this.$store.getters.user.id;
     },
-    data() {
-        return {
-            valid: false,
-            modal: false,
-            localLoading: false,
-            name: "",
-            phone: "",
-            nameRules: [
-                (v) => !!v || "Name is required",
-                (v) =>
-                    (v && v.length >= 2) ||
-                    "Name must be equal or more than 2 characters",
-                (v) =>
-                    (v && v.length <= 60) ||
-                    "Name must be equal or less than 60 characters",
-            ],
-            phoneRules: [
-                (v) => !!v || "Phone is required",
-                (v) =>
-                    (v && v.length >= 5) ||
-                    "Phone must be equal or more than 5 characters",
-                (v) =>
-                    (v && v.length <= 30) ||
-                    "Phone must be equal or less than 30 characters",
-                (v) => !/\s/.test(v) || "No spaces are allowed",
-                (v) =>
-                    /^[0-9 +]+$/.test(v) ||
-                    "Phone can only contain digits and  + sign",
-            ],
-        };
+  },
+  methods: {
+    onCancel() {
+      this.name = '';
+      this.phone = '';
+      this.modal = false;
+      this.localLoading = false;
     },
-    computed: {
-        isOwner() {
-            if (!this.$store.getters.user.id) return;
-            return this.ad.ownerId === this.$store.getters.user.id;
-        },
-    },
-    methods: {
-        onCancel() {
-            this.name = "";
-            this.phone = "";
-            this.modal = false;
+    onSave() {
+      if (this.$refs.formEdit.validate()) {
+        this.localLoading = true;
+        this.$store
+          .dispatch('createOrder', {
+            name: this.name,
+            phone: this.phone,
+            adId: this.ad.id,
+            ownerId: this.ad.ownerId,
+          })
+          .finally(() => {
+            this.name = '';
+            this.phone = '';
             this.localLoading = false;
-        },
-        onSave() {
-            if (this.$refs.formEdit.validate()) {
-                this.localLoading = true;
-                this.$store
-                    .dispatch("createOrder", {
-                        name: this.name,
-                        phone: this.phone,
-                        adId: this.ad.id,
-                        ownerId: this.ad.ownerId,
-                    })
-                    .finally(() => {
-                        this.name = "";
-                        this.phone = "";
-                        this.localLoading = false;
-                        this.modal = false;
-                    });
-            }
-        },
+            this.modal = false;
+          });
+      }
     },
+  },
 };
 </script>
 
 <style>
 /* removes word break in card title */
 .v-card__title .modal__title {
-    word-break: normal;
+  word-break: normal;
 }
 </style>

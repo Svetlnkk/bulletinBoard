@@ -1,46 +1,46 @@
 export default {
-    state: {
-        loading: false,
-        loadingUser: false,
-        error: null,
+  state: {
+    loading: false,
+    loadingUser: false,
+    error: null,
+  },
+  mutations: {
+    setLoading(state, payload) {
+      state.loading = payload;
     },
-    mutations: {
-        setLoading (state, payload) {
-            state.loading = payload;
-        },
-        setLoadingUser (state, payload) {
-            state.loadingUser = payload
-        },
-        setError (state, payload) {
-            state.error = payload;
-        },
-        clearError (state) {
-            state.error = null;
-        }
+    setLoadingUser(state, payload) {
+      state.loadingUser = payload;
     },
-    actions: {
-        setLoading ({commit}, payload) {
-            commit('setLoading', payload)
-        },
-        setLoadingUser ({commit}, payload) {
-            commit('setLoadingUser', payload)
-        },
-        setError ({commit}, payload) {
-            commit('setError', payload)
-        },
-        clearError({commit}) {
-            commit('clearError')
-        }
+    setError(state, payload) {
+      state.error = payload;
     },
-    getters: {
-        loadingUser (state) {
-            return state.loadingUser
-        },
-        loading (state) {
-            return state.loading
-        },
-        error (state) {
-            return state.error
-        }
-    }
-}
+    clearError(state) {
+      state.error = null;
+    },
+  },
+  actions: {
+    setLoading({ commit }, payload) {
+      commit('setLoading', payload);
+    },
+    setLoadingUser({ commit }, payload) {
+      commit('setLoadingUser', payload);
+    },
+    setError({ commit }, payload) {
+      commit('setError', payload);
+    },
+    clearError({ commit }) {
+      commit('clearError');
+    },
+  },
+  getters: {
+    loadingUser(state) {
+      return state.loadingUser;
+    },
+    loading(state) {
+      return state.loading;
+    },
+    error(state) {
+      return state.error;
+    },
+  },
+};
