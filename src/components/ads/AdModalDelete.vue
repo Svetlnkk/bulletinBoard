@@ -1,13 +1,13 @@
 <template>
-    <v-dialog width="400" v-model="modal">
-        <template v-slot:activator="{on, attrs}">
+    <v-dialog v-model="modal" width="400">
+        <template v-slot:activator="{ on, attrs }">
             <v-btn
+                v-bind="attrs"
                 class="red white--text mr-3"
                 depressed
                 v-on="on"
-                v-bind="attrs"
             >
-            Delete
+                Delete
             </v-btn>
         </template>
         <v-card>
@@ -23,8 +23,15 @@
                     <v-col>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn text @click="onCancel">Cancel</v-btn>
-                            <v-btn class="red white--text" depressed @click="onDelete">Ok</v-btn>
+                            <v-btn text @click="onCancel">
+                                Cancel
+                            </v-btn>
+                            <v-btn
+                                class="red white--text"
+                                depressed
+                                @click="onDelete"
+                                >Ok</v-btn
+                            >
                         </v-card-actions>
                     </v-col>
                 </v-row>
@@ -35,26 +42,29 @@
 
 <script>
 export default {
-    props:['ad'],
+    props: {
+        ad: String,
+    },
     data() {
         return {
             modal: false,
-        }
+        };
     },
     methods: {
-        onCancel () {
-            this.modal = false
+        onCancel() {
+            this.modal = false;
         },
-        onDelete () {
-            this.$store.dispatch('deleteAd', {
-                id: this.ad.id,
-                imageSrc: this.ad.imageSrc,
-            })
-            .then ( () => {
-                this.modal = false;
-                this.$router.push('/list');
-            })
-        }
+        onDelete() {
+            this.$store
+                .dispatch("deleteAd", {
+                    id: this.ad.id,
+                    imageSrc: this.ad.imageSrc,
+                })
+                .then(() => {
+                    this.modal = false;
+                    this.$router.push("/list");
+                });
+        },
     },
-}
+};
 </script>
