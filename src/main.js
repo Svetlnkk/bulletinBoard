@@ -3,11 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
-import BuyModalComponent from '@/components/shared/buyModal'
+import AdModalBuyComponent from '@/components/shared/AdModalBuy'
 import * as firebase from 'firebase'
 
 Vue.config.productionTip = false;
-Vue.component('app-buy-modal', BuyModalComponent)
+Vue.component('app-buy-modal', AdModalBuyComponent)
 
 firebase.initializeApp({
 	apiKey: 'AIzaSyAnI2BvSkYCUJZJmN3GrUwJal8yjuj0jqs',

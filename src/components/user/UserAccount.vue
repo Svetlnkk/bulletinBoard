@@ -49,7 +49,7 @@
                     
                      <v-card-actions>
                         <v-spacer></v-spacer>
-                        <add-edit-user :user="user" :loading="loading" :userName="userName"></add-edit-user>
+                        <app-user-modal-edit :user="user" :loading="loading" :userName="userName"></app-user-modal-edit>
                     </v-card-actions>
                 </v-card>
                 <div v-else>
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import EditUser from './editUser'
+import UserModalEdit from './UserModalEdit'
 
 export default {
     computed: {
@@ -84,11 +84,11 @@ export default {
             return this.$store.getters.loading
         },
         userName () {
-            return this.$store.state.user.user.name // forced check. For to first load of editUser (input 'editedName')
+            return this.$store.state.user.user.name // forced check. For to first load of UserModalEdit (input 'editedName')
         }
     },
     components: {
-        addEditUser: EditUser,
+        AppUserModalEdit: EditUser,
     },
 }
 </script>

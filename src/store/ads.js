@@ -47,7 +47,7 @@ export default {
             const image = payload.image;
 
             try {
-                const newAd = new Ad(
+                const AdNew = new Ad(
                     payload.title,
                     payload.description,
                     getters.user.id,
@@ -58,7 +58,7 @@ export default {
                     payload.price,
                     );
                 
-                const ad = await firebase.database().ref('ads').push(newAd);
+                const ad = await firebase.database().ref('ads').push(AdNew);
                 const imageExt = image.name.slice(image.name.lastIndexOf('.')).slice(1);
 
                 const fileData = await firebase.storage().ref(`ads/${ad.key}.${imageExt}`).put(image);
@@ -75,7 +75,7 @@ export default {
                 })
 
                 commit('createAd', {
-                    ...newAd,
+                    ...AdNew,
                     id: ad.key,
                     imageSrc,
                     dateAdded,
