@@ -1,16 +1,21 @@
 <template>
-    <v-dialog width="400" v-model="modal">
+    <v-dialog v-model="modal" width="400">
+        <!-- activator -->
         <template v-slot:activator="{ on, attrs }">
-            <v-btn 
-            class="teal darken-2 white--text mr-3"
-            depressed
-            v-bind="attrs"
-            v-on="on"
+            <v-btn
+                v-bind="attrs"
+                class="teal darken-2 white--text mr-3"
+                depressed
+                v-on="on"
             >
-            Edit</v-btn>
+                Edit</v-btn
+            >
         </template>
+
+        <!-- dialog body -->
         <v-card>
             <v-container>
+                <!-- title -->
                 <v-row>
                     <v-col class="col-xs-12 py-0 teal darken-2">
                         <v-card-title class="text-subtitle-1 text-sm-h5">
@@ -18,57 +23,64 @@
                         </v-card-title>
                     </v-col>
                 </v-row>
+
                 <v-divider></v-divider>
+
+                <!-- form -->
                 <v-row>
                     <v-col class="col-xs-12">
                         <v-card-text>
-                            <v-form 
-                                ref="formEdit"
-                                v-model="valid"
-                            >
+                            <v-form ref="formEdit" v-model="valid">
+                                <!-- name -->
                                 <v-text-field
-                                    name="name"
-                                    label="User name"
-                                    type="text"
-                                    color="teal"
-                                    required
                                     v-model="editedName"
                                     :rules="nameEditRules"
-                                    counter="30"
-                                    validate-on-blur
-                                    >
-                                </v-text-field>
-                                <v-text-field 
-                                    name="email" 
-                                    label="Email"
                                     color="teal"
-                                    type="email"
+                                    counter="30"
+                                    label="User name"
+                                    name="name"
                                     required
+                                    type="text"
+                                    validate-on-blur
+                                >
+                                </v-text-field>
+
+                                <!-- email -->
+                                <v-text-field
                                     v-model="editedEmail"
                                     :rules="emailEditRules"
+                                    color="teal"
                                     counter
+                                    label="Email"
+                                    name="email"
+                                    required
+                                    type="email"
                                     validate-on-blur
                                 >
                                 </v-text-field>
-                                <v-text-field 
-                                    name="password" 
-                                    label="New password"
-                                    color="teal"
-                                    type="password"
+
+                                <!-- password -->
+                                <v-text-field
                                     v-model="editedPassword"
                                     :rules="passwordEditRules"
+                                    color="teal"
                                     counter
+                                    label="New password"
+                                    name="password"
+                                    type="password"
                                     validate-on-blur
                                 >
                                 </v-text-field>
-                                <v-text-field 
-                                    name="confirmPassword" 
-                                    label="Confirm new password"
-                                    color="teal"
-                                    type="password"
+
+                                <!-- confirm password -->
+                                <v-text-field
                                     v-model="editedConfirmPassword"
                                     :rules="confirmEditPasswordRules"
+                                    color="teal"
                                     counter
+                                    label="Confirm new password"
+                                    name="confirmPassword"
+                                    type="password"
                                     validate-on-blur
                                 >
                                 </v-text-field>
@@ -76,43 +88,65 @@
                         </v-card-text>
                     </v-col>
                 </v-row>
+
                 <v-divider></v-divider>
+
+                <!-- actions -->
                 <v-row>
                     <v-col class="col-xs-12">
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn class="" text @click='onCancel'>Cancel</v-btn>
-                            <v-btn class="teal darken-2 white--text" :disabled="!valid" depressed @click='onSave'>Save</v-btn>
-                            <!-- <v-btn class="success" depressed @click='checkPassword'>PasswordModal</v-btn> -->
+                            <v-btn text @click="onCancel">Cancel</v-btn>
+                            <v-btn
+                                :disabled="!valid"
+                                class="teal darken-2 white--text"
+                                depressed
+                                @click="onSave"
+                            >
+                                Save
+                            </v-btn>
                         </v-card-actions>
                     </v-col>
                 </v-row>
             </v-container>
         </v-card>
-        <v-dialog width="400" v-model="modalPassword">
+
+        <!-- dialog old (current) password -->
+        <v-dialog v-model="modalPassword" width="400">
             <v-card>
                 <v-container>
                     <v-row>
                         <v-col class="col-xs-12">
+                            <!-- title -->
                             <v-card-title class="subtitle-1">
                                 <h4>Enter current password</h4>
                             </v-card-title>
 
+                            <!-- current password -->
                             <v-text-field
-                                name="currentPassword"
-                                label="********"
-                                single-line
-                                color="teal"
-                                type="password"
                                 v-model="currentPassword"
+                                color="teal"
+                                label="********"
+                                name="currentPassword"
+                                single-line
+                                type="password"
                             >
                             </v-text-field>
 
+                            <!-- actions -->
                             <v-card-actions class="px-0">
-                            <v-spacer></v-spacer>
-                            <v-btn class="" @click="modalPassword = false" text>Cancel</v-btn>
-                            <v-btn class="teal darken-2 white--text" depressed @click="checkPassword" :loading="localLoading">Ok</v-btn>
-                        </v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn text @click="modalPassword = false"
+                                    >Cancel</v-btn
+                                >
+                                <v-btn
+                                    :loading="localLoading"
+                                    class="teal darken-2 white--text"
+                                    depressed
+                                    @click="checkPassword"
+                                    >Ok</v-btn
+                                >
+                            </v-card-actions>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -123,106 +157,130 @@
 
 <script>
 export default {
-    props: ['user', 'userName'],
-    data () {
+    props: {
+        user: String,
+        userName: String,
+    },
+    data() {
         return {
-            modal: false,
-            modalPassword: false,
-            currentPassword: '',
-            isCheckedCurrentPassword: false,
             valid: false,
+            localLoading: false,
             editedName: this.user.name,
             editedEmail: this.user.email,
-            editedPassword: '',
-            editedConfirmPassword: '',
-            localLoading: false,
+            editedPassword: "",
+            editedConfirmPassword: "",
+            modal: false,
+            modalPassword: false,
+            currentPassword: "",
+            isCheckedCurrentPassword: false,
             emailEditRules: [
-                v => !!v || 'E-mail is required',
-                v => /.+@.+/.test(v) || 'E-mail must be valid',
+                (v) => !!v || "E-mail is required",
+                (v) => /.+@.+/.test(v) || "E-mail must be valid",
             ],
             passwordEditRules: [
-                v => (v && v.length >= 6 || v.length === 0) || 'Password must be equal or more than 6 characters',
-                v => (!/\s/.test(v) || v.length === 0) || 'No spaces are allowed',
-                v => (/[a-z]/.test(v) || v.length === 0) || 'Need at least one latin letter with lowercase',
-                v => (/[A-Z]/.test(v) || v.length === 0) || 'Need at least one latin letter with uppercase',
-                v => (/\d/.test(v) || v.length === 0) || 'Need at least one digit',
-                v => (!/\W/.test(v) || v.length === 0) ||  'You can not enter anything other than Latin letters and digits'
+                (v) =>
+                    (v && v.length >= 6) ||
+                    v.length === 0 ||
+                    "Password must be equal or more than 6 characters",
+                (v) =>
+                    !/\s/.test(v) || v.length === 0 || "No spaces are allowed",
+                (v) =>
+                    /[a-z]/.test(v) ||
+                    v.length === 0 ||
+                    "Need at least one latin letter with lowercase",
+                (v) =>
+                    /[A-Z]/.test(v) ||
+                    v.length === 0 ||
+                    "Need at least one latin letter with uppercase",
+                (v) =>
+                    /\d/.test(v) || v.length === 0 || "Need at least one digit",
+                (v) =>
+                    !/\W/.test(v) ||
+                    v.length === 0 ||
+                    "You can not enter anything other than Latin letters and digits",
             ],
             confirmEditPasswordRules: [
-                v => v === this.editedPassword || 'Password must match'
+                (v) => v === this.editedPassword || "Password must match",
             ],
             nameEditRules: [
-                v => !!v || 'Name is required',
-                v => (v && v.length >= 2) || 'Name must be equal or more than 2 characters',
-                v => (v && v.length <= 30) || 'Name must be equal or less than 30 characters',
-            ]
-
-        }
+                (v) => !!v || "Name is required",
+                (v) =>
+                    (v && v.length >= 2) ||
+                    "Name must be equal or more than 2 characters",
+                (v) =>
+                    (v && v.length <= 30) ||
+                    "Name must be equal or less than 30 characters",
+            ],
+        };
     },
     watch: {
-        userName () {
+        userName() {
             this.editedName = this.user.name;
-        }
+        },
     },
     methods: {
-        onCancel () {
+        onCancel() {
             this.editedName = this.user.name;
             this.editedEmail = this.user.email;
-            this.editedPassword = '';
-            this.editedConfirmPassword = '';
-            this.currentPassword = '';
+            this.editedPassword = "";
+            this.editedConfirmPassword = "";
+            this.currentPassword = "";
             this.modal = false;
         },
-        async checkPassword () {
-            this.localLoading = true
+        async checkPassword() {
+            this.localLoading = true;
 
             try {
-                await this.$store.dispatch('checkAuthenticate', this.currentPassword)
+                await this.$store.dispatch(
+                    "checkAuthenticate",
+                    this.currentPassword
+                );
                 this.localLoading = false;
                 this.modalPassword = false;
-                this.currentPassword = '';
+                this.currentPassword = "";
                 this.isCheckedCurrentPassword = true;
 
-                this.onSave()
+                this.onSave();
             } catch (error) {
-                this.currentPassword = '';
+                this.currentPassword = "";
                 this.isCheckedCurrentPassword = false;
                 this.localLoading = false;
-                throw error
+                throw error;
             }
         },
-        async onSave () {
+        async onSave() {
             const user = {
-                name: this.editedName === this.user.name ? null : this.editedName,
-                email: this.editedEmail  === this.user.email ? null : this.editedEmail,
-                password: !this.editedPassword ? null : this.editedPassword
-            }
+                name:
+                    this.editedName === this.user.name ? null : this.editedName,
+                email:
+                    this.editedEmail === this.user.email
+                        ? null
+                        : this.editedEmail,
+                password: !this.editedPassword ? null : this.editedPassword,
+            };
 
-            if (this.$refs.formEdit.validate() && (user.name ||user.email || user.password)) {
-
-                if(user.name && !user.email && !user.password) {
-                    this.$store.dispatch('updateUser', user)
+            if (
+                this.$refs.formEdit.validate() &&
+                (user.name || user.email || user.password)
+            ) {
+                if (user.name && !user.email && !user.password) {
+                    this.$store.dispatch("updateUser", user);
                     this.isCheckedCurrentPassword = false;
-                    this.modal = false
-                    return
-                } else if(!this.isCheckedCurrentPassword) {
+                    this.modal = false;
+                    return;
+                } else if (!this.isCheckedCurrentPassword) {
                     this.modalPassword = true;
-                    return
+                    return;
                 } else {
-                    this.$store.dispatch('updateUser', user)
+                    this.$store.dispatch("updateUser", user);
 
-                this.isCheckedCurrentPassword = false;
-                this.modal = false
+                    this.isCheckedCurrentPassword = false;
+                    this.modal = false;
                 }
             } else {
-                this.modal = false
+                this.modal = false;
             }
         },
     },
-}
+};
 </script>
-
-<style>
-
-</style>
-
