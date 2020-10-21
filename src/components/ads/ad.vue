@@ -48,7 +48,7 @@
                     <v-divider></v-divider>
                     <v-col class="d-flex justify-end">
                         <app-ad-modal-delete :ad="ad" v-if="isOwner"></app-ad-modal-delete>
-                        <app-ad-modal-delete :ad="ad" v-if="isOwner"></app-ad-modal-delete>
+                        <app-ad-modal-edit :ad="ad" v-if="isOwner"></app-ad-modal-edit>
                         <app-ad-modal-buy :ad="ad" v-if="!isOwner"></app-ad-modal-buy>
                     </v-col>
                 </v-row>

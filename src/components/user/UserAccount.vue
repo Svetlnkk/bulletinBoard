@@ -88,7 +88,7 @@ export default {
         }
     },
     components: {
-        AppUserModalEdit: EditUser,
+        AppUserModalEdit: UserModalEdit,
     },
 }
 </script>
