@@ -1,37 +1,38 @@
 <template>
     <div v-if="!loading">
+        <!-- carousel -->
         <v-container fluid class="pt-0">
             <v-row>
                 <v-col class="col-md-12 pt-3">
                     <v-carousel
-                        continuous
-                        height="auto"
-                        cycle
-                        interval="5000"
                         :show-arrows="false"
-                        hide-delimiters
                         class="carousel__home"
+                        continuous
+                        cycle
+                        height="auto"
+                        hide-delimiters
+                        interval="5000"
                     >
                         <v-carousel-item
-                            contain
-                            :to="'/ad/' + ad.id"
                             v-for="ad in promoAds"
                             :key="ad.id"
                             :src="ad.imageSrc"
+                            :to="'/ad/' + ad.id"
+                            contain
                         >
                             <div
-                                class="carousel__background"
                                 :style="{
                                     backgroundImage: `url('${ad.imageSrc}')`,
                                 }"
+                                class="carousel__background"
                             ></div>
                             <div class="carousel__link">
                                 <v-btn
-                                    class="carousel__button"
-                                    rounded
-                                    large
-                                    text
                                     :to="'/ad/' + ad.id"
+                                    class="carousel__button"
+                                    large
+                                    rounded
+                                    text
                                 >
                                     Open</v-btn
                                 >
@@ -41,32 +42,38 @@
                 </v-col>
             </v-row>
         </v-container>
+
+        <!-- content -->
         <v-container>
             <v-row>
+                <!-- ad list -->
                 <v-col
-                    class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"
                     v-for="ad in ads"
                     :key="ad.id"
+                    class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"
                 >
                     <v-card
                         class="d-flex flex-column mx-auto"
                         height="100%"
                         max-width="400"
                     >
+                        <!-- image -->
                         <v-img
+                            :src="ad.imageSrc"
                             class="white--text align-end"
                             height="270px"
-                            :src="ad.imageSrc"
                         >
                         </v-img>
 
+                        <!-- title -->
                         <v-card-title class="mb-auto">
                             <h2 class="text-h6">{{ ad.title }}</h2>
                         </v-card-title>
 
+                        <!-- actions -->
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn text color="teal" :to="'/ad/' + ad.id">
+                            <v-btn :to="'/ad/' + ad.id" text color="teal">
                                 Open
                             </v-btn>
                             <app-ad-modal-buy :ad="ad"></app-ad-modal-buy>
@@ -76,6 +83,8 @@
             </v-row>
         </v-container>
     </div>
+
+    <!-- in loading progress -->
     <div v-else>
         <v-container>
             <v-row>
@@ -96,11 +105,11 @@
 <script>
 export default {
     computed: {
-        promoAds() {
-            return this.$store.getters.promoAds;
-        },
         ads() {
             return this.$store.getters.ads;
+        },
+        promoAds() {
+            return this.$store.getters.promoAds;
         },
         loading() {
             return this.$store.getters.loading;
@@ -117,8 +126,8 @@ export default {
 .v-carousel__item {
     height: 500px !important;
 
-    border: 1px solid rgba(0, 0, 0, 0.12);
     border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
 
     @media (max-width: 599px) {
         height: 270px !important;
@@ -144,8 +153,8 @@ export default {
     z-index: 0;
 
     display: block;
-    width: 100%;
     height: 100%;
+    width: 100%;
 
     background-position: center center;
     background-size: cover;
