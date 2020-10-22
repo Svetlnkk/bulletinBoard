@@ -121,7 +121,7 @@ export default {
     id: String,
   },
   computed: {
-    ...mapState({
+    ...mapState('shared', {
       loading: 'loading',
     }),
     ad() {

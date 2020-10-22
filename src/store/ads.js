@@ -51,7 +51,7 @@ export default {
   actions: {
     async createAd({ commit, getters }, payload) {
       commit('clearError');
-      commit('setLoading', true);
+      commit('shared/setLoading', true);
 
       const image = payload.image;
 
@@ -111,16 +111,16 @@ export default {
           imageSrc,
           dateAdded,
         });
-        commit('setLoading', false);
+        commit('shared/setLoading', false);
       } catch (error) {
         commit('setError', error.message);
-        commit('setLoading', false);
+        commit('shared/setLoading', false);
         throw error;
       }
     },
     async fetchAds({ commit }) {
       commit('clearError');
-      commit('setLoading', true);
+      commit('shared/setLoading', true);
 
       const resultAds = [];
 
@@ -133,7 +133,7 @@ export default {
         const ads = firebaseValue.val();
 
         if (!ads) {
-          commit('setLoading', false);
+          commit('shared/setLoading', false);
           return;
         }
 
@@ -154,16 +154,16 @@ export default {
         });
 
         commit('getAds', resultAds);
-        commit('setLoading', false);
+        commit('shared/setLoading', false);
       } catch (error) {
         commit('setError', error.message);
-        commit('setLoading', false);
+        commit('shared/setLoading', false);
         throw error;
       }
     },
     async updateAd({ commit }, { title, description, id, price }) {
       commit('clearError');
-      commit('setLoading', true);
+      commit('shared/setLoading', true);
       try {
         await firebase
           .database()
@@ -180,16 +180,16 @@ export default {
           id,
           price,
         });
-        commit('setLoading', false);
+        commit('shared/setLoading', false);
       } catch (error) {
         commit('setError', error.message);
-        commit('setLoading', false);
+        commit('shared/setLoading', false);
         throw error;
       }
     },
     async deleteAd({ commit }, { id, imageSrc }) {
       commit('clearError');
-      commit('setLoading', true);
+      commit('shared/setLoading', true);
 
       const storage = firebase.storage();
       const storageRef = storage.ref();
@@ -209,10 +209,10 @@ export default {
 
         commit('deleteAd', id);
 
-        commit('setLoading', false);
+        commit('shared/setLoading', false);
       } catch (error) {
         commit('setError', error.message);
-        commit('setLoading', false);
+        commit('shared/setLoading', false);
         throw error;
       }
     },

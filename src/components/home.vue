@@ -102,7 +102,7 @@ import { mapState } from 'vuex';
 
 export default {
   computed: {
-    ...mapState({
+    ...mapState('shared', {
       loading: 'loading',
     }),
     ads() {
@@ -111,6 +111,19 @@ export default {
     promoAds() {
       return this.$store.getters.promoAds;
     },
+  },
+  created() {
+    console.log(this.loading);
+  },
+  mounted() {
+    console.log(this.loading);
+  },
+  beforeUpdate() {
+    console.log(this.loading);
+  },
+  updated() {
+    console.log(this.loading);
+    console.log(this.$store.state);
   },
 };
 </script>

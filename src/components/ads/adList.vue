@@ -104,7 +104,7 @@ import { mapState } from 'vuex';
 
 export default {
   computed: {
-    ...mapState({
+    ...mapState('shared', {
       loading: 'loading',
     }),
     myAds() {

@@ -35,7 +35,7 @@ export default {
       }
     },
     async fetchOrders({ commit, getters }) {
-      commit('setLoading', true);
+      commit('shared/setLoading', true);
       commit('clearError');
 
       const resultOrders = [];
@@ -49,7 +49,7 @@ export default {
         const orders = firebaseValue.val();
 
         if (!orders) {
-          commit('setLoading', false);
+          commit('shared/setLoading', false);
           return;
         }
 
@@ -61,9 +61,9 @@ export default {
         });
 
         commit('loadOrders', resultOrders);
-        commit('setLoading', false);
+        commit('shared/setLoading', false);
       } catch (error) {
-        commit('setLoading', false);
+        commit('shared/setLoading', false);
         commit('setError', error);
         throw error;
       }

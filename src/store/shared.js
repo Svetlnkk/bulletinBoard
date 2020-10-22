@@ -1,4 +1,5 @@
 export default {
+  namespaced: true,
   state: {
     loading: false,
     loadingUser: false,
@@ -20,10 +21,10 @@ export default {
   },
   actions: {
     setLoading({ commit }, payload) {
-      commit('setLoading', payload);
+      commit('shared/setLoading', payload);
     },
     setLoadingUser({ commit }, payload) {
-      commit('setLoadingUser', payload);
+      commit('shared/setLoadingUser', payload);
     },
     setError({ commit }, payload) {
       commit('setError', payload);
@@ -33,9 +34,9 @@ export default {
     },
   },
   getters: {
-    loadingUser(state) {
-      return state.loadingUser;
-    },
+    // loading(state) {
+    //   return state.loading;
+    // },
     error(state) {
       return state.error;
     },

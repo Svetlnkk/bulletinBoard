@@ -30,7 +30,7 @@ export default {
   actions: {
     async registerUser({ commit, getters }, { name, email, password }) {
       commit('clearError');
-      commit('setLoading', true);
+      commit('shared/setLoadingUser', true);
       try {
         const user = await firebase
           .auth()
@@ -45,16 +45,16 @@ export default {
         const storeUser = getters.user;
         storeUser.name = name;
 
-        commit('setLoading', false);
+        commit('shared/setLoadingUser', false);
       } catch (error) {
-        commit('setLoading', false);
+        commit('shared/setLoadingUser', false);
         commit('setError', error.message);
         throw error;
       }
     },
     async loginUser({ commit }, { email, password }) {
       commit('clearError');
-      commit('setLoading', true);
+      commit('shared/setLoadingUser', true);
 
       try {
         let user = await firebase
@@ -71,16 +71,16 @@ export default {
           'setUser',
           new User(user.user.uid, user.user.email, databasePersonalName)
         );
-        commit('setLoading', false);
+        commit('shared/setLoadingUser', false);
       } catch (error) {
-        commit('setLoading', false);
+        commit('shared/setLoadingUser', false);
         commit('setError', error.message);
         throw error;
       }
     },
     async fetchUser({ commit, getters }) {
       commit('clearError');
-      commit('setLoading', true);
+      commit('shared/setLoadingUser', true);
 
       try {
         const databaseUserValue = await firebase
@@ -93,16 +93,16 @@ export default {
         user.name = databasePersonalName;
 
         commit('setUser', user);
-        commit('setLoadingUser', false);
+        commit('shared/setLoadingUser', false);
       } catch (error) {
-        commit('setLoadingUser', false);
+        commit('shared/setLoadingUser', false);
         commit('setError', error.message);
         throw error;
       }
     },
     async fetchUsers({ commit }) {
       commit('clearError');
-      commit('setLoadingUser', true);
+      commit('shared/setLoadingUser', true);
 
       let databaseUsersResult = [];
 
@@ -119,16 +119,16 @@ export default {
         });
 
         commit('loadUsers', databaseUsersResult);
-        commit('setLoadingUser', false);
+        commit('shared/setLoadingUser', false);
       } catch (error) {
-        commit('setLoadingUser', false);
+        commit('shared/setLoadingUser', false);
         commit('setError', error.message);
         throw error;
       }
     },
     async updateUser({ commit, dispatch }, { name, email, password }) {
       commit('clearError');
-      commit('setLoading', true);
+      commit('shared/setLoadingUser', true);
       try {
         await dispatch('changeName', name);
 
@@ -136,9 +136,9 @@ export default {
 
         await dispatch('changePassword', password);
 
-        commit('setLoading', false);
+        commit('shared/setLoadingUser', false);
       } catch (error) {
-        commit('setLoading', false);
+        commit('shared/setLoadingUser', false);
         commit('setError', error.message);
         throw error;
       }
@@ -146,7 +146,7 @@ export default {
     async changeName({ commit, getters }, payload) {
       if (!payload) return;
       commit('clearError');
-      commit('setLoading', true);
+      commit('shared/setLoadingUser', true);
       try {
         await firebase
           .database()
@@ -156,9 +156,9 @@ export default {
         const user = getters.user;
         user.name = payload;
         commit('setUser', user);
-        commit('setLoading', false);
+        commit('shared/setLoadingUser', false);
       } catch (error) {
-        commit('setLoading', false);
+        commit('shared/setLoadingUser', false);
         commit('setError', error.message);
         throw error;
       }
