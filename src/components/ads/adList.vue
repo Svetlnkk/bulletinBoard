@@ -100,13 +100,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   computed: {
+    ...mapState({
+      loading: 'loading',
+    }),
     myAds() {
       return this.$store.getters.myAds;
-    },
-    loading() {
-      return this.$store.getters.loading;
     },
   },
 };

@@ -98,16 +98,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   computed: {
+    ...mapState({
+      loading: 'loading',
+    }),
     ads() {
       return this.$store.getters.ads;
     },
     promoAds() {
       return this.$store.getters.promoAds;
-    },
-    loading() {
-      return this.$store.getters.loading;
     },
   },
 };

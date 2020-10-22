@@ -36,9 +36,6 @@ export default {
     loadingUser(state) {
       return state.loadingUser;
     },
-    loading(state) {
-      return state.loading;
-    },
     error(state) {
       return state.error;
     },

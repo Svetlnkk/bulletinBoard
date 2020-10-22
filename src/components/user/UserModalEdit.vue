@@ -156,7 +156,7 @@
 <script>
 export default {
   props: {
-    user: String,
+    user: Object,
     userName: String,
   },
   data() {

@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import UserModalEdit from './UserModalEdit';
 
 export default {
@@ -94,11 +95,11 @@ export default {
     AppUserModalEdit: UserModalEdit,
   },
   computed: {
+    ...mapState({
+      loading: 'loading',
+    }),
     user() {
       return this.$store.getters.user;
-    },
-    loading() {
-      return this.$store.getters.loading;
     },
     userName() {
       return this.$store.state.user.user.name; // forced check user name. For to first load of UserModalEdit (input 'editedName')

@@ -56,11 +56,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   computed: {
-    loading() {
-      return this.$store.getters.loading;
-    },
+    ...mapState({
+      loading: 'loading',
+    }),
     orders() {
       return this.$store.getters.orders;
     },
