@@ -6,14 +6,14 @@
           v-if="!loading && ad"
           class="ad-main__item col-12 col-sm-11 flex-column mx-auto"
         >
-          <!-- title -->
+          <!-- ad title -->
           <v-col class="pa-0 mb-1">
             <h1 class="ad-main__title text--primary font-weight-medium">
               {{ ad.title }}
             </h1>
           </v-col>
 
-          <!-- owner -->
+          <!-- ad owner -->
           <v-col class="pt-0">
             <h3
               v-if="isOwner"
@@ -30,9 +30,11 @@
             </h3>
           </v-col>
 
-          <!-- image -->
+          <!-- ad image -->
           <v-col class="ad-main__wrapper col-auto pa-0">
             <img :alt="ad.title" :src="ad.imageSrc" class="ad-main__image" />
+
+            <!-- ad background image of main image -->
             <div
               :style="{
                 backgroundImage: `url('${ad.imageSrc}')`,
@@ -41,7 +43,7 @@
             ></div>
           </v-col>
 
-          <!-- price -->
+          <!-- ad price -->
           <v-col class="pa-2">
             <div class="ad-main__date text-body-2 text-sm-subtitle-1">
               <v-icon class="ad-main__icon pr-1 mb-1" color="teal">
@@ -56,7 +58,7 @@
 
           <v-divider></v-divider>
 
-          <!-- description -->
+          <!-- ad description -->
           <v-col>
             <p v-for="text in ad.description.split('\n')" :key="text.index">
               {{ text }}
@@ -65,7 +67,7 @@
 
           <v-divider></v-divider>
 
-          <!-- date -->
+          <!-- ad date -->
           <v-col class="pa-2">
             <div class="ad-main__date text-body-2 text-sm-subtitle-1">
               <v-icon class="ad-main__icon pr-1 mb-1" color="teal"
@@ -79,7 +81,7 @@
 
           <v-divider></v-divider>
 
-          <!-- actions -->
+          <!-- ad actions -->
           <v-col class="d-flex justify-end">
             <app-ad-modal-delete :ad="ad" v-if="isOwner"></app-ad-modal-delete>
             <app-ad-modal-edit :ad="ad" v-if="isOwner"></app-ad-modal-edit>
@@ -87,7 +89,7 @@
           </v-col>
         </v-row>
 
-        <!-- in loading process -->
+        <!-- loading animation -->
         <v-container v-else>
           <v-row>
             <v-col class="col-xs-12 text-center pt-5">
@@ -133,23 +135,32 @@ export default {
     ...mapGetters('user', {
       userById: 'userById',
     }),
+
+    // Get 'false' when all content is loaded
     loading() {
       return !(!this.loadingAd && !this.loadingUser);
     },
+
+    // Get ad by his id
     ad() {
       const id = this.id;
       return this.adById(id);
     },
+
+    // Check. Whether the owner is the current user
     isOwner() {
       if (!this.user) return;
       return this.ad.ownerId === this.user.id;
     },
+
+    // Get the owner to this ad
     ownerAd() {
       const ownerId = this.ad.ownerId;
       return this.userById(ownerId);
     },
   },
   beforeUpdate() {
+    // 404 page, if ad of this id is not
     if (!this.ad) {
       this.$router.replace('/404');
       return;

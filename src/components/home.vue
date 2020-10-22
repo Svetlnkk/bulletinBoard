@@ -1,6 +1,6 @@
 <template>
   <div v-if="!loading">
-    <!-- carousel -->
+    <!-- carousel home page -->
     <v-container fluid class="pt-0">
       <v-row>
         <v-col class="col-md-12 pt-3">
@@ -20,6 +20,7 @@
               :to="'/ad/' + ad.id"
               contain
             >
+              <!-- background image of home page carousel -->
               <div
                 :style="{
                   backgroundImage: `url('${ad.imageSrc}')`,
@@ -43,10 +44,10 @@
       </v-row>
     </v-container>
 
-    <!-- content -->
+    <!-- content of home page -->
     <v-container>
       <v-row>
-        <!-- ad list -->
+        <!-- ad list of home page -->
         <v-col
           v-for="ad in ads"
           :key="ad.id"
@@ -57,7 +58,7 @@
             height="100%"
             max-width="400"
           >
-            <!-- image -->
+            <!-- image of home page -->
             <v-img
               :src="ad.imageSrc"
               class="white--text align-end"
@@ -65,12 +66,12 @@
             >
             </v-img>
 
-            <!-- title -->
+            <!-- title of home page -->
             <v-card-title class="mb-auto">
               <h2 class="text-h6">{{ ad.title }}</h2>
             </v-card-title>
 
-            <!-- actions -->
+            <!-- actions of home page -->
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn :to="'/ad/' + ad.id" text color="teal">
@@ -84,7 +85,7 @@
     </v-container>
   </div>
 
-  <!-- in loading progress -->
+  <!-- loading animation -->
   <div v-else>
     <v-container>
       <v-row>

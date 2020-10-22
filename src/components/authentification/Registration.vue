@@ -3,15 +3,15 @@
     <v-row class="align-center justify-center">
       <v-col class="col-xs-12 col-sm-8 col-md-4">
         <v-card class="elevation-12">
-          <!-- title -->
+          <!-- registration title -->
           <v-app-bar dark color="teal">
             <v-toolbar-title>Registration form</v-toolbar-title>
           </v-app-bar>
 
-          <!-- form -->
+          <!-- registration form -->
           <v-card-text>
             <v-form ref="form" v-model="valid">
-              <!-- name -->
+              <!-- registration name input -->
               <v-text-field
                 v-model="name"
                 :rules="nameRules"
@@ -25,7 +25,7 @@
               >
               </v-text-field>
 
-              <!-- email -->
+              <!-- registration email input -->
               <v-text-field
                 v-model="email"
                 :rules="emailRules"
@@ -39,7 +39,7 @@
               >
               </v-text-field>
 
-              <!-- password -->
+              <!-- registration password input -->
               <v-text-field
                 v-model="password"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -55,7 +55,7 @@
               >
               </v-text-field>
 
-              <!-- confirm password -->
+              <!-- registration confirm password input-->
               <v-text-field
                 v-model="confirmPassword"
                 :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -73,9 +73,11 @@
             </v-form>
           </v-card-text>
 
-          <!-- actions -->
+          <!-- registration actions -->
           <v-card-actions>
             <v-spacer></v-spacer>
+
+            <!-- registration form submit button -->
             <v-btn
               :disabled="!valid || loading"
               :loading="loading"
@@ -149,6 +151,8 @@ export default {
     ...mapActions('user', {
       registerUser: 'registerUser',
     }),
+
+    // submit new user on Firebase and Vuex
     onSubmit() {
       if (this.$refs.form.validate()) {
         const user = {

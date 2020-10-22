@@ -4,20 +4,22 @@
       <v-col class="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-6 mx-auto">
         <h1 class="text--secondary mb-3 ml-3">Ad List</h1>
         <v-row>
-          <!-- ad -->
+          <!-- ad list -->
           <v-col
             v-for="ad in myAds"
             :key="ad.id"
             class="ad-list__item col-11 d-flex flex-column flex-sm-row mb-5 mx-auto py-0"
           >
             <v-row>
-              <!-- image -->
+              <!-- ad item image -->
               <v-col class="ad-list__wrapper col-auto mr-2 pa-0">
                 <img
                   :alt="ad.title"
                   :src="ad.imageSrc"
                   class="ad-list__image"
                 />
+
+                <!-- ad item background image -->
                 <div
                   :style="{
                     backgroundImage: `url('${ad.imageSrc}')`,
@@ -26,20 +28,19 @@
                 ></div>
               </v-col>
 
-              <!-- content -->
+              <!-- ad item content -->
               <v-col
                 class="ad-list__content d-flex flex-column justify-space-between pa-3"
               >
-                <!-- text -->
                 <div class="ad-list__text mb-2">
-                  <!-- title -->
+                  <!-- ad item title -->
                   <h2
                     class="ad-list__title mb-2 text--primary text-subtitle-1 text-lg-h6 font-weight-bold"
                   >
                     {{ ad.title }}
                   </h2>
 
-                  <!-- date -->
+                  <!-- ad item date -->
                   <div
                     class="ad-list__date mb-1 text-body-2 text-sm-subtitle-1"
                   >
@@ -52,7 +53,7 @@
                     </span>
                   </div>
 
-                  <!-- price -->
+                  <!-- ad item price -->
                   <div
                     class="ad-list__date mb-1 text-body-2 text-sm-subtitle-1"
                   >
@@ -66,8 +67,9 @@
                   </div>
                 </div>
 
-                <!-- actions -->
+                <!-- ad item actions -->
                 <v-col class="ad-list__buttons d-flex justify-end">
+                  <!-- ad item button. link to ad -->
                   <v-btn
                     :to="'/ad/' + ad.id"
                     class="ad-list__button teal white--text mr-sm-2"
@@ -89,7 +91,7 @@
       </v-col>
     </v-row>
 
-    <!-- in loading process -->
+    <!-- loading animation -->
     <v-row v-else>
       <v-col class="col-xs-12 text-center pt-5">
         <v-progress-circular :size="50" :width="4" color="teal" indeterminate>
@@ -111,6 +113,8 @@ export default {
     ...mapGetters('ads', {
       myAds: 'myAds',
     }),
+
+    // Get 'false' when all content is loaded
     loading() {
       return !(!this.loadingAd && !this.loadingUser);
     },

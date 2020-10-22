@@ -66,11 +66,14 @@ export default {
     ...mapGetters('orders', {
       orders: 'orders',
     }),
+
+    // Get 'false' when all content is loaded
     loading() {
-      return this.loadingUser && this.loadingAd;
+      return !(!this.loadingAd && !this.loadingUser);
     },
   },
   created() {
+    // reload all orders of this user
     this.fetchOrders();
   },
   methods: {
@@ -78,6 +81,8 @@ export default {
       fetchOrders: 'fetchOrders',
       markOrderDone: 'markOrderDone',
     }),
+
+    // sort user's orders
     markDone(order) {
       this.markOrderDone(order.id)
         .then(() => (order.done = true))

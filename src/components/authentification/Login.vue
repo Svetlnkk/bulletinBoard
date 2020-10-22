@@ -3,15 +3,15 @@
     <v-row class="align-center justify-center">
       <v-col class="col-xs-12 col-sm-8 col-md-4">
         <v-card class="elevation-12">
-          <!-- title -->
+          <!-- login title -->
           <v-app-bar dark color="teal">
             <v-toolbar-title>Login form</v-toolbar-title>
           </v-app-bar>
 
-          <!-- form -->
+          <!-- login form -->
           <v-card-text>
             <v-form ref="form" v-model="valid">
-              <!-- email -->
+              <!-- login email input -->
               <v-text-field
                 v-model="email"
                 :rules="emailRules"
@@ -25,7 +25,7 @@
               >
               </v-text-field>
 
-              <!-- password -->
+              <!-- login password input -->
               <v-text-field
                 v-model="password"
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
@@ -43,9 +43,11 @@
             </v-form>
           </v-card-text>
 
-          <!-- actions -->
+          <!-- login actions -->
           <v-card-actions>
             <v-spacer></v-spacer>
+
+            <!-- log in button -->
             <v-btn
               :disabled="!valid || loading"
               :loading="loading"
@@ -98,8 +100,10 @@ export default {
       loadingAd: 'loading',
       loadingUser: 'loadingUser',
     }),
+
+    // get 'false' when all content is loaded
     loading() {
-      return this.loadingUser && this.loadingAd;
+      return !(!this.loadingAd && !this.loadingUser);
     },
   },
   methods: {
@@ -109,6 +113,8 @@ export default {
     ...mapActions('user', {
       loginUser: 'loginUser',
     }),
+
+    // submit user login form
     onSubmit() {
       if (this.$refs.form.validate()) {
         const user = {
@@ -126,6 +132,7 @@ export default {
     },
   },
   created() {
+    // denying access without authorization
     if (this.$route.query['loginError']) {
       this.setError('Please log in to access this page');
     }

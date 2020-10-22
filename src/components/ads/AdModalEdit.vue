@@ -1,16 +1,16 @@
 <template>
   <v-dialog v-model="modal" width="400">
-    <!-- dialog activator -->
+    <!-- ad edit dialog activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" class="orange white--text mr-3" depressed v-on="on">
         Edit</v-btn
       >
     </template>
 
-    <!-- dialog body -->
+    <!-- ad edit dialog dialog body -->
     <v-card>
       <v-container>
-        <!-- title -->
+        <!-- ad edit dialog title -->
         <v-row>
           <v-col class="col-xs-12 py-0 orange">
             <v-card-title>
@@ -23,12 +23,12 @@
 
         <v-divider></v-divider>
 
-        <!-- form -->
+        <!-- ad edit dialog form -->
         <v-row>
           <v-col class="col-xs-12">
             <v-card-text>
               <v-form ref="formEdit" v-model="valid">
-                <!-- title -->
+                <!-- ad edit dialog title input -->
                 <v-text-field
                   v-model="editedTitle"
                   :rules="editedTitleRules"
@@ -42,7 +42,7 @@
                 >
                 </v-text-field>
 
-                <!-- description -->
+                <!-- ad edit dialog description input -->
                 <v-textarea
                   v-model="editedDescription"
                   :rules="editedDescriptionRules"
@@ -55,7 +55,7 @@
                 >
                 </v-textarea>
 
-                <!-- price -->
+                <!-- ad edit dialog price input -->
                 <v-text-field
                   v-model="editedPrice"
                   :rules="priceRules"
@@ -79,7 +79,11 @@
           <v-col class="col-xs-12">
             <v-card-actions>
               <v-spacer></v-spacer>
+
+              <!-- cancel edit ad button -->
               <v-btn text @click="onCancel">Cancel</v-btn>
+
+              <!-- save changes in this ad after editing -->
               <v-btn class="orange white--text" depressed @click="onSave"
                 >Save</v-btn
               >
@@ -100,11 +104,11 @@ export default {
   },
   data() {
     return {
-      modal: false,
-      valid: false,
-      editedTitle: this.ad.title,
       editedDescription: this.ad.description,
       editedPrice: this.ad.price,
+      editedTitle: this.ad.title,
+      modal: false,
+      valid: false,
       editedTitleRules: [
         (v) => !!v || 'Title is required',
         (v) =>
@@ -134,12 +138,16 @@ export default {
     ...mapActions('ads', {
       updateAd: 'updateAd',
     }),
+
+    // cancel editing ad
     onCancel() {
       this.editedTitle = this.ad.title;
       this.editedDescription = this.ad.description;
       this.editedPrice = Number(this.ad.price);
       this.modal = false;
     },
+
+    // save changes in this ad after editing
     onSave() {
       if (this.$refs.formEdit.validate()) {
         this.updateAd({

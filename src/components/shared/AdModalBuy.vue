@@ -1,6 +1,6 @@
 <template>
   <v-dialog width="400" v-model="modal">
-    <!-- activator -->
+    <!-- buy dialog activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         v-if="!isOwner"
@@ -14,10 +14,10 @@
       <v-btn v-else disabled>Your Ad</v-btn>
     </template>
 
-    <!-- dialog body -->
+    <!-- buy dialog body -->
     <v-card>
       <v-container>
-        <!-- title -->
+        <!-- buy dialog title -->
         <v-row>
           <v-col class="col-xs-12 py-0 primary">
             <v-card-title>
@@ -29,12 +29,12 @@
         </v-row>
         <v-divider></v-divider>
 
-        <!-- form -->
+        <!-- buy dialog form -->
         <v-row>
           <v-col class="col-xs-12">
             <v-card-text>
               <v-form ref="formEdit" v-model="valid">
-                <!-- name -->
+                <!-- buy dialog name input -->
                 <v-text-field
                   v-model="name"
                   :rules="nameRules"
@@ -48,7 +48,7 @@
                 >
                 </v-text-field>
 
-                <!-- phone -->
+                <!-- buy dialog phone input -->
                 <v-text-field
                   v-model="phone"
                   :rules="phoneRules"
@@ -66,18 +66,18 @@
         </v-row>
         <v-divider></v-divider>
 
-        <!-- actions -->
+        <!-- buy dialog actions -->
         <v-row>
           <v-col class="col-xs-12">
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <!-- cancel -->
+              <!-- buy dialog cancel button -->
               <v-btn :disabled="localLoading" class="" text @click="onCancel"
                 >Close</v-btn
               >
 
-              <!-- save -->
+              <!-- buy dialog save button -->
               <v-btn
                 :disabled="localLoading"
                 :loading="localLoading"
@@ -103,11 +103,11 @@ export default {
   },
   data() {
     return {
-      valid: false,
-      modal: false,
       localLoading: false,
+      modal: false,
       name: '',
       phone: '',
+      valid: false,
       nameRules: [
         (v) => !!v || 'Name is required',
         (v) =>
@@ -135,6 +135,8 @@ export default {
     ...mapState('user', {
       user: 'user',
     }),
+
+    // Check. Whether the owner is the current user
     isOwner() {
       if (!this.user) return;
       return this.ad.ownerId === this.user.id;
@@ -144,12 +146,16 @@ export default {
     ...mapActions('orders', {
       createOrder: 'createOrder',
     }),
+
+    // cancel buy
     onCancel() {
       this.name = '';
       this.phone = '';
       this.modal = false;
       this.localLoading = false;
     },
+
+    // submit the name and phone to ad owner
     onSave() {
       if (this.$refs.formEdit.validate()) {
         this.localLoading = true;

@@ -4,8 +4,9 @@
       <v-col class="col-sm-8 col-lg-6 mx-auto">
         <h1 class="text--secondary mb-3">Create new ad</h1>
 
-        <!-- form -->
+        <!-- form new ad -->
         <v-form ref="form" v-model="valid">
+          <!-- input title of new ad -->
           <v-text-field
             v-model="title"
             :rules="titleRules"
@@ -18,6 +19,8 @@
             validate-on-blur
           >
           </v-text-field>
+
+          <!-- input description of new ad -->
           <v-textarea
             v-model="description"
             :rules="descriptionRules"
@@ -29,6 +32,8 @@
             validate-on-blur
           >
           </v-textarea>
+
+          <!-- input the price of new ad -->
           <v-text-field
             v-model="price"
             :rules="priceRules"
@@ -44,7 +49,7 @@
 
         <!-- actions -->
         <v-row>
-          <!-- load image -->
+          <!-- upload image -->
           <v-col>
             <v-btn
               class="my-2 white--text mt-3"
@@ -65,14 +70,14 @@
             />
           </v-col>
 
-          <!-- promo -->
+          <!-- switch promo of new ad -->
           <v-col>
             <v-switch v-model="promo" color="teal" inset label="Add to promo?">
             </v-switch>
           </v-col>
         </v-row>
 
-        <!-- show image -->
+        <!-- show image of new ad -->
         <v-row>
           <v-col>
             <v-img
@@ -86,7 +91,7 @@
           </v-col>
         </v-row>
 
-        <!-- button create -->
+        <!-- button create new ad -->
         <v-row>
           <v-col class="sm-12">
             <v-btn
@@ -111,13 +116,13 @@ import { mapActions, mapState } from 'vuex';
 export default {
   data() {
     return {
-      valid: false,
-      title: '',
       description: '',
       image: null,
       imageSrc: '',
-      promo: false,
       price: null,
+      promo: false,
+      title: '',
+      valid: false,
       titleRules: [
         (v) => !!v || 'Title is required',
         (v) =>
@@ -148,14 +153,18 @@ export default {
       loadingAd: 'loading',
       loadingUser: 'loadingUser',
     }),
+
+    // Get 'false' when all content is loaded
     loading() {
-      return this.loadingUser && this.loadingAd;
+      return !(!this.loadingAd && !this.loadingUser);
     },
   },
   methods: {
     ...mapActions('ads', {
       createAdDispatch: 'createAd',
     }),
+
+    // Create new ad in Firebase and vuex
     createAd() {
       if (this.$refs.form.validate() && this.image) {
         const ad = {
@@ -172,9 +181,13 @@ export default {
           .catch(() => {});
       }
     },
+
+    // trigger of upload image
     triggerUpload() {
       this.$refs.fileInput.click();
     },
+
+    // event of file changed (upload image)
     onFileChange(event) {
       const file = event.target.files[0];
       const reader = new FileReader();

@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="modal" width="400">
-    <!-- activator -->
+    <!-- user edit dialog activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         v-bind="attrs"
@@ -12,10 +12,10 @@
       >
     </template>
 
-    <!-- dialog body -->
+    <!-- user edit dialog body -->
     <v-card>
       <v-container>
-        <!-- title -->
+        <!-- user edit dialog title -->
         <v-row>
           <v-col class="col-xs-12 py-0 teal darken-2">
             <v-card-title class="text-subtitle-1 text-sm-h5">
@@ -26,12 +26,12 @@
 
         <v-divider></v-divider>
 
-        <!-- form -->
+        <!-- user edit dialog form -->
         <v-row>
           <v-col class="col-xs-12">
             <v-card-text>
               <v-form ref="formEdit" v-model="valid">
-                <!-- name -->
+                <!-- user edit dialog name input -->
                 <v-text-field
                   v-model="editedName"
                   :rules="nameEditRules"
@@ -45,7 +45,7 @@
                 >
                 </v-text-field>
 
-                <!-- email -->
+                <!-- user edit dialog email input -->
                 <v-text-field
                   v-model="editedEmail"
                   :rules="emailEditRules"
@@ -59,7 +59,7 @@
                 >
                 </v-text-field>
 
-                <!-- password -->
+                <!-- user edit dialog password input -->
                 <v-text-field
                   v-model="editedPassword"
                   :rules="passwordEditRules"
@@ -72,7 +72,7 @@
                 >
                 </v-text-field>
 
-                <!-- confirm password -->
+                <!-- user edit dialog confirm password input -->
                 <v-text-field
                   v-model="editedConfirmPassword"
                   :rules="confirmEditPasswordRules"
@@ -91,12 +91,16 @@
 
         <v-divider></v-divider>
 
-        <!-- actions -->
+        <!-- user edit dialog actions -->
         <v-row>
           <v-col class="col-xs-12">
             <v-card-actions>
               <v-spacer></v-spacer>
+
+              <!-- user edit dialog cancel button -->
               <v-btn text @click="onCancel">Cancel</v-btn>
+
+              <!-- user edit dialog save button -->
               <v-btn
                 :disabled="!valid"
                 class="teal darken-2 white--text"
@@ -117,12 +121,12 @@
         <v-container>
           <v-row>
             <v-col class="col-xs-12">
-              <!-- title -->
+              <!-- dialog old (current) title -->
               <v-card-title class="subtitle-1">
                 <h4>Enter current password</h4>
               </v-card-title>
 
-              <!-- current password -->
+              <!-- dialog old (current) password -->
               <v-text-field
                 v-model="currentPassword"
                 color="teal"
@@ -133,10 +137,14 @@
               >
               </v-text-field>
 
-              <!-- actions -->
+              <!-- dialog old (current) actions -->
               <v-card-actions class="px-0">
                 <v-spacer></v-spacer>
+
+                <!-- dialog old (current) cancel button -->
                 <v-btn text @click="modalPassword = false">Cancel</v-btn>
+
+                <!-- dialog old (current) save button -->
                 <v-btn
                   :loading="localLoading"
                   class="teal darken-2 white--text"
@@ -162,16 +170,16 @@ export default {
   },
   data() {
     return {
-      valid: false,
-      localLoading: false,
-      editedName: this.user.name,
-      editedEmail: this.user.email,
-      editedPassword: '',
+      currentPassword: '',
       editedConfirmPassword: '',
+      editedEmail: this.user.email,
+      editedName: this.user.name,
+      editedPassword: '',
+      isCheckedCurrentPassword: false,
+      localLoading: false,
       modal: false,
       modalPassword: false,
-      currentPassword: '',
-      isCheckedCurrentPassword: false,
+      valid: false,
       emailEditRules: [
         (v) => !!v || 'E-mail is required',
         (v) => /.+@.+/.test(v) || 'E-mail must be valid',
@@ -215,6 +223,8 @@ export default {
       checkAuthenticate: 'checkAuthenticate',
       updateUser: 'updateUser',
     }),
+
+    // cancel of all changes
     onCancel() {
       this.editedName = this.user.name;
       this.editedEmail = this.user.email;
@@ -223,6 +233,8 @@ export default {
       this.currentPassword = '';
       this.modal = false;
     },
+
+    // check old password
     async checkPassword() {
       this.localLoading = true;
 
@@ -241,6 +253,8 @@ export default {
         throw error;
       }
     },
+
+    // submit of all changes
     async onSave() {
       const user = {
         name: this.editedName === this.user.name ? null : this.editedName,

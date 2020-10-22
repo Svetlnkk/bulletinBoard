@@ -1,14 +1,18 @@
 <template>
   <v-dialog v-model="modal" width="400">
+    <!-- activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" class="red white--text mr-3" depressed v-on="on">
         Delete
       </v-btn>
     </template>
+
+    <!-- delete card -->
     <v-card>
       <v-container>
         <v-row>
           <v-col class="col-xs-12 py-0 red">
+            <!-- delete title -->
             <v-card-title class="white--text">
               Delete this ad?
             </v-card-title>
@@ -16,14 +20,19 @@
         </v-row>
         <v-row>
           <v-col>
+            <!-- delete actions -->
             <v-card-actions>
               <v-spacer></v-spacer>
+
+              <!-- delete "cancel" button -->
               <v-btn text @click="onCancel">
                 Cancel
               </v-btn>
-              <v-btn class="red white--text" depressed @click="onDelete"
-                >Ok</v-btn
-              >
+
+              <!-- delete "ok" button -->
+              <v-btn class="red white--text" depressed @click="onDelete">
+                Ok
+              </v-btn>
             </v-card-actions>
           </v-col>
         </v-row>
@@ -48,9 +57,13 @@ export default {
     ...mapActions('ads', {
       deleteAd: 'deleteAd',
     }),
+
+    //  cancel to deleting ad
     onCancel() {
       this.modal = false;
     },
+
+    // deleting ad
     onDelete() {
       this.deleteAd({
         id: this.ad.id,

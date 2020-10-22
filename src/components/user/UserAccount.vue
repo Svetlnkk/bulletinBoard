@@ -100,6 +100,8 @@ export default {
     ...mapState('user', {
       user: 'user',
     }),
+
+    // Get 'false' when all content is loaded
     loading() {
       return this.loadingUser;
     },

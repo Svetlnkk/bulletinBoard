@@ -1,7 +1,7 @@
 <template>
   <!-- App.vue -->
-
   <v-app>
+    <!-- navigation drawer, for mobile -->
     <v-navigation-drawer app temporary v-model="drawer">
       <v-list>
         <v-list-item v-for="(link, i) in links" :key="i" :to="link.url">
@@ -25,12 +25,14 @@
       </v-list>
     </v-navigation-drawer>
 
+    <!-- navigation drawer toggle icon -->
     <v-app-bar app dark class="teal">
       <v-app-bar-nav-icon
         class="hidden-md-and-up"
         @click="drawer = !drawer"
       ></v-app-bar-nav-icon>
 
+      <!-- toolbar title -->
       <v-toolbar-title>
         <router-link to="/" tag="span" class="pointer"
           >Bulletin Board</router-link
@@ -39,6 +41,7 @@
 
       <v-spacer></v-spacer>
 
+      <!-- toolbar menu -->
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn text v-for="(link, i) in links" :key="i" :to="link.url">
           <v-icon left>{{ link.icon }}</v-icon>
@@ -51,11 +54,12 @@
       </v-toolbar-items>
     </v-app-bar>
 
-    <!-- Sizes your content based upon application components -->
+    <!-- main container -->
     <v-main>
       <router-view></router-view>
     </v-main>
 
+    <!-- snackbar for errors -->
     <template v-if="error">
       <v-snackbar
         color="error"
@@ -91,6 +95,8 @@ export default {
     ...mapGetters('user', {
       isUserLoggedIn: 'isUserLoggedIn',
     }),
+
+    // get links in main menu
     links() {
       if (this.isUserLoggedIn) {
         return [
@@ -126,9 +132,13 @@ export default {
     ...mapActions('user', {
       logoutUser: 'logoutUser',
     }),
+
+    // close this error
     closeError() {
       this.clearError;
     },
+
+    // logut the current user
     onLogout() {
       this.logoutUser();
       if (this.$route.path !== '/') this.$router.push('/');
