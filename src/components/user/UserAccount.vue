@@ -60,7 +60,6 @@
             <app-user-modal-edit
               :loading="loading"
               :user="user"
-              :userName="userName"
             ></app-user-modal-edit>
           </v-card-actions>
         </v-card>
@@ -98,14 +97,11 @@ export default {
     ...mapState('shared', {
       loadingUser: 'loadingUser',
     }),
+    ...mapState('user', {
+      user: 'user',
+    }),
     loading() {
       return this.loadingUser;
-    },
-    user() {
-      return this.$store.getters.user;
-    },
-    userName() {
-      return this.$store.state.user.user.name; // forced check user name. For to first load of UserModalEdit (input 'editedName')
     },
   },
 };

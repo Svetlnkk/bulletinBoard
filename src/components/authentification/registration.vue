@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   data() {
@@ -146,6 +146,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions('user', {
+      registerUser: 'registerUser',
+    }),
     onSubmit() {
       if (this.$refs.form.validate()) {
         const user = {
@@ -154,8 +157,7 @@ export default {
           name: this.name,
         };
 
-        this.$store
-          .dispatch('registerUser', user)
+        this.registerUser(user)
           .then(() => {
             this.$router.push('/');
           })

@@ -95,6 +95,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
+
 export default {
   props: {
     ad: Object,
@@ -130,12 +132,18 @@ export default {
     };
   },
   computed: {
+    ...mapState('user', {
+      user: 'user',
+    }),
     isOwner() {
-      if (!this.$store.getters.user.id) return;
-      return this.ad.ownerId === this.$store.getters.user.id;
+      if (!this.user) return;
+      return this.ad.ownerId === this.user.id;
     },
   },
   methods: {
+    ...mapActions('orders', {
+      createOrder: 'createOrder',
+    }),
     onCancel() {
       this.name = '';
       this.phone = '';
@@ -145,19 +153,17 @@ export default {
     onSave() {
       if (this.$refs.formEdit.validate()) {
         this.localLoading = true;
-        this.$store
-          .dispatch('createOrder', {
-            name: this.name,
-            phone: this.phone,
-            adId: this.ad.id,
-            ownerId: this.ad.ownerId,
-          })
-          .finally(() => {
-            this.name = '';
-            this.phone = '';
-            this.localLoading = false;
-            this.modal = false;
-          });
+        this.createOrder({
+          name: this.name,
+          phone: this.phone,
+          adId: this.ad.id,
+          ownerId: this.ad.ownerId,
+        }).finally(() => {
+          this.name = '';
+          this.phone = '';
+          this.localLoading = false;
+          this.modal = false;
+        });
       }
     },
   },

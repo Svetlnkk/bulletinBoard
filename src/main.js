@@ -29,11 +29,11 @@ firebase.auth().onAuthStateChanged((user) => {
       vuetify,
       created() {
         if (user) {
-          this.$store.dispatch('autoLoginUser', user);
-          this.$store.dispatch('fetchUser');
+          this.$store.dispatch('user/autoLoginUser', user);
+          this.$store.dispatch('user/fetchUser');
         }
-        this.$store.dispatch('fetchUsers');
-        this.$store.dispatch('fetchAds');
+        this.$store.dispatch('user/fetchUsers');
+        this.$store.dispatch('ads/fetchAds');
       },
       render: (h) => h(App),
     }).$mount('#app');

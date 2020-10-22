@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
   computed: {
@@ -108,11 +108,11 @@ export default {
       loadingAd: 'loading',
       loadingUser: 'loadingUser',
     }),
+    ...mapGetters('ads', {
+      myAds: 'myAds',
+    }),
     loading() {
       return this.loadingUser && this.loadingAd;
-    },
-    myAds() {
-      return this.$store.getters.myAds;
     },
   },
 };

@@ -21,21 +21,16 @@ export default {
   },
   actions: {
     setLoading({ commit }, payload) {
-      commit('shared/setLoading', payload);
+      commit('setLoading', payload);
     },
     setLoadingUser({ commit }, payload) {
-      commit('shared/setLoadingUser', payload);
+      commit('setLoadingUser', payload);
     },
     setError({ commit }, payload) {
       commit('setError', payload);
     },
     clearError({ commit }) {
       commit('clearError');
-    },
-  },
-  getters: {
-    error(state) {
-      return state.error;
     },
   },
 };

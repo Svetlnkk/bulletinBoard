@@ -23,6 +23,7 @@ class Ad {
 }
 
 export default {
+  namespaced: true,
   state: {
     ads: [],
   },
@@ -49,9 +50,9 @@ export default {
     },
   },
   actions: {
-    async createAd({ commit, getters }, payload) {
-      commit('shared/clearError');
-      commit('shared/setLoading', true);
+    async createAd({ commit, dispatch, rootState }, payload) {
+      dispatch('shared/clearError', null, { root: true });
+      dispatch('shared/setLoading', true, { root: true });
 
       const image = payload.image;
 
@@ -59,7 +60,7 @@ export default {
         const AdNew = new Ad(
           payload.title,
           payload.description,
-          getters.user.id,
+          rootState['user'].user.id,
           '',
           payload.promo,
           null,
@@ -111,16 +112,17 @@ export default {
           imageSrc,
           dateAdded,
         });
-        commit('shared/setLoading', false);
+        dispatch('shared/setLoading', false, { root: true });
       } catch (error) {
-        commit('shared/setError', error.message);
-        commit('shared/setLoading', false);
+        dispatch('shared/setError', error.message, { root: true });
+        dispatch('shared/setLoading', false, { root: true });
         throw error;
       }
     },
-    async fetchAds({ commit }) {
-      commit('shared/clearError');
-      commit('shared/setLoading', true);
+
+    async fetchAds({ commit, dispatch }) {
+      dispatch('shared/clearError', null, { root: true });
+      dispatch('shared/setLoading', true, { root: true });
 
       const resultAds = [];
 
@@ -133,7 +135,7 @@ export default {
         const ads = firebaseValue.val();
 
         if (!ads) {
-          commit('shared/setLoading', false);
+          dispatch('shared/setLoading', false, { root: true });
           return;
         }
 
@@ -154,16 +156,17 @@ export default {
         });
 
         commit('getAds', resultAds);
-        commit('shared/setLoading', false);
+        dispatch('shared/setLoading', false, { root: true });
       } catch (error) {
-        commit('shared/setError', error.message);
-        commit('shared/setLoading', false);
+        dispatch('shared/setError', error.message, { root: true });
+        dispatch('shared/setLoading', false, { root: true });
         throw error;
       }
     },
-    async updateAd({ commit }, { title, description, id, price }) {
-      commit('shared/clearError');
-      commit('shared/setLoading', true);
+
+    async updateAd({ commit, dispatch }, { title, description, id, price }) {
+      dispatch('shared/clearError', null, { root: true });
+      dispatch('shared/setLoading', true, { root: true });
       try {
         await firebase
           .database()
@@ -180,16 +183,17 @@ export default {
           id,
           price,
         });
-        commit('shared/setLoading', false);
+        dispatch('shared/setLoading', false, { root: true });
       } catch (error) {
-        commit('shared/setError', error.message);
-        commit('shared/setLoading', false);
+        dispatch('shared/setError', error.message, { root: true });
+        dispatch('shared/setLoading', false, { root: true });
         throw error;
       }
     },
-    async deleteAd({ commit }, { id, imageSrc }) {
-      commit('shared/clearError');
-      commit('shared/setLoading', true);
+
+    async deleteAd({ commit, dispatch }, { id, imageSrc }) {
+      dispatch('shared/clearError', null, { root: true });
+      dispatch('shared/setLoading', true, { root: true });
 
       const storage = firebase.storage();
       const storageRef = storage.ref();
@@ -209,26 +213,24 @@ export default {
 
         commit('deleteAd', id);
 
-        commit('shared/setLoading', false);
+        dispatch('shared/setLoading', false, { root: true });
       } catch (error) {
-        commit('shared/setError', error.message);
-        commit('shared/setLoading', false);
+        dispatch('shared/setError', error.message, { root: true });
+        dispatch('shared/setLoading', false, { root: true });
         throw error;
       }
     },
   },
   getters: {
-    ads(state) {
-      return state.ads;
-    },
     promoAds(state) {
       return state.ads.filter((ad) => {
         return ad.promo;
       });
     },
-    myAds(state, getters) {
+    myAds(state, getters, rootState) {
+      console.log(rootState);
       return state.ads.filter((ad) => {
-        return ad.ownerId === getters.user.id;
+        return ad.ownerId === rootState['user'].user.id;
       });
     },
     adById(state) {

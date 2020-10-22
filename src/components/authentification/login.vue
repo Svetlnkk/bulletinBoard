@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   data() {
@@ -103,6 +103,12 @@ export default {
     },
   },
   methods: {
+    ...mapActions('shared', {
+      setError: 'setError',
+    }),
+    ...mapActions('user', {
+      loginUser: 'loginUser',
+    }),
     onSubmit() {
       if (this.$refs.form.validate()) {
         const user = {
@@ -111,8 +117,7 @@ export default {
           valid: this.valid,
         };
 
-        this.$store
-          .dispatch('loginUser', user)
+        this.loginUser(user)
           .then(() => {
             this.$router.push('/');
           })
@@ -122,10 +127,7 @@ export default {
   },
   created() {
     if (this.$route.query['loginError']) {
-      this.$store.dispatch(
-        'shared/setError',
-        'Please log in to access this page'
-      );
+      this.setError('Please log in to access this page');
     }
   },
 };

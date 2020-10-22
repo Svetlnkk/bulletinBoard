@@ -98,32 +98,19 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
   computed: {
     ...mapState('shared', {
       loading: 'loading',
     }),
-    ads() {
-      return this.$store.getters.ads;
-    },
-    promoAds() {
-      return this.$store.getters.promoAds;
-    },
-  },
-  created() {
-    console.log(this.loading);
-  },
-  mounted() {
-    console.log(this.loading);
-  },
-  beforeUpdate() {
-    console.log(this.loading);
-  },
-  updated() {
-    console.log(this.loading);
-    console.log(this.$store.state);
+    ...mapState('ads', {
+      ads: 'ads',
+    }),
+    ...mapGetters('ads', {
+      promoAds: 'promoAds',
+    }),
   },
 };
 </script>

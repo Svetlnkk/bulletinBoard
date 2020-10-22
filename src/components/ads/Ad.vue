@@ -2,7 +2,6 @@
   <v-container>
     <v-row>
       <v-col class="col-12 col-sm-10 col-md-10 col-lg-8 col-xl-6 mx-auto">
-        <v-col class="sdffdsf" :v-model="asd"></v-col>
         <v-row
           v-if="!loading && ad"
           class="ad-main__item col-12 col-sm-11 flex-column mx-auto"
@@ -108,7 +107,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import AdModalEdit from './AdModalEdit';
 import AdModalDelete from './AdModalDelete';
 
@@ -125,20 +124,29 @@ export default {
       loadingAd: 'loading',
       loadingUser: 'loadingUser',
     }),
+    ...mapState('user', {
+      user: 'user',
+    }),
+    ...mapGetters('ads', {
+      adById: 'adById',
+    }),
+    ...mapGetters('user', {
+      userById: 'userById',
+    }),
     loading() {
       return this.loadingUser && this.loadingAd;
     },
     ad() {
       const id = this.id;
-      return this.$store.getters.adById(id);
+      return this.adById(id);
     },
     isOwner() {
-      if (!this.$store.getters.user.id) return;
-      return this.ad.ownerId === this.$store.getters.user.id;
+      if (!this.user.id) return;
+      return this.ad.ownerId === this.user.id;
     },
     ownerAd() {
       const ownerId = this.ad.ownerId;
-      return this.$store.getters.userById(ownerId);
+      return this.userById(ownerId);
     },
   },
   beforeUpdate() {

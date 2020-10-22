@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   data() {
@@ -153,6 +153,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions('ads', {
+      createAdDispatch: 'createAd',
+    }),
     createAd() {
       if (this.$refs.form.validate() && this.image) {
         const ad = {
@@ -162,8 +165,7 @@ export default {
           image: this.image,
           price: Number(this.price),
         };
-        this.$store
-          .dispatch('createAd', ad)
+        this.createAdDispatch(ad)
           .then(() => {
             this.$router.push('/list');
           })

@@ -56,27 +56,33 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
   computed: {
     ...mapState('shared', {
       loadingUser: 'loadingUser',
     }),
+    ...mapGetters('orders', {
+      orders: 'orders',
+    }),
     loading() {
       return this.loadingUser;
     },
     orders() {
-      return this.$store.getters.orders;
+      return this.orders;
     },
   },
   created() {
-    this.$store.dispatch('fetchOrders');
+    this.fetchOrders();
   },
   methods: {
+    ...mapActions('orders', {
+      fetchOrders: 'fetchOrders',
+      markOrderDone: 'markOrderDone',
+    }),
     markDone(order) {
-      this.$store
-        .dispatch('markOrderDone', order.id)
+      this.markOrderDone(order.id)
         .then(() => (order.done = true))
         .catch(() => {});
     },

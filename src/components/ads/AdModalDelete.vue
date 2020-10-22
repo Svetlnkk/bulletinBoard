@@ -33,9 +33,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   props: {
-    ad: String,
+    ad: Object,
   },
   data() {
     return {
@@ -43,19 +45,20 @@ export default {
     };
   },
   methods: {
+    ...mapActions('ads', {
+      deleteAd: 'deleteAd',
+    }),
     onCancel() {
       this.modal = false;
     },
     onDelete() {
-      this.$store
-        .dispatch('deleteAd', {
-          id: this.ad.id,
-          imageSrc: this.ad.imageSrc,
-        })
-        .then(() => {
-          this.modal = false;
-          this.$router.push('/list');
-        });
+      this.deleteAd({
+        id: this.ad.id,
+        imageSrc: this.ad.imageSrc,
+      }).then(() => {
+        this.modal = false;
+        this.$router.push('/list');
+      });
     },
   },
 };

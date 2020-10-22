@@ -92,9 +92,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   props: {
-    ad: String,
+    ad: Object,
   },
   data() {
     return {
@@ -129,6 +131,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions('ads', {
+      updateAd: 'updateAd',
+    }),
     onCancel() {
       this.editedTitle = this.ad.title;
       this.editedDescription = this.ad.description;
@@ -137,7 +142,7 @@ export default {
     },
     onSave() {
       if (this.$refs.formEdit.validate()) {
-        this.$store.dispatch('updateAd', {
+        this.updateAd({
           title: this.editedTitle,
           description: this.editedDescription,
           id: this.ad.id,

@@ -154,10 +154,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   props: {
     user: Object,
-    userName: String,
   },
   data() {
     return {
@@ -209,12 +210,11 @@ export default {
       ],
     };
   },
-  watch: {
-    userName() {
-      this.editedName = this.user.name;
-    },
-  },
   methods: {
+    ...mapActions('user', {
+      checkAuthenticate: 'checkAuthenticate',
+      updateUser: 'updateUser',
+    }),
     onCancel() {
       this.editedName = this.user.name;
       this.editedEmail = this.user.email;
@@ -227,7 +227,7 @@ export default {
       this.localLoading = true;
 
       try {
-        await this.$store.dispatch('checkAuthenticate', this.currentPassword);
+        await this.checkAuthenticate(this.currentPassword);
         this.localLoading = false;
         this.modalPassword = false;
         this.currentPassword = '';
@@ -253,7 +253,7 @@ export default {
         (user.name || user.email || user.password)
       ) {
         if (user.name && !user.email && !user.password) {
-          this.$store.dispatch('updateUser', user);
+          this.updateUser(user);
           this.isCheckedCurrentPassword = false;
           this.modal = false;
           return;
@@ -261,7 +261,7 @@ export default {
           this.modalPassword = true;
           return;
         } else {
-          this.$store.dispatch('updateUser', user);
+          this.updateUser(user);
 
           this.isCheckedCurrentPassword = false;
           this.modal = false;

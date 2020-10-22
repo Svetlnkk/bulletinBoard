@@ -76,6 +76,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapState } from 'vuex';
+
 export default {
   data() {
     return {
@@ -83,12 +85,12 @@ export default {
     };
   },
   computed: {
-    error() {
-      return this.$store.getters.error;
-    },
-    isUserLoggedIn() {
-      return this.$store.getters.isUserLoggedIn;
-    },
+    ...mapState('shared', {
+      error: 'error',
+    }),
+    ...mapGetters('user', {
+      isUserLoggedIn: 'isUserLoggedIn',
+    }),
     links() {
       if (this.isUserLoggedIn) {
         return [
@@ -118,11 +120,17 @@ export default {
     },
   },
   methods: {
+    ...mapActions('shared', {
+      clearError: 'clearError',
+    }),
+    ...mapActions('user', {
+      logoutUser: 'logoutUser',
+    }),
     closeError() {
-      this.$store.dispatch('shared/clearError');
+      this.clearError;
     },
     onLogout() {
-      this.$store.dispatch('logoutUser');
+      this.logoutUser;
       if (this.$route.path !== '/') this.$router.push('/');
     },
   },
