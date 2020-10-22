@@ -16,14 +16,14 @@ export default {
     orders: [],
   },
   mutations: {
-    loadOrders(state, payload) {
+    setOrders(state, payload) {
       state.orders = payload;
     },
   },
   actions: {
-    async createOrder({ commit }, { name, phone, adId, ownerId }) {
+    async createOrder({ dispatch }, { name, phone, adId, ownerId }) {
       const order = new Order(name, phone, adId);
-      commit('shared/clearError');
+      dispatch('shared/clearError', null, { root: true });
 
       try {
         await firebase
@@ -31,26 +31,25 @@ export default {
           .ref(`/users/${ownerId}/orders`)
           .push(order);
       } catch (error) {
-        commit('shared/setError', error.message);
+        dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
     },
-    async fetchOrders({ commit, getters }) {
-      commit('shared/setLoading', true);
-      commit('shared/clearError');
-
+    async fetchOrders({ commit, dispatch, rootState }) {
+      dispatch('shared/setLoading', true, { root: true });
+      dispatch('shared/clearError', null, { root: true });
       const resultOrders = [];
 
       try {
         const firebaseValue = await firebase
           .database()
-          .ref(`/users/${getters.user.id}/orders`)
+          .ref(`/users/${rootState['user'].user.id}/orders`)
           .once('value');
 
         const orders = firebaseValue.val();
 
         if (!orders) {
-          commit('shared/setLoading', false);
+          dispatch('shared/setLoading', false, { root: true });
           return;
         }
 
@@ -61,25 +60,25 @@ export default {
           );
         });
 
-        commit('loadOrders', resultOrders);
-        commit('shared/setLoading', false);
+        commit('setOrders', resultOrders);
+        dispatch('shared/setLoading', false, { root: true });
       } catch (error) {
-        commit('shared/setLoading', false);
-        commit('shared/setError', error);
+        dispatch('shared/setLoading', false, { root: true });
+        dispatch('shared/setError', error, { root: true });
         throw error;
       }
     },
-    async markOrderDone({ commit, getters }, payload) {
+    async markOrderDone({ dispatch, rootState }, payload) {
       try {
         await firebase
           .database()
-          .ref(`users/${getters.user.id}/orders`)
+          .ref(`users/${rootState['user'].user.id}/orders`)
           .child(payload)
           .update({
             done: true,
           });
       } catch (error) {
-        commit('shared/setError', error);
+        dispatch('shared/setError', error, { root: true });
         throw error;
       }
     },

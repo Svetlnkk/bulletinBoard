@@ -228,7 +228,6 @@ export default {
       });
     },
     myAds(state, getters, rootState) {
-      console.log(rootState);
       return state.ads.filter((ad) => {
         return ad.ownerId === rootState['user'].user.id;
       });

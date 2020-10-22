@@ -112,7 +112,7 @@ export default {
       myAds: 'myAds',
     }),
     loading() {
-      return this.loadingUser && this.loadingAd;
+      return !(!this.loadingAd && !this.loadingUser);
     },
   },
 };

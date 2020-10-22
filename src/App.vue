@@ -130,7 +130,7 @@ export default {
       this.clearError;
     },
     onLogout() {
-      this.logoutUser;
+      this.logoutUser();
       if (this.$route.path !== '/') this.$router.push('/');
     },
   },

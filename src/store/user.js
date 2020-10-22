@@ -29,10 +29,7 @@ export default {
     },
   },
   actions: {
-    async registerUser(
-      { commit, dispatch, getters },
-      { name, email, password }
-    ) {
+    async registerUser({ commit, dispatch, state }, { name, email, password }) {
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/setLoadingUser', true, { root: true });
       try {
@@ -46,7 +43,7 @@ export default {
           .ref(`/users/${user.user.uid}/personal`)
           .set({ name: name });
 
-        const storeUser = getters.user;
+        const storeUser = state.user;
         storeUser.name = name;
 
         dispatch('shared/setLoadingUser', false, { root: true });
@@ -84,18 +81,18 @@ export default {
       }
     },
 
-    async fetchUser({ commit, dispatch, getters }) {
+    async fetchUser({ commit, dispatch, state }) {
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/setLoadingUser', true, { root: true });
 
       try {
         const databaseUserValue = await firebase
           .database()
-          .ref(`/users/${getters.user.id}/personal`)
+          .ref(`/users/${state.user.id}/personal`)
           .once('value');
         const databasePersonalName = databaseUserValue.val().name;
 
-        const user = getters.user;
+        const user = state.user;
         user.name = databasePersonalName;
 
         commit('setUser', user);
@@ -152,17 +149,17 @@ export default {
       }
     },
 
-    async changeName({ commit, dispatch, getters }, payload) {
+    async changeName({ commit, dispatch, state }, payload) {
       if (!payload) return;
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/setLoadingUser', true, { root: true });
       try {
         await firebase
           .database()
-          .ref(`/users/${getters.user.id}/personal`)
+          .ref(`/users/${state.user.id}/personal`)
           .set({ name: payload });
 
-        const user = getters.user;
+        const user = state.user;
         user.name = payload;
         commit('setUser', user);
         dispatch('shared/setLoadingUser', false, { root: true });
@@ -173,11 +170,11 @@ export default {
       }
     },
 
-    async changeEmail({ commit, dispatch, getters }, payload) {
+    async changeEmail({ commit, dispatch, state }, payload) {
       if (!payload) return;
-      dispatch('shared/clearError');
+      dispatch('shared/clearError', false, { root: true });
 
-      const user = getters.user;
+      const user = state.user;
       user.email = payload;
 
       try {
@@ -230,11 +227,6 @@ export default {
   },
 
   getters: {
-    user(state) {
-      if (!state.user) return false;
-      return state.user;
-    },
-
     isUserLoggedIn(state) {
       return state.user !== null;
     },

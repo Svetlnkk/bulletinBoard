@@ -134,14 +134,14 @@ export default {
       userById: 'userById',
     }),
     loading() {
-      return this.loadingUser && this.loadingAd;
+      return !(!this.loadingAd && !this.loadingUser);
     },
     ad() {
       const id = this.id;
       return this.adById(id);
     },
     isOwner() {
-      if (!this.user.id) return;
+      if (!this.user) return;
       return this.ad.ownerId === this.user.id;
     },
     ownerAd() {

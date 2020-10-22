@@ -67,10 +67,7 @@ export default {
       orders: 'orders',
     }),
     loading() {
-      return this.loadingUser;
-    },
-    orders() {
-      return this.orders;
+      return this.loadingUser && this.loadingAd;
     },
   },
   created() {
