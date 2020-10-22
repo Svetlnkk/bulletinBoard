@@ -94,9 +94,13 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      loading: 'loading',
+    ...mapState('shared', {
+      loadingAd: 'loading',
+      loadingUser: 'loadingUser',
     }),
+    loading() {
+      return this.loadingUser && this.loadingAd;
+    },
   },
   methods: {
     onSubmit() {
@@ -118,7 +122,10 @@ export default {
   },
   created() {
     if (this.$route.query['loginError']) {
-      this.$store.dispatch('setError', 'Please log in to access this page');
+      this.$store.dispatch(
+        'shared/setError',
+        'Please log in to access this page'
+      );
     }
   },
 };

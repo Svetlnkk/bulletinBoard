@@ -122,8 +122,12 @@ export default {
   },
   computed: {
     ...mapState('shared', {
-      loading: 'loading',
+      loadingAd: 'loading',
+      loadingUser: 'loadingUser',
     }),
+    loading() {
+      return this.loadingUser && this.loadingAd;
+    },
     ad() {
       const id = this.id;
       return this.$store.getters.adById(id);

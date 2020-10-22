@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     closeError() {
-      this.$store.dispatch('clearError');
+      this.$store.dispatch('shared/clearError');
     },
     onLogout() {
       this.$store.dispatch('logoutUser');

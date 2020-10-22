@@ -105,8 +105,12 @@ import { mapState } from 'vuex';
 export default {
   computed: {
     ...mapState('shared', {
-      loading: 'loading',
+      loadingAd: 'loading',
+      loadingUser: 'loadingUser',
     }),
+    loading() {
+      return this.loadingUser && this.loadingAd;
+    },
     myAds() {
       return this.$store.getters.myAds;
     },

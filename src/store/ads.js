@@ -50,7 +50,7 @@ export default {
   },
   actions: {
     async createAd({ commit, getters }, payload) {
-      commit('clearError');
+      commit('shared/clearError');
       commit('shared/setLoading', true);
 
       const image = payload.image;
@@ -113,13 +113,13 @@ export default {
         });
         commit('shared/setLoading', false);
       } catch (error) {
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         commit('shared/setLoading', false);
         throw error;
       }
     },
     async fetchAds({ commit }) {
-      commit('clearError');
+      commit('shared/clearError');
       commit('shared/setLoading', true);
 
       const resultAds = [];
@@ -156,13 +156,13 @@ export default {
         commit('getAds', resultAds);
         commit('shared/setLoading', false);
       } catch (error) {
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         commit('shared/setLoading', false);
         throw error;
       }
     },
     async updateAd({ commit }, { title, description, id, price }) {
-      commit('clearError');
+      commit('shared/clearError');
       commit('shared/setLoading', true);
       try {
         await firebase
@@ -182,13 +182,13 @@ export default {
         });
         commit('shared/setLoading', false);
       } catch (error) {
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         commit('shared/setLoading', false);
         throw error;
       }
     },
     async deleteAd({ commit }, { id, imageSrc }) {
-      commit('clearError');
+      commit('shared/clearError');
       commit('shared/setLoading', true);
 
       const storage = firebase.storage();
@@ -211,7 +211,7 @@ export default {
 
         commit('shared/setLoading', false);
       } catch (error) {
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         commit('shared/setLoading', false);
         throw error;
       }

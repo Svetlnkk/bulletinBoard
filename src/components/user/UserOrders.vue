@@ -61,8 +61,11 @@ import { mapState } from 'vuex';
 export default {
   computed: {
     ...mapState('shared', {
-      loading: 'loading',
+      loadingUser: 'loadingUser',
     }),
+    loading() {
+      return this.loadingUser;
+    },
     orders() {
       return this.$store.getters.orders;
     },

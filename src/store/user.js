@@ -29,7 +29,7 @@ export default {
   },
   actions: {
     async registerUser({ commit, getters }, { name, email, password }) {
-      commit('clearError');
+      commit('shared/clearError');
       commit('shared/setLoadingUser', true);
       try {
         const user = await firebase
@@ -48,12 +48,12 @@ export default {
         commit('shared/setLoadingUser', false);
       } catch (error) {
         commit('shared/setLoadingUser', false);
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         throw error;
       }
     },
     async loginUser({ commit }, { email, password }) {
-      commit('clearError');
+      commit('shared/clearError');
       commit('shared/setLoadingUser', true);
 
       try {
@@ -74,12 +74,12 @@ export default {
         commit('shared/setLoadingUser', false);
       } catch (error) {
         commit('shared/setLoadingUser', false);
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         throw error;
       }
     },
     async fetchUser({ commit, getters }) {
-      commit('clearError');
+      commit('shared/clearError');
       commit('shared/setLoadingUser', true);
 
       try {
@@ -96,12 +96,12 @@ export default {
         commit('shared/setLoadingUser', false);
       } catch (error) {
         commit('shared/setLoadingUser', false);
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         throw error;
       }
     },
     async fetchUsers({ commit }) {
-      commit('clearError');
+      commit('shared/clearError');
       commit('shared/setLoadingUser', true);
 
       let databaseUsersResult = [];
@@ -122,12 +122,12 @@ export default {
         commit('shared/setLoadingUser', false);
       } catch (error) {
         commit('shared/setLoadingUser', false);
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         throw error;
       }
     },
     async updateUser({ commit, dispatch }, { name, email, password }) {
-      commit('clearError');
+      commit('shared/clearError');
       commit('shared/setLoadingUser', true);
       try {
         await dispatch('changeName', name);
@@ -139,13 +139,13 @@ export default {
         commit('shared/setLoadingUser', false);
       } catch (error) {
         commit('shared/setLoadingUser', false);
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         throw error;
       }
     },
     async changeName({ commit, getters }, payload) {
       if (!payload) return;
-      commit('clearError');
+      commit('shared/clearError');
       commit('shared/setLoadingUser', true);
       try {
         await firebase
@@ -159,13 +159,13 @@ export default {
         commit('shared/setLoadingUser', false);
       } catch (error) {
         commit('shared/setLoadingUser', false);
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         throw error;
       }
     },
     async changeEmail({ commit, getters }, payload) {
       if (!payload) return;
-      commit('clearError');
+      commit('shared/clearError');
 
       const user = getters.user;
       user.email = payload;
@@ -175,18 +175,18 @@ export default {
 
         commit('setUser', user);
       } catch (error) {
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         throw error;
       }
     },
     async changePassword({ commit }, payload) {
       if (!payload) return;
-      commit('clearError');
+      commit('shared/clearError');
 
       try {
         await firebase.auth().currentUser.updatePassword(payload);
       } catch (error) {
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         throw error;
       }
     },
@@ -198,7 +198,7 @@ export default {
       commit('setUser', null);
     },
     async checkAuthenticate({ commit }, payload) {
-      commit('clearError');
+      commit('shared/clearError');
 
       const user = firebase.auth().currentUser;
       const credential = firebase.auth.EmailAuthProvider.credential(
@@ -209,7 +209,7 @@ export default {
       try {
         await user.reauthenticateWithCredential(credential);
       } catch (error) {
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         throw error;
       }
     },

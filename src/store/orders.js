@@ -22,7 +22,7 @@ export default {
   actions: {
     async createOrder({ commit }, { name, phone, adId, ownerId }) {
       const order = new Order(name, phone, adId);
-      commit('clearError');
+      commit('shared/clearError');
 
       try {
         await firebase
@@ -30,13 +30,13 @@ export default {
           .ref(`/users/${ownerId}/orders`)
           .push(order);
       } catch (error) {
-        commit('setError', error.message);
+        commit('shared/setError', error.message);
         throw error;
       }
     },
     async fetchOrders({ commit, getters }) {
       commit('shared/setLoading', true);
-      commit('clearError');
+      commit('shared/clearError');
 
       const resultOrders = [];
 
@@ -64,7 +64,7 @@ export default {
         commit('shared/setLoading', false);
       } catch (error) {
         commit('shared/setLoading', false);
-        commit('setError', error);
+        commit('shared/setError', error);
         throw error;
       }
     },
@@ -78,7 +78,7 @@ export default {
             done: true,
           });
       } catch (error) {
-        commit('setError', error);
+        commit('shared/setError', error);
         throw error;
       }
     },

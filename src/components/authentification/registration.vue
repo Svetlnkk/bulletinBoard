@@ -137,9 +137,13 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      loading: 'loading',
+    ...mapState('shared', {
+      loadingAd: 'loading',
+      loadingUser: 'loadingUser',
     }),
+    loading() {
+      return this.loadingUser && this.loadingAd;
+    },
   },
   methods: {
     onSubmit() {

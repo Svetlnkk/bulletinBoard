@@ -96,8 +96,11 @@ export default {
   },
   computed: {
     ...mapState('shared', {
-      loading: 'loading',
+      loadingUser: 'loadingUser',
     }),
+    loading() {
+      return this.loadingUser;
+    },
     user() {
       return this.$store.getters.user;
     },
