@@ -103,15 +103,9 @@ import { mapGetters, mapState } from 'vuex';
 
 export default {
   computed: {
-    ...mapState('shared', {
-      loading: 'loading',
-    }),
-    ...mapState('ads', {
-      ads: 'ads',
-    }),
-    ...mapGetters('ads', {
-      promoAds: 'promoAds',
-    }),
+    ...mapState('shared', ['loading']),
+    ...mapState('ads', ['ads']),
+    ...mapGetters('ads', ['promoAds']),
   },
 };
 </script>

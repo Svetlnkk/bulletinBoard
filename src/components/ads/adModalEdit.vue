@@ -129,15 +129,13 @@ export default {
       ],
       editedPriceRules: [
         (v) =>
-          ((v) && (v).length <= 20) ||
+          (v && v.length <= 20) ||
           'The price must be equal or less than 20 only digits',
       ],
     };
   },
   methods: {
-    ...mapActions('ads', {
-      updateAd: 'updateAd',
-    }),
+    ...mapActions('ads', ['updateAd']),
 
     // cancel editing ad
     onCancel() {

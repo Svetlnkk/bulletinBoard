@@ -122,20 +122,12 @@ export default {
     id: String,
   },
   computed: {
-    ...mapState('shared', {
-      loading: 'loading'
-    }),
-    ...mapState('user', {
-      user: 'user',
-    }),
-    ...mapGetters('ads', {
-      adById: 'adById',
-    }),
-    ...mapGetters('user', {
-      userById: 'userById',
-    }),
+    ...mapState('shared', ['loading']),
+    ...mapState('user', ['user']),
+    ...mapGetters('ads', ['adById']),
+    ...mapGetters('user', ['userById']),
 
-    // Get ad by his id
+    // Get ad by id
     ad() {
       const id = this.id;
       return this.adById(id);

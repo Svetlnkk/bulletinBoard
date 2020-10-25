@@ -139,14 +139,10 @@ export default {
     };
   },
   computed: {
-    ...mapState('shared', {
-      loading: 'loading',
-    }),
+    ...mapState('shared', ['loading']),
   },
   methods: {
-    ...mapActions('user', {
-      registerUser: 'registerUser',
-    }),
+    ...mapActions('user', ['registerUser']),
 
     // submit new user on Firebase and Vuex
     onSubmit() {

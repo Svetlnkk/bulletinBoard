@@ -219,10 +219,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions('user', {
-      checkAuthenticate: 'checkAuthenticate',
-      updateUser: 'updateUser',
-    }),
+    ...mapActions('user', ['checkAuthenticate', 'updateUser']),
 
     // cancel of all changes
     onCancel() {

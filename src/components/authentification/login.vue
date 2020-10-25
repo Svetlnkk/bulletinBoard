@@ -96,24 +96,18 @@ export default {
     };
   },
   computed: {
-    ...mapState('shared', {
-      loading: 'loading',
-    }),
+    ...mapState('shared', ['loading']),
     loadingButton() {
       if (this.loading) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
-    }
+    },
   },
   methods: {
-    ...mapActions('shared', {
-      setError: 'setError',
-    }),
-    ...mapActions('user', {
-      loginUser: 'loginUser',
-    }),
+    ...mapActions('shared', ['setError']),
+    ...mapActions('user', ['loginUser']),
 
     // submit user login form
     onSubmit() {

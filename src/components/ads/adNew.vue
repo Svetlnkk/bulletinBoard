@@ -149,21 +149,17 @@ export default {
     };
   },
   computed: {
-    ...mapState('shared', {
-      loading: 'loading',
-    }),
+    ...mapState('shared', ['loading']),
     loadingButton() {
       if (this.loading) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     },
   },
   methods: {
-    ...mapActions('ads', {
-      createAdDispatch: 'createAd',
-    }),
+    ...mapActions('ads', ['createAd']),
 
     // Create new ad in Firebase and vuex
     createAd() {
