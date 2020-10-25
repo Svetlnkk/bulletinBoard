@@ -105,7 +105,6 @@ export default {
     },
 
     async fetchUsers({ commit, dispatch }) {
-      console.log('test')
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
 
@@ -124,7 +123,8 @@ export default {
         });
 
         commit('getUsers', databaseUsersResult);
-        dispatch('shared/finishLoading', null, { root: true });
+          dispatch('shared/finishLoading', null, { root: true });
+        
       } catch (error) {
         dispatch('shared/finishLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });

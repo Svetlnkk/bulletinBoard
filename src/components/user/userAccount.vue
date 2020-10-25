@@ -95,16 +95,11 @@ export default {
   },
   computed: {
     ...mapState('shared', {
-      loadingUser: 'loadingUser',
+      loading: 'loading',
     }),
     ...mapState('user', {
       user: 'user',
     }),
-
-    // Get 'false' when all content is loaded
-    loading() {
-      return this.loadingUser;
-    },
   },
 };
 </script>

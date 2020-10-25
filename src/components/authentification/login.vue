@@ -49,8 +49,8 @@
 
             <!-- log in button -->
             <v-btn
-              :disabled="!valid || loading"
-              :loading="loading"
+              :disabled="!valid || loadingButton"
+              :loading="loadingButton"
               color="teal"
               text
               @click.prevent="onSubmit"
@@ -99,6 +99,13 @@ export default {
     ...mapState('shared', {
       loading: 'loading',
     }),
+    loadingButton() {
+      if (this.loading) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     ...mapActions('shared', {

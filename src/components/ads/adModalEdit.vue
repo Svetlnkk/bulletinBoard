@@ -58,7 +58,7 @@
                 <!-- ad edit dialog price input -->
                 <v-text-field
                   v-model="editedPrice"
-                  :rules="priceRules"
+                  :rules="editedPriceRules"
                   color="teal"
                   counter="20"
                   label="Price"
@@ -105,7 +105,7 @@ export default {
   data() {
     return {
       editedDescription: this.ad.description,
-      editedPrice: this.ad.price,
+      editedPrice: String(this.ad.price),
       editedTitle: this.ad.title,
       modal: false,
       valid: false,
@@ -127,10 +127,10 @@ export default {
           (v && v.length <= 1000) ||
           'Description must be equal or less than 1000 characters',
       ],
-      priceRules: [
+      editedPriceRules: [
         (v) =>
-          (String(v) && String(v).length <= 20) ||
-          'The price must be equal or less than 20 digits',
+          ((v) && (v).length <= 20) ||
+          'The price must be equal or less than 20 only digits',
       ],
     };
   },

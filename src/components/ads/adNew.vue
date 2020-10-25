@@ -95,8 +95,8 @@
         <v-row>
           <v-col class="sm-12">
             <v-btn
-              :disabled="!valid || !image || loading"
-              :loading="loading"
+              :disabled="!valid || !image || loadingButton"
+              :loading="loadingButton"
               block
               class="success"
               @click="createAd"
@@ -152,6 +152,13 @@ export default {
     ...mapState('shared', {
       loading: 'loading',
     }),
+    loadingButton() {
+      if (this.loading) {
+        return true
+      } else {
+        return false
+      }
+    },
   },
   methods: {
     ...mapActions('ads', {
