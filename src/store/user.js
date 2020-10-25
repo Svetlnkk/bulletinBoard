@@ -10,7 +10,7 @@ class User {
 
 class UsersArray {
   constructor(userId, name = '') {
-    (this.userId = userId), (this.name = name);
+    this.userId = userId, this.name = name;
   }
 }
 
@@ -31,7 +31,7 @@ export default {
   actions: {
     async registerUser({ commit, dispatch, state }, { name, email, password }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/setLoadingUser', true, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
       try {
         const user = await firebase
           .auth()
@@ -46,17 +46,17 @@ export default {
         const storeUser = state.user;
         storeUser.name = name;
 
-        dispatch('shared/setLoadingUser', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/setLoadingUser', false, { root: true });
-        dispatch('shared/setError', error.message);
+        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
     },
 
     async loginUser({ commit, dispatch }, { email, password }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/setLoadingUser', true, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
 
       try {
         let user = await firebase
@@ -73,9 +73,9 @@ export default {
           'setUser',
           new User(user.user.uid, user.user.email, databasePersonalName)
         );
-        dispatch('shared/setLoadingUser', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/setLoadingUser', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
@@ -83,7 +83,7 @@ export default {
 
     async fetchUser({ commit, dispatch, state }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/setLoadingUser', true, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
 
       try {
         const databaseUserValue = await firebase
@@ -96,17 +96,18 @@ export default {
         user.name = databasePersonalName;
 
         commit('setUser', user);
-        dispatch('shared/setLoadingUser', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/setLoadingUser', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
     },
 
     async fetchUsers({ commit, dispatch }) {
+      console.log('test')
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/setLoadingUser', true, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
 
       let databaseUsersResult = [];
 
@@ -123,9 +124,9 @@ export default {
         });
 
         commit('getUsers', databaseUsersResult);
-        dispatch('shared/setLoadingUser', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/setLoadingUser', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
@@ -133,7 +134,7 @@ export default {
 
     async updateUser({ dispatch }, { name, email, password }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/setLoadingUser', true, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
       try {
         await dispatch('changeName', name);
 
@@ -141,9 +142,9 @@ export default {
 
         await dispatch('changePassword', password);
 
-        dispatch('shared/setLoadingUser', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/setLoadingUser', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
@@ -152,7 +153,7 @@ export default {
     async changeName({ commit, dispatch, state }, payload) {
       if (!payload) return;
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/setLoadingUser', true, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
       try {
         await firebase
           .database()
@@ -162,9 +163,9 @@ export default {
         const user = state.user;
         user.name = payload;
         commit('setUser', user);
-        dispatch('shared/setLoadingUser', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/setLoadingUser', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }

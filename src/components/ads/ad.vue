@@ -123,8 +123,7 @@ export default {
   },
   computed: {
     ...mapState('shared', {
-      loadingAd: 'loading',
-      loadingUser: 'loadingUser',
+      loading: 'loading'
     }),
     ...mapState('user', {
       user: 'user',
@@ -135,11 +134,6 @@ export default {
     ...mapGetters('user', {
       userById: 'userById',
     }),
-
-    // Get 'false' when all content is loaded
-    loading() {
-      return !(!this.loadingAd && !this.loadingUser);
-    },
 
     // Get ad by his id
     ad() {

@@ -1,16 +1,14 @@
 export default {
   namespaced: true,
   state: {
-    loading: false,
-    loadingUser: false,
-    error: null,
+    loading: 0,
   },
   mutations: {
-    setLoading(state, payload) {
-      state.loading = payload;
+    startLoading(state) {
+      state.loading++
     },
-    setLoadingUser(state, payload) {
-      state.loadingUser = payload;
+    finishLoading(state) {
+      state.loading--
     },
     setError(state, payload) {
       state.error = payload;
@@ -20,17 +18,17 @@ export default {
     },
   },
   actions: {
-    setLoading({ commit }, payload) {
-      commit('setLoading', payload);
+    startLoading({commit}) {
+        commit('startLoading');
     },
-    setLoadingUser({ commit }, payload) {
-      commit('setLoadingUser', payload);
+    finishLoading({commit}) {
+        commit('finishLoading');
     },
-    setError({ commit }, payload) {
-      commit('setError', payload);
+    setError({commit}, payload) {
+        commit('setError', payload);
     },
-    clearError({ commit }) {
-      commit('clearError');
+    clearError({commit}) {
+        commit('clearError');
     },
   },
 };

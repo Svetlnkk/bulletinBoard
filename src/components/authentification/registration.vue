@@ -140,12 +140,8 @@ export default {
   },
   computed: {
     ...mapState('shared', {
-      loadingAd: 'loading',
-      loadingUser: 'loadingUser',
+      loading: 'loading',
     }),
-    loading() {
-      return this.loadingUser && this.loadingAd;
-    },
   },
   methods: {
     ...mapActions('user', {

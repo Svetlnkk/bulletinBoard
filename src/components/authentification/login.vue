@@ -97,14 +97,8 @@ export default {
   },
   computed: {
     ...mapState('shared', {
-      loadingAd: 'loading',
-      loadingUser: 'loadingUser',
+      loading: 'loading',
     }),
-
-    // get 'false' when all content is loaded
-    loading() {
-      return !(!this.loadingAd && !this.loadingUser);
-    },
   },
   methods: {
     ...mapActions('shared', {

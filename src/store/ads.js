@@ -52,7 +52,7 @@ export default {
   actions: {
     async createAd({ commit, dispatch, rootState }, payload) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/setLoading', true, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
 
       const image = payload.image;
 
@@ -112,17 +112,17 @@ export default {
           imageSrc,
           dateAdded,
         });
-        dispatch('shared/setLoading', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/setError', error.message, { root: true });
-        dispatch('shared/setLoading', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
         throw error;
       }
     },
 
     async fetchAds({ commit, dispatch }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/setLoading', true, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
 
       const resultAds = [];
 
@@ -135,7 +135,7 @@ export default {
         const ads = firebaseValue.val();
 
         if (!ads) {
-          dispatch('shared/setLoading', false, { root: true });
+          dispatch('shared/finishLoading', null, { root: true });
           return;
         }
 
@@ -156,17 +156,23 @@ export default {
         });
 
         commit('getAds', resultAds);
-        dispatch('shared/setLoading', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/setError', error.message, { root: true });
-        dispatch('shared/setLoading', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
         throw error;
       }
     },
 
-    async updateAd({ commit, dispatch }, { title, description, id, price }) {
+    async updateAd({ commit, dispatch }, {
+      title,
+      description,
+      id,
+      price
+      }) 
+      {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/setLoading', true, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
       try {
         await firebase
           .database()
@@ -183,17 +189,17 @@ export default {
           id,
           price,
         });
-        dispatch('shared/setLoading', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/setError', error.message, { root: true });
-        dispatch('shared/setLoading', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
         throw error;
       }
     },
 
     async deleteAd({ commit, dispatch }, { id, imageSrc }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/setLoading', true, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
 
       const storage = firebase.storage();
       const storageRef = storage.ref();
@@ -213,10 +219,10 @@ export default {
 
         commit('deleteAd', id);
 
-        dispatch('shared/setLoading', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/setError', error.message, { root: true });
-        dispatch('shared/setLoading', false, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
         throw error;
       }
     },
