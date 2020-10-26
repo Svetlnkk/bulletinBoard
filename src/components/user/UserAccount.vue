@@ -18,7 +18,7 @@
 
               <v-list-item-content>
                 <v-list-item-title>
-                  {{ user.name }}
+                  {{ currentUser.name }}
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -33,7 +33,7 @@
 
               <v-list-item-content>
                 <v-list-item-title>
-                  {{ user.email }}
+                  {{ currentUser.email }}
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -95,7 +95,7 @@ export default {
   },
   computed: {
     ...mapState('shared', ['loading']),
-    ...mapState('user', ['user']),
+    ...mapState('user', ['currentUser']),
   },
 };
 </script>

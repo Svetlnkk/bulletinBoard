@@ -123,7 +123,7 @@ export default {
   },
   computed: {
     ...mapState('shared', ['loading']),
-    ...mapState('user', ['user']),
+    ...mapState('user', ['currentUser']),
     ...mapGetters('ads', ['adById']),
     ...mapGetters('user', ['userById']),
 

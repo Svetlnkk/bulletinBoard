@@ -30,9 +30,9 @@ firebase.auth().onAuthStateChanged((user) => {
       created() {
         if (user) {
           this.$store.dispatch('user/autoLoginUser', user);
-          this.$store.dispatch('user/fetchUser');
+          this.$store.dispatch('user/fetchCurrentUser', user);
         }
-        this.$store.dispatch('user/fetchUsers');
+        this.$store.dispatch('user/fetchAllUsers');
         this.$store.dispatch('ads/fetchAds');
       },
       render: (h) => h(App),

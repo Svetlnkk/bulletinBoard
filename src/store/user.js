@@ -1,50 +1,48 @@
 import * as firebase from 'firebase';
 
 class User {
-  constructor(id, email, name = '') {
+  constructor({ id, email, name = '' }) {
     this.id = id;
     this.email = email;
     this.name = name;
   }
 }
 
-class UsersArray {
-  constructor(userId, name = '') {
-    this.userId = userId, this.name = name;
-  }
-}
-
 export default {
   namespaced: true,
   state: {
-    user: null,
-    users: [],
+    currentUser: null,
+    allUsers: [],
   },
   mutations: {
-    setUser(state, payload) {
-      state.user = payload;
+    setCurrentUser(state, payload) {
+      state.currentUser = payload;
     },
-    getUsers(state, payload) {
-      state.users = payload;
+    getAllUsers(state, payload) {
+      state.allUsers = payload;
     },
   },
   actions: {
-    async registerUser({ commit, dispatch, state }, { name, email, password }) {
+    async registerUser({ commit, dispatch }, { name, email, password }) {
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
       try {
         const user = await firebase
           .auth()
           .createUserWithEmailAndPassword(email, password);
-        commit('setUser', new User(user.user.uid, user.user.email));
+        commit(
+          'setCurrentUser',
+          new User({
+            id: user.user.uid,
+            email: user.user.email,
+            name: name,
+          })
+        );
 
         await firebase
           .database()
           .ref(`/users/${user.user.uid}/personal`)
-          .set({ name: name });
-
-        const storeUser = state.user;
-        storeUser.name = name;
+          .set({ name: name, email: email });
 
         dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
@@ -70,8 +68,12 @@ export default {
         const databasePersonalName = databaseUserValue.val().name;
 
         commit(
-          'setUser',
-          new User(user.user.uid, user.user.email, databasePersonalName)
+          'setCurrentUser',
+          new User({
+            id: user.user.uid,
+            email: user.user.email,
+            name: databasePersonalName,
+          })
         );
         dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
@@ -81,21 +83,21 @@ export default {
       }
     },
 
-    async fetchUser({ commit, dispatch, state }) {
+    async fetchCurrentUser({ commit, dispatch, state }) {
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
 
       try {
         const databaseUserValue = await firebase
           .database()
-          .ref(`/users/${state.user.id}/personal`)
+          .ref(`/users/${state.currentUser.id}/personal`)
           .once('value');
         const databasePersonalName = databaseUserValue.val().name;
 
-        const user = state.user;
-        user.name = databasePersonalName;
+        const currentUser = state.currentUser;
+        currentUser.name = databasePersonalName;
 
-        commit('setUser', user);
+        commit('setCurrentUser', currentUser);
         dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/finishLoading', null, { root: true });
@@ -104,7 +106,7 @@ export default {
       }
     },
 
-    async fetchUsers({ commit, dispatch }) {
+    async fetchAllUsers({ commit, dispatch }) {
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
 
@@ -119,12 +121,12 @@ export default {
 
         Object.keys(databaseUsersObject).forEach((key) => {
           const user = databaseUsersObject[key].personal;
-          databaseUsersResult.push(new UsersArray(key, user.name));
+          databaseUsersResult.push(
+            new User({ id: key, email: (user.email = ''), name: user.name })
+          );
         });
-
-        commit('getUsers', databaseUsersResult);
-          dispatch('shared/finishLoading', null, { root: true });
-        
+        commit('getAllUsers', databaseUsersResult);
+        dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/finishLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
@@ -157,12 +159,12 @@ export default {
       try {
         await firebase
           .database()
-          .ref(`/users/${state.user.id}/personal`)
+          .ref(`/users/${state.currentUser.id}/personal`)
           .set({ name: payload });
 
-        const user = state.user;
-        user.name = payload;
-        commit('setUser', user);
+        const currentUser = state.currentUser;
+        currentUser.name = payload;
+        commit('setCurrentUser', currentUser);
         dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/finishLoading', null, { root: true });
@@ -175,13 +177,18 @@ export default {
       if (!payload) return;
       dispatch('shared/clearError', false, { root: true });
 
-      const user = state.user;
-      user.email = payload;
+      const currentUser = state.currentUser;
+      currentUser.email = payload;
 
       try {
         await firebase.auth().currentUser.updateEmail(payload);
 
-        commit('setUser', user);
+        await firebase
+          .database()
+          .ref(`/users/${state.currentUser.id}/personal`)
+          .set({ email: payload });
+
+        commit('setCurrentUser', currentUser);
       } catch (error) {
         dispatch('shared/setError', error.message, { root: true });
         throw error;
@@ -201,7 +208,14 @@ export default {
     },
 
     autoLoginUser({ commit }, payload) {
-      commit('setUser', new User(payload.uid, payload.email));
+      commit(
+        'setCurrentUser',
+        new User({
+          id: payload.uid,
+          email: payload.email,
+          name: payload.name,
+        })
+      );
     },
 
     async logoutUser({ commit }) {
@@ -229,13 +243,13 @@ export default {
 
   getters: {
     isUserLoggedIn(state) {
-      return state.user !== null;
+      return state.currentUser !== null;
     },
 
     userById(state) {
       return function(userId) {
-        return state.users.find((user) => {
-          return user.userId === userId;
+        return state.allUsers.find((user) => {
+          return user.id === userId;
         });
       };
     },
