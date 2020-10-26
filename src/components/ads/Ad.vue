@@ -3,7 +3,7 @@
     <v-row>
       <v-col class="col-12 col-sm-10 col-md-10 col-lg-8 col-xl-6 mx-auto">
         <v-row
-          v-if="!loading && ad"
+          v-if="!loading && this.ad"
           class="ad-main__item col-12 col-sm-11 flex-column mx-auto"
         >
           <!-- ad title -->
@@ -122,26 +122,12 @@ export default {
     id: String,
   },
   computed: {
-    ...mapState('shared', {
-      loadingAd: 'loading',
-      loadingUser: 'loadingUser',
-    }),
-    ...mapState('user', {
-      user: 'user',
-    }),
-    ...mapGetters('ads', {
-      adById: 'adById',
-    }),
-    ...mapGetters('user', {
-      userById: 'userById',
-    }),
+    ...mapState('shared', ['loading']),
+    ...mapState('user', ['user']),
+    ...mapGetters('ads', ['adById']),
+    ...mapGetters('user', ['userById']),
 
-    // Get 'false' when all content is loaded
-    loading() {
-      return !(!this.loadingAd && !this.loadingUser);
-    },
-
-    // Get ad by his id
+    // Get ad by id
     ad() {
       const id = this.id;
       return this.adById(id);
@@ -161,7 +147,7 @@ export default {
   },
   beforeUpdate() {
     // 404 page, if ad of this id is not
-    if (!this.ad) {
+    if (!this.loading && !this.ad) {
       this.$router.replace('/404');
       return;
     }

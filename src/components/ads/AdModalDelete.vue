@@ -54,9 +54,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions('ads', {
-      deleteAd: 'deleteAd',
-    }),
+    ...mapActions('ads', ['deleteAd']),
 
     //  cancel to deleting ad
     onCancel() {

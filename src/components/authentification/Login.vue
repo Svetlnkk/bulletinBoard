@@ -49,8 +49,8 @@
 
             <!-- log in button -->
             <v-btn
-              :disabled="!valid || loading"
-              :loading="loading"
+              :disabled="!valid || loadingButton"
+              :loading="loadingButton"
               color="teal"
               text
               @click.prevent="onSubmit"
@@ -96,23 +96,18 @@ export default {
     };
   },
   computed: {
-    ...mapState('shared', {
-      loadingAd: 'loading',
-      loadingUser: 'loadingUser',
-    }),
-
-    // get 'false' when all content is loaded
-    loading() {
-      return !(!this.loadingAd && !this.loadingUser);
+    ...mapState('shared', ['loading']),
+    loadingButton() {
+      if (this.loading) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   methods: {
-    ...mapActions('shared', {
-      setError: 'setError',
-    }),
-    ...mapActions('user', {
-      loginUser: 'loginUser',
-    }),
+    ...mapActions('shared', ['setError']),
+    ...mapActions('user', ['loginUser']),
 
     // submit user login form
     onSubmit() {

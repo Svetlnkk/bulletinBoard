@@ -94,17 +94,8 @@ export default {
     AppUserModalEdit: UserModalEdit,
   },
   computed: {
-    ...mapState('shared', {
-      loadingUser: 'loadingUser',
-    }),
-    ...mapState('user', {
-      user: 'user',
-    }),
-
-    // Get 'false' when all content is loaded
-    loading() {
-      return this.loadingUser;
-    },
+    ...mapState('shared', ['loading']),
+    ...mapState('user', ['user']),
   },
 };
 </script>

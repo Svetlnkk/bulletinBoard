@@ -95,8 +95,8 @@
         <v-row>
           <v-col class="sm-12">
             <v-btn
-              :disabled="!valid || !image || loading"
-              :loading="loading"
+              :disabled="!valid || !image || loadingButton"
+              :loading="loadingButton"
               block
               class="success"
               @click="createAd"
@@ -149,20 +149,17 @@ export default {
     };
   },
   computed: {
-    ...mapState('shared', {
-      loadingAd: 'loading',
-      loadingUser: 'loadingUser',
-    }),
-
-    // Get 'false' when all content is loaded
-    loading() {
-      return !(!this.loadingAd && !this.loadingUser);
+    ...mapState('shared', ['loading']),
+    loadingButton() {
+      if (this.loading) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   methods: {
-    ...mapActions('ads', {
-      createAdDispatch: 'createAd',
-    }),
+    ...mapActions('ads', ['createAd']),
 
     // Create new ad in Firebase and vuex
     createAd() {

@@ -132,9 +132,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('user', {
-      user: 'user',
-    }),
+    ...mapState('user', ['user']),
 
     // Check. Whether the owner is the current user
     isOwner() {
@@ -143,9 +141,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('orders', {
-      createOrder: 'createOrder',
-    }),
+    ...mapActions('orders', ['createOrder']),
 
     // cancel buy
     onCancel() {

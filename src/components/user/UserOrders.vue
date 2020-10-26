@@ -60,12 +60,8 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
   computed: {
-    ...mapState('shared', {
-      loadingUser: 'loadingUser',
-    }),
-    ...mapGetters('orders', {
-      orders: 'orders',
-    }),
+    ...mapState('shared', ['loadingUser']),
+    ...mapGetters('orders', ['orders']),
 
     // Get 'false' when all content is loaded
     loading() {
@@ -77,10 +73,7 @@ export default {
     this.fetchOrders();
   },
   methods: {
-    ...mapActions('orders', {
-      fetchOrders: 'fetchOrders',
-      markOrderDone: 'markOrderDone',
-    }),
+    ...mapActions('orders', ['fetchOrders', 'markOrderDone']),
 
     // sort user's orders
     markDone(order) {

@@ -106,18 +106,8 @@ import { mapGetters, mapState } from 'vuex';
 
 export default {
   computed: {
-    ...mapState('shared', {
-      loadingAd: 'loading',
-      loadingUser: 'loadingUser',
-    }),
-    ...mapGetters('ads', {
-      myAds: 'myAds',
-    }),
-
-    // Get 'false' when all content is loaded
-    loading() {
-      return !(!this.loadingAd && !this.loadingUser);
-    },
+    ...mapState('shared', ['loading']),
+    ...mapGetters('ads', ['myAds']),
   },
 };
 </script>
