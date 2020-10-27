@@ -17,7 +17,7 @@
       <v-container>
         <!-- user edit dialog title -->
         <v-row>
-          <v-col class="col-xs-12 py-0 teal darken-2">
+          <v-col class="col-12 py-0 teal darken-2">
             <v-card-title class="text-subtitle-1 text-sm-h5">
               <h3 class="white--text">Change user settings</h3>
             </v-card-title>
@@ -28,7 +28,7 @@
 
         <!-- user edit dialog form -->
         <v-row>
-          <v-col class="col-xs-12">
+          <v-col class="col-12">
             <v-card-text>
               <v-form ref="formEdit" v-model="valid">
                 <!-- user edit dialog name input -->
@@ -93,7 +93,7 @@
 
         <!-- user edit dialog actions -->
         <v-row>
-          <v-col class="col-xs-12">
+          <v-col class="col-12">
             <v-card-actions>
               <v-spacer></v-spacer>
 
@@ -119,25 +119,33 @@
     <v-dialog v-model="modalPassword" width="400">
       <v-card>
         <v-container>
+          <!-- dialog old (current) title -->
           <v-row>
-            <v-col class="col-xs-12">
-              <!-- dialog old (current) title -->
-              <v-card-title class="subtitle-1">
-                <h4>Enter current password</h4>
+            <v-col class="col-12 teal darken-3">
+              <v-card-title class="subtitle-1 white--text">
+                <h4>Enter <u>current</u> password</h4>
               </v-card-title>
+            </v-col>
+          </v-row>
 
-              <!-- dialog old (current) password -->
+          <!-- dialog old (current) password -->
+          <v-row>
+            <v-col class="col-12">
               <v-text-field
                 v-model="currentPassword"
-                color="teal"
+                color="teal darken-3"
                 label="********"
                 name="currentPassword"
                 single-line
                 type="password"
               >
               </v-text-field>
+            </v-col>
+          </v-row>
 
-              <!-- dialog old (current) actions -->
+          <!-- dialog old (current) actions -->
+          <v-row>
+            <v-col class="col-12">
               <v-card-actions class="px-0">
                 <v-spacer></v-spacer>
 
@@ -147,7 +155,7 @@
                 <!-- dialog old (current) save button -->
                 <v-btn
                   :loading="localLoading"
-                  class="teal darken-2 white--text"
+                  class="teal darken-3 white--text"
                   depressed
                   @click="checkPassword"
                   >Ok</v-btn

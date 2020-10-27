@@ -220,7 +220,7 @@ export default {
 
     async logoutUser({ commit }) {
       await firebase.auth().signOut();
-      commit('setUser', null);
+      commit('setCurrentUser', null);
     },
 
     async checkAuthenticate({ dispatch }, payload) {

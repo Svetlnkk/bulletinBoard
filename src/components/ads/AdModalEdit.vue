@@ -141,7 +141,7 @@ export default {
     onCancel() {
       this.editedTitle = this.ad.title;
       this.editedDescription = this.ad.description;
-      this.editedPrice = Number(this.ad.price);
+      this.editedPrice = String(this.ad.price);
       this.modal = false;
     },
 

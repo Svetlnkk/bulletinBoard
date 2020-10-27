@@ -79,8 +79,8 @@
 
             <!-- registration form submit button -->
             <v-btn
-              :disabled="!valid || loading"
-              :loading="loading"
+              :disabled="!valid || loadingButton"
+              :loading="loadingButton"
               color="teal"
               text
               @click.prevent="onSubmit"
@@ -100,13 +100,13 @@ import { mapActions, mapState } from 'vuex';
 export default {
   data() {
     return {
-      valid: false,
-      email: '',
-      password: '',
-      showPassword: false,
       confirmPassword: '',
-      showConfirmPassword: false,
+      email: '',
       name: '',
+      password: '',
+      showConfirmPassword: false,
+      showPassword: false,
+      valid: false,
       emailRules: [
         (v) => !!v || 'E-mail is required',
         (v) => /.+@.+/.test(v) || 'E-mail must be valid',
@@ -140,6 +140,14 @@ export default {
   },
   computed: {
     ...mapState('shared', ['loading']),
+
+    loadingButton() {
+      if (this.loading) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   methods: {
     ...mapActions('user', ['registerUser']),

@@ -132,12 +132,12 @@ export default {
     };
   },
   computed: {
-    ...mapState('user', ['user']),
+    ...mapState('user', ['currentUser']),
 
     // Check. Whether the owner is the current user
     isOwner() {
-      if (!this.user) return;
-      return this.ad.ownerId === this.user.id;
+      if (!this.currentUser) return;
+      return this.ad.ownerId === this.currentUser.id;
     },
   },
   methods: {
