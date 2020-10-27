@@ -135,8 +135,9 @@ export default {
 
     // Check. Whether the owner is the current user
     isOwner() {
-      if (!this.user) return;
-      return this.ad.ownerId === this.user.id;
+      if (!this.currentUser) return;
+      console.log(this.ad.ownerId, this.currentUser.id);
+      return this.ad.ownerId === this.currentUser.id;
     },
 
     // Get the owner to this ad

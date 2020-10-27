@@ -99,7 +99,7 @@
               :loading="loadingButton"
               block
               class="success"
-              @click="createAd"
+              @click="submitAd"
             >
               Create ad</v-btn
             >
@@ -162,7 +162,7 @@ export default {
     ...mapActions('ads', ['createAd']),
 
     // Create new ad in Firebase and vuex
-    createAd() {
+    submitAd() {
       if (this.$refs.form.validate() && this.image) {
         const ad = {
           title: this.title,
@@ -171,7 +171,7 @@ export default {
           image: this.image,
           price: Number(this.price),
         };
-        this.createAdDispatch(ad)
+        this.createAd(ad)
           .then(() => {
             this.$router.push('/list');
           })

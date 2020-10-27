@@ -159,8 +159,8 @@ export default {
       try {
         await firebase
           .database()
-          .ref(`/users/${state.currentUser.id}/personal`)
-          .set({ name: payload });
+          .ref(`/users/${state.currentUser.id}/personal/name`)
+          .set(payload);
 
         const currentUser = state.currentUser;
         currentUser.name = payload;
@@ -185,8 +185,8 @@ export default {
 
         await firebase
           .database()
-          .ref(`/users/${state.currentUser.id}/personal`)
-          .set({ email: payload });
+          .ref(`/users/${state.currentUser.id}/personal/email`)
+          .set(payload);
 
         commit('setCurrentUser', currentUser);
       } catch (error) {

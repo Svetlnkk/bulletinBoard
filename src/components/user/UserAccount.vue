@@ -59,7 +59,7 @@
             <v-spacer></v-spacer>
             <app-user-modal-edit
               :loading="loading"
-              :user="user"
+              :currentUser="currentUser"
             ></app-user-modal-edit>
           </v-card-actions>
         </v-card>

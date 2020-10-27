@@ -43,7 +43,7 @@ export default {
       try {
         const firebaseValue = await firebase
           .database()
-          .ref(`/users/${rootState['user'].user.id}/orders`)
+          .ref(`/users/${rootState['user'].currentUser.id}/orders`)
           .once('value');
 
         const orders = firebaseValue.val();
@@ -72,7 +72,7 @@ export default {
       try {
         await firebase
           .database()
-          .ref(`users/${rootState['user'].user.id}/orders`)
+          .ref(`users/${rootState['user'].currentUser.id}/orders`)
           .child(payload)
           .update({
             done: true,

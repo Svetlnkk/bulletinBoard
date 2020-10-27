@@ -166,14 +166,14 @@ import { mapActions } from 'vuex';
 
 export default {
   props: {
-    user: Object,
+    currentUser: Object,
   },
   data() {
     return {
       currentPassword: '',
       editedConfirmPassword: '',
-      editedEmail: this.user.email,
-      editedName: this.user.name,
+      editedEmail: this.currentUser.email,
+      editedName: this.currentUser.name,
       editedPassword: '',
       isCheckedCurrentPassword: false,
       localLoading: false,
@@ -223,8 +223,8 @@ export default {
 
     // cancel of all changes
     onCancel() {
-      this.editedName = this.user.name;
-      this.editedEmail = this.user.email;
+      this.editedName = this.currentUser.name;
+      this.editedEmail = this.currentUser.email;
       this.editedPassword = '';
       this.editedConfirmPassword = '';
       this.currentPassword = '';
@@ -254,8 +254,10 @@ export default {
     // submit of all changes
     async onSave() {
       const user = {
-        name: this.editedName === this.user.name ? null : this.editedName,
-        email: this.editedEmail === this.user.email ? null : this.editedEmail,
+        name:
+          this.editedName === this.currentUser.name ? null : this.editedName,
+        email:
+          this.editedEmail === this.currentUser.email ? null : this.editedEmail,
         password: !this.editedPassword ? null : this.editedPassword,
       };
 

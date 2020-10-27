@@ -60,7 +60,7 @@ export default {
         const AdNew = new Ad(
           payload.title,
           payload.description,
-          rootState['user'].user.id,
+          rootState['user'].currentUser.id,
           '',
           payload.promo,
           null,
@@ -164,13 +164,7 @@ export default {
       }
     },
 
-    async updateAd({ commit, dispatch }, {
-      title,
-      description,
-      id,
-      price
-      }) 
-      {
+    async updateAd({ commit, dispatch }, { title, description, id, price }) {
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
       try {
@@ -235,7 +229,7 @@ export default {
     },
     myAds(state, getters, rootState) {
       return state.ads.filter((ad) => {
-        return ad.ownerId === rootState['user'].user.id;
+        return ad.ownerId === rootState['user'].currentUser.id;
       });
     },
     adById(state) {

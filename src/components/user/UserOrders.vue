@@ -2,7 +2,7 @@
   <v-container>
     <!-- in loading progress -->
     <v-row v-if="loading">
-      <v-col class="col-sm-8 col-lg-6 mx-auto pt-5">
+      <v-col class="col-xs-12 text-center pt-5">
         <v-progress-circular :size="50" :width="4" color="teal" indeterminate>
         </v-progress-circular>
       </v-col>
@@ -60,13 +60,8 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
   computed: {
-    ...mapState('shared', ['loadingUser']),
+    ...mapState('shared', ['loading']),
     ...mapGetters('orders', ['orders']),
-
-    // Get 'false' when all content is loaded
-    loading() {
-      return !(!this.loadingAd && !this.loadingUser);
-    },
   },
   created() {
     // reload all orders of this user
