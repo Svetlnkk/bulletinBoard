@@ -1,5 +1,10 @@
 <template>
-  <v-dialog v-model="modal" width="400">
+  <v-dialog
+    v-model="modal"
+    width="400"
+    @click:outside="onCancel"
+    @keydown="onCancelKeydown"
+  >
     <!-- user edit dialog activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn
@@ -114,27 +119,39 @@
         </v-row>
       </v-container>
     </v-card>
+
+    <app-user-modal-confirm-password
+      :modalCurrentPassword="modalCurrentPassword"
+      :isCheckedCurrentPassword="isCheckedCurrentPassword"
+      @close="modalCurrentPassword = false"
+      @passwordAccepted="
+        isCheckedCurrentPassword = true;
+        onSave;
+      "
+    ></app-user-modal-confirm-password>
   </v-dialog>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import UserModalConfirmPassword from './UserModalConfirmPassword';
 
 export default {
+  components: {
+    appUserModalConfirmPassword: UserModalConfirmPassword,
+  },
   props: {
     currentUser: Object,
   },
   data() {
     return {
-      currentPassword: '',
       editedConfirmPassword: '',
       editedEmail: this.currentUser.email,
       editedName: this.currentUser.name,
       editedPassword: '',
       isCheckedCurrentPassword: false,
-      localLoading: false,
       modal: false,
-      modalPassword: false,
+      modalCurrentPassword: false,
       valid: false,
       emailEditRules: [
         (v) => !!v || 'E-mail is required',
@@ -175,7 +192,15 @@ export default {
     };
   },
   methods: {
-    ...mapActions('user', ['checkAuthenticate', 'updateUser']),
+    ...mapActions('user', ['', 'updateUser']),
+
+    onCancelKeydown(event) {
+      if (event.code === 'Escape') {
+        this.onCancel();
+      } else {
+        return;
+      }
+    },
 
     // cancel of all changes
     onCancel() {
@@ -183,28 +208,8 @@ export default {
       this.editedEmail = this.currentUser.email;
       this.editedPassword = '';
       this.editedConfirmPassword = '';
-      this.currentPassword = '';
       this.modal = false;
-    },
-
-    // check old password
-    async checkPassword() {
-      this.localLoading = true;
-
-      try {
-        await this.checkAuthenticate(this.currentPassword);
-        this.localLoading = false;
-        this.modalPassword = false;
-        this.currentPassword = '';
-        this.isCheckedCurrentPassword = true;
-
-        this.onSave();
-      } catch (error) {
-        this.currentPassword = '';
-        this.isCheckedCurrentPassword = false;
-        this.localLoading = false;
-        throw error;
-      }
+      this.modalCurrentPassword = false;
     },
 
     // submit of all changes
@@ -227,7 +232,7 @@ export default {
           this.modal = false;
           return;
         } else if (!this.isCheckedCurrentPassword) {
-          this.modalPassword = true;
+          this.modalCurrentPassword = true;
           return;
         } else {
           this.updateUser(user);

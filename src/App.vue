@@ -70,7 +70,7 @@
       >
         {{ error }}
         <template v-slot:action>
-          <v-btn class="white--text" text @click.native="closeError">
+          <v-btn class="white--text" text @click.native="clearError">
             Close
           </v-btn>
         </template>
@@ -89,12 +89,8 @@ export default {
     };
   },
   computed: {
-    ...mapState('shared', {
-      error: 'error',
-    }),
-    ...mapGetters('user', {
-      isUserLoggedIn: 'isUserLoggedIn',
-    }),
+    ...mapState('shared', ['error']),
+    ...mapGetters('user', ['isUserLoggedIn']),
 
     // get links in main menu
     links() {
@@ -132,11 +128,6 @@ export default {
     ...mapActions('user', {
       logoutUser: 'logoutUser',
     }),
-
-    // close this error
-    closeError() {
-      this.clearError;
-    },
 
     // logut the current user
     onLogout() {

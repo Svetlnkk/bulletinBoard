@@ -1,6 +1,6 @@
 <template>
   <!-- dialog old (current) password -->
-  <v-dialog v-model="modalPassword" width="400">
+  <v-dialog v-model="modalCurrentPassword" width="400">
     <v-card>
       <v-container>
         <!-- dialog old (current) title -->
@@ -33,8 +33,10 @@
             <v-card-actions class="px-0">
               <v-spacer></v-spacer>
 
-              <!-- dialog old (current) cancel button -->
-              <v-btn text @click="modalPassword = false">Cancel</v-btn>
+              <!-- dialog old (current) cancel button 
+                  $emit('close') - created event 'close' for parent
+              -->
+              <v-btn text @click="$emit('close')">Cancel</v-btn>
 
               <!-- dialog old (current) save button -->
               <v-btn
@@ -51,6 +53,41 @@
     </v-card>
   </v-dialog>
 </template>
+
 <script>
-export default {};
+import { mapActions } from 'vuex';
+export default {
+  props: {
+    modalCurrentPassword: Boolean,
+  },
+  data() {
+    return {
+      currentPassword: '',
+      localLoading: false,
+    };
+  },
+  methods: {
+    ...mapActions('user', ['checkAuthenticate']),
+    ...mapActions('shared', ['setError']),
+
+    // check old password
+    async checkPassword() {
+      this.localLoading = true;
+
+      try {
+        await this.checkAuthenticate(this.currentPassword);
+        this.localLoading = false;
+        this.currentPassword = '';
+        this.$emit('close');
+
+        this.$emit('passwordAccepted');
+      } catch (error) {
+        this.currentPassword = '';
+        this.localLoading = false;
+        this.setError(error.message);
+        throw error;
+      }
+    },
+  },
+};
 </script>

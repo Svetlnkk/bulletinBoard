@@ -2,13 +2,14 @@ export default {
   namespaced: true,
   state: {
     loading: 0,
+    error: null,
   },
   mutations: {
     startLoading(state) {
-      state.loading++
+      state.loading++;
     },
     finishLoading(state) {
-      state.loading--
+      state.loading--;
     },
     setError(state, payload) {
       state.error = payload;
@@ -18,17 +19,17 @@ export default {
     },
   },
   actions: {
-    startLoading({commit}) {
-        commit('startLoading');
+    startLoading({ commit }) {
+      commit('startLoading');
     },
-    finishLoading({commit}) {
-        commit('finishLoading');
+    finishLoading({ commit }) {
+      commit('finishLoading');
     },
-    setError({commit}, payload) {
-        commit('setError', payload);
+    setError({ commit }, payload) {
+      commit('setError', payload);
     },
-    clearError({commit}) {
-        commit('clearError');
+    clearError({ commit }) {
+      commit('clearError');
     },
   },
 };
