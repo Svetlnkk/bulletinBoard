@@ -1,14 +1,14 @@
 <template>
   <v-container>
-    <v-row v-if="!loading && partAds.length !== 0">
+    <v-row v-if="!loading && myAds">
       <v-col class="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-6 mx-auto">
         <h1 class="text--secondary mb-3 ml-3">
-          {{ `Ad List (${myAds.length + partAds.length})` }}
+          {{ `Ad List (${myAds.length})` }}
         </h1>
         <v-row>
           <!-- ad list -->
           <v-col
-            v-for="ad of partAds"
+            v-for="ad of myAds.slice(0, this.shownAds)"
             :key="ad.id"
             class="ad-list__item col-11 d-flex flex-column flex-sm-row mb-5 mx-auto py-0"
           >
@@ -83,14 +83,17 @@
             </v-row>
           </v-col>
 
-          <v-btn
-            v-if="myAds.length"
-            block
-            @click="getAds(4)"
-            class="teal white--text"
-          >
-            Load more {{ myAds.length }} Ads...
-          </v-btn>
+          <!-- button to show next ads -->
+          <v-row v-if="shownAds !== myAds.length">
+            <v-col
+              class="col-11 d-flex flex-column flex-sm-row mb-5 mx-auto py-0 col"
+            >
+              <v-btn block class="green white--text " @click="increaseShownAds">
+                Load more {{ myAds.length - shownAds }}
+                {{ myAds.length - shownAds === 1 ? 'ad...' : 'ads' }}
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-row>
       </v-col>
     </v-row>
@@ -118,7 +121,7 @@ import { mapGetters, mapState } from 'vuex';
 export default {
   data() {
     return {
-      partAds: [],
+      shownAds: 5,
     };
   },
   computed: {
@@ -126,14 +129,13 @@ export default {
     ...mapGetters('ads', ['myAds']),
   },
   methods: {
-    getAds(num) {
-      for (let i = 0; i <= num; i++) {
-        if (this.myAds.length) this.partAds.push(this.myAds.pop());
+    increaseShownAds() {
+      if (this.shownAds + 5 > this.myAds.length) {
+        this.shownAds = this.myAds.length;
+      } else {
+        this.shownAds += 5;
       }
     },
-  },
-  created() {
-    this.getAds(4);
   },
 };
 </script>
