@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="modal" width="400">
+  <v-dialog v-model="modal" max-width="400">
     <!-- activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" class="red white--text mr-3" depressed v-on="on">
@@ -55,21 +55,24 @@ export default {
   },
   methods: {
     ...mapActions('ads', ['deleteAd']),
-
+    ...mapActions('shared', ['setError']),
     //  cancel to deleting ad
     onCancel() {
       this.modal = false;
     },
 
     // deleting ad
-    onDelete() {
-      this.deleteAd({
-        id: this.ad.id,
-        imageSrc: this.ad.imageSrc,
-      }).then(() => {
+    async onDelete() {
+      try {
+        this.deleteAd({
+          adId: this.ad.id,
+          imageSrc: this.ad.imageSrc,
+        });
+      } catch (error) {
         this.modal = false;
-        this.$router.push('/list');
-      });
+        this.setError(error.message);
+        throw error;
+      }
     },
   },
 };

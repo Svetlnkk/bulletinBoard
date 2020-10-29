@@ -56,7 +56,13 @@
 
           <!-- actions -->
           <v-card-actions>
+            <app-user-modal-delete
+              :loading="loading"
+              :currentUser="currentUser"
+            ></app-user-modal-delete>
+
             <v-spacer></v-spacer>
+
             <app-user-modal-edit
               :loading="loading"
               :currentUser="currentUser"
@@ -87,10 +93,12 @@
 
 <script>
 import { mapState } from 'vuex';
+import UserModalDelete from './UserModalDelete';
 import UserModalEdit from './UserModalEdit';
 
 export default {
   components: {
+    AppUserModalDelete: UserModalDelete,
     AppUserModalEdit: UserModalEdit,
   },
   computed: {

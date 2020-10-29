@@ -1,12 +1,14 @@
 <template>
   <v-container>
-    <v-row v-if="!loading && myAds.length !== 0">
+    <v-row v-if="!loading && partAds.length !== 0">
       <v-col class="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-6 mx-auto">
-        <h1 class="text--secondary mb-3 ml-3">Ad List</h1>
+        <h1 class="text--secondary mb-3 ml-3">
+          {{ `Ad List (${myAds.length + partAds.length})` }}
+        </h1>
         <v-row>
           <!-- ad list -->
           <v-col
-            v-for="ad in myAds"
+            v-for="ad of partAds"
             :key="ad.id"
             class="ad-list__item col-11 d-flex flex-column flex-sm-row mb-5 mx-auto py-0"
           >
@@ -80,6 +82,15 @@
               </v-col>
             </v-row>
           </v-col>
+
+          <v-btn
+            v-if="myAds.length"
+            block
+            @click="getAds(4)"
+            class="teal white--text"
+          >
+            Load more {{ myAds.length }} Ads...
+          </v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -105,9 +116,24 @@
 import { mapGetters, mapState } from 'vuex';
 
 export default {
+  data() {
+    return {
+      partAds: [],
+    };
+  },
   computed: {
     ...mapState('shared', ['loading']),
     ...mapGetters('ads', ['myAds']),
+  },
+  methods: {
+    getAds(num) {
+      for (let i = 0; i <= num; i++) {
+        if (this.myAds.length) this.partAds.push(this.myAds.pop());
+      }
+    },
+  },
+  created() {
+    this.getAds(4);
   },
 };
 </script>
@@ -132,6 +158,7 @@ export default {
   align-items: center;
   display: flex;
   justify-content: center;
+  min-width: 200px;
 
   overflow: hidden;
 
@@ -150,8 +177,9 @@ export default {
   height: 200px;
   width: 200px;
 
+  background-position: center center;
+  background-repeat: no-repeat;
   background-size: cover;
-  background: no-repeat center;
 
   filter: blur(14px);
   opacity: 0.4;

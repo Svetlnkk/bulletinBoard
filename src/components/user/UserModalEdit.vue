@@ -124,10 +124,7 @@
       :modalCurrentPassword="modalCurrentPassword"
       :isCheckedCurrentPassword="isCheckedCurrentPassword"
       @close="modalCurrentPassword = false"
-      @passwordAccepted="
-        isCheckedCurrentPassword = true;
-        onSave;
-      "
+      @passwordAccepted="passwordAccepted"
     ></app-user-modal-confirm-password>
   </v-dialog>
 </template>
@@ -192,7 +189,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions('user', ['', 'updateUser']),
+    ...mapActions('user', ['updateUser']),
 
     onCancelKeydown(event) {
       if (event.code === 'Escape') {
@@ -227,15 +224,18 @@ export default {
         (user.name || user.email || user.password)
       ) {
         if (user.name && !user.email && !user.password) {
-          this.updateUser(user);
+          await this.updateUser(user);
+
           this.isCheckedCurrentPassword = false;
           this.modal = false;
+
           return;
         } else if (!this.isCheckedCurrentPassword) {
           this.modalCurrentPassword = true;
+
           return;
         } else {
-          this.updateUser(user);
+          await this.updateUser(user);
 
           this.isCheckedCurrentPassword = false;
           this.modal = false;
@@ -243,6 +243,10 @@ export default {
       } else {
         this.modal = false;
       }
+    },
+    passwordAccepted() {
+      this.isCheckedCurrentPassword = true;
+      this.onSave();
     },
   },
 };

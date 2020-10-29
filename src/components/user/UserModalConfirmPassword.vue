@@ -1,6 +1,6 @@
 <template>
   <!-- dialog old (current) password -->
-  <v-dialog v-model="modalCurrentPassword" width="400">
+  <v-dialog v-model="modalCurrentPassword" max-width="400">
     <v-card>
       <v-container>
         <!-- dialog old (current) title -->

@@ -90,6 +90,8 @@ export default {
             imageSrc,
           });
 
+        // add current date
+
         const date = new Date();
 
         const hours =
@@ -191,11 +193,11 @@ export default {
       }
     },
 
-    async deleteAd({ commit, dispatch }, { id, imageSrc }) {
+    async deleteAd({ commit, dispatch }, { adId, imageSrc }) {
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
 
-      const storage = firebase.storage();
+      const storage = await firebase.storage();
       const storageRef = storage.ref();
 
       const imageFullPath = storage.refFromURL(imageSrc).fullPath;
@@ -203,15 +205,17 @@ export default {
       const imageReference = await storageRef.child(imageFullPath);
 
       try {
+        //delete image
         await imageReference.delete();
 
+        //delete ad in database
         await firebase
           .database()
           .ref('ads')
-          .child(id)
+          .child(adId)
           .remove();
 
-        commit('deleteAd', id);
+        commit('deleteAd', adId);
 
         dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {

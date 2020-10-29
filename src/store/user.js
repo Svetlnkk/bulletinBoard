@@ -239,6 +239,34 @@ export default {
         throw error;
       }
     },
+
+    async deleteCurrentUser({ dispatch, rootGetters }) {
+      dispatch('shared/clearError', null, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
+
+      let ads = rootGetters['ads/myAds'];
+
+      try {
+        //delete ads
+        for (const ad of ads) {
+          let imageSrc = ad.imageSrc;
+          let adId = ad.id;
+
+          dispatch('ads/deleteAd', { adId, imageSrc }, { root: true });
+        }
+
+        //delete user
+        // await firebase.auth().currentUser.delete();
+
+        // commit('setCurrentUser', null);
+
+        dispatch('shared/finishLoading', null, { root: true });
+      } catch (error) {
+        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/setError', error.message, { root: true });
+        throw error;
+      }
+    },
   },
 
   getters: {
