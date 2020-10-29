@@ -68,6 +68,7 @@ export default {
           adId: this.ad.id,
           imageSrc: this.ad.imageSrc,
         });
+        this.$router.push('/list');
       } catch (error) {
         this.modal = false;
         this.setError(error.message);

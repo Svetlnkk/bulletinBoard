@@ -232,7 +232,7 @@ export default {
       });
     },
     myAds(state, getters, rootState) {
-      return state.ads.filter((ad) => {
+      return state.ads.reverse().filter((ad) => {
         return ad.ownerId === rootState['user'].currentUser.id;
       });
     },
