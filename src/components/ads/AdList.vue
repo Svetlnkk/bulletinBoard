@@ -2,7 +2,7 @@
   <v-container>
     <v-row v-if="!loading && myAds">
       <v-col class="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-6 mx-auto">
-        <h1 class="text--secondary mb-3 ml-3">
+        <h1 class="text--secondary text-h5 font-weight-medium mb-5 ml-3">
           {{ `Ad List (${myAds.length})` }}
         </h1>
         <v-row>
@@ -86,7 +86,7 @@
           <!-- button to show next ads -->
           <v-row v-if="shownAds !== myAds.length && !(myAds.length <= 5)">
             <v-col
-              class="col-11 d-flex flex-column flex-sm-row mb-5 mx-auto py-0 col"
+              class="col-11 d-flex flex-column flex-sm-row my-4 mx-auto py-0"
             >
               <v-btn block class="green white--text " @click="increaseShownAds">
                 Load more {{ myAds.length - shownAds }}

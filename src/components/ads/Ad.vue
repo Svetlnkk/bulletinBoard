@@ -8,7 +8,9 @@
         >
           <!-- ad title -->
           <v-col class="pa-0 mb-1">
-            <h1 class="ad-main__title text--primary font-weight-medium">
+            <h1
+              class="ad-main__title text--primary text-h5 text-sm-h4 font-weight-medium"
+            >
               {{ ad.title }}
             </h1>
           </v-col>
@@ -60,7 +62,11 @@
 
           <!-- ad description -->
           <v-col>
-            <p v-for="text in ad.description.split('\n')" :key="text.index">
+            <p
+              v-for="text in ad.description.split('\n')"
+              :key="text.index"
+              class="ad-main__description text-body-2 text-sm-body-1"
+            >
               {{ text }}
             </p>
           </v-col>
@@ -221,6 +227,11 @@ export default {
 
 .ad-main__title {
   line-height: 1.4;
+}
+
+.ad-main__description,
+.ad-main__title {
+  word-break: break-word;
 }
 
 .ad-main__icon {
