@@ -240,7 +240,7 @@ export default {
       }
     },
 
-    async deleteCurrentUser({ dispatch, rootGetters }) {
+    async deleteCurrentUser({ commit, dispatch, rootGetters, state }) {
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
 
@@ -256,10 +256,20 @@ export default {
           }
         }
 
-        //delete user
-        // await firebase.auth().currentUser.delete();
+        //delete user from firebase
+        await firebase.auth().currentUser.delete();
 
-        // commit('setCurrentUser', null);
+        //delete user from database
+        const currentUserId = state.currentUser.id;
+
+        await firebase
+          .database()
+          .ref('users')
+          .child(currentUserId)
+          .remove();
+
+        //delete user from vuex
+        commit('setCurrentUser', null);
 
         dispatch('shared/finishLoading', null, { root: true });
       } catch (error) {

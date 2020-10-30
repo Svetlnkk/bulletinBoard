@@ -5,7 +5,7 @@
       <v-container>
         <!-- dialog old (current) title -->
         <v-row>
-          <v-col class="col-12 teal darken-3">
+          <v-col class="col-12 red darken-3">
             <v-card-title class="subtitle-1 white--text">
               <h4>Enter <u>current</u> password</h4>
             </v-card-title>
@@ -17,7 +17,7 @@
           <v-col class="col-12">
             <v-text-field
               v-model="currentPassword"
-              color="teal darken-3"
+              color="red darken-3"
               label="********"
               name="currentPassword"
               single-line
@@ -41,7 +41,7 @@
               <!-- dialog old (current) save button -->
               <v-btn
                 :loading="localLoading"
-                class="teal darken-3 white--text"
+                class="red darken-3 white--text"
                 depressed
                 @click="checkPassword"
                 >Ok</v-btn
@@ -68,14 +68,17 @@ export default {
   },
   methods: {
     ...mapActions('user', ['checkAuthenticate']),
-    ...mapActions('shared', ['setError']),
+    ...mapActions('shared', ['clearError', 'setError']),
 
     // check old password
     async checkPassword() {
       this.localLoading = true;
 
       try {
+        this.clearError();
+
         await this.checkAuthenticate(this.currentPassword);
+
         this.localLoading = false;
         this.currentPassword = '';
         this.$emit('close');

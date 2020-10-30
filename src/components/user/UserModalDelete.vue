@@ -1,5 +1,10 @@
 <template>
-  <v-dialog v-model="modal" max-width="400">
+  <v-dialog
+    v-model="modal"
+    max-width="400"
+    @keydown="onCancelKeydown"
+    @click:outside="onCancel"
+  >
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" class="red--text mr-3" text v-on="on">
         Delete Account
@@ -28,7 +33,11 @@
               </v-btn>
 
               <!-- delete "ok" button -->
-              <v-btn class="red white--text" depressed @click="onDelete">
+              <v-btn
+                class="red white--text"
+                depressed
+                @click="onDeleteCurrentUser"
+              >
                 Ok
               </v-btn>
             </v-card-actions>
@@ -44,31 +53,52 @@
         </v-row>
       </v-container>
     </v-card>
-    <app-user-modal-confirm-password></app-user-modal-confirm-password>
+    <app-user-modal-current-password></app-user-modal-current-password>
   </v-dialog>
 </template>
 <script>
 import { mapActions } from 'vuex';
-import UserModalConfirmPassword from './UserModalConfirmPassword';
+import UserModalCurrentPassword from './UserModalCurrentPassword';
 
 export default {
   components: {
-    AppUserModalConfirmPassword: UserModalConfirmPassword,
+    AppUserModalCurrentPassword: UserModalCurrentPassword,
   },
   data() {
     return {
       modal: false,
+      modalCurrentPassword: false,
+      isCheckedCurrentPassword: false,
     };
   },
   methods: {
     ...mapActions('user', ['deleteCurrentUser']),
 
-    async onDelete() {
-      await this.deleteCurrentUser();
-      this.modal = false;
+    async onDeleteCurrentUser() {
+      if (!this.isCheckedCurrentPassword) {
+        this.modalCurrentPassword = true;
+        return;
+      } else {
+        await this.deleteCurrentUser();
+        this.modalCurrentPassword = false;
+      }
     },
     onCancel() {
       this.modal = false;
+      this.modalCurrentPassword = false;
+    },
+    onCancelKeydown(event) {
+      if (event.code === 'Escape') {
+        this.onCancel();
+      } else {
+        return;
+      }
+    },
+    passwordAccepted() {
+      this.isCheckedCurrentPassword = true;
+      this.onDeleteCurrentUser();
+      this.modal = false;
+      this.$router.push('/');
     },
   },
 };

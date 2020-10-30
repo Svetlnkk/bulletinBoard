@@ -122,8 +122,8 @@
 
     <!-- сonfirm the change with your current password -->
     <app-user-modal-current-password
-      :modalCurrentPassword="modalCurrentPassword"
       :isCheckedCurrentPassword="isCheckedCurrentPassword"
+      :modalCurrentPassword="modalCurrentPassword"
       @close="modalCurrentPassword = false"
       @passwordAccepted="passwordAccepted"
     ></app-user-modal-current-password>
@@ -239,15 +239,15 @@ export default {
           await this.updateUser(user);
 
           this.isCheckedCurrentPassword = false;
-          this.modal = false;
         }
       } else {
         this.modal = false;
       }
     },
-    passwordAccepted() {
+    async passwordAccepted() {
       this.isCheckedCurrentPassword = true;
-      this.onSave();
+      await this.onSave();
+      this.modal = false;
     },
   },
 };
