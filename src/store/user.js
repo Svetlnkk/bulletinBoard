@@ -248,11 +248,12 @@ export default {
 
       try {
         //delete ads
-        for (const ad of ads) {
-          let imageSrc = ad.imageSrc;
-          let adId = ad.id;
-
-          dispatch('ads/deleteAd', { adId, imageSrc }, { root: true });
+        if (ads) {
+          for (const ad of ads) {
+            let imageSrc = ad.imageSrc;
+            let adId = ad.id;
+            dispatch('ads/deleteAd', { adId, imageSrc }, { root: true });
+          }
         }
 
         //delete user

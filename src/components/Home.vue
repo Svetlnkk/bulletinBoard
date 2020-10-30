@@ -84,7 +84,7 @@
       </v-row>
 
       <!-- button to show next ads -->
-      <v-row v-if="shownAds !== sortAds.length && !(sortAds.length <= 10)">
+      <v-row v-if="shownAds !== sortAds.length && !(sortAds.length <= 12)">
         <v-col
           class="col-12 d-flex flex-column flex-sm-row my-4 mx-auto py-0 px-xl-6 px-lg-3 px-md-6"
         >
@@ -115,7 +115,7 @@ import { mapGetters, mapState } from 'vuex';
 export default {
   data() {
     return {
-      shownAds: 10,
+      shownAds: 12,
     };
   },
   computed: {
@@ -132,10 +132,10 @@ export default {
   },
   methods: {
     increaseShownAds() {
-      if (this.shownAds + 10 > this.sortAds.length) {
+      if (this.shownAds + 12 > this.sortAds.length) {
         this.shownAds = this.sortAds.length;
       } else {
-        this.shownAds += 10;
+        this.shownAds += 12;
       }
     },
   },

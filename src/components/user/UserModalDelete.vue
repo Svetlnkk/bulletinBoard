@@ -32,6 +32,14 @@
                 Ok
               </v-btn>
             </v-card-actions>
+
+            <!-- сonfirm the change with your current password -->
+            <app-user-modal-current-password
+              :modalCurrentPassword="modalCurrentPassword"
+              :isCheckedCurrentPassword="isCheckedCurrentPassword"
+              @close="modalCurrentPassword = false"
+              @passwordAccepted="passwordAccepted"
+            ></app-user-modal-current-password>
           </v-col>
         </v-row>
       </v-container>
@@ -55,10 +63,13 @@ export default {
   methods: {
     ...mapActions('user', ['deleteCurrentUser']),
 
-    onDelete() {
-      this.deleteCurrentUser();
+    async onDelete() {
+      await this.deleteCurrentUser();
+      this.modal = false;
     },
-    onCancel() {},
+    onCancel() {
+      this.modal = false;
+    },
   },
 };
 </script>

@@ -120,22 +120,23 @@
       </v-container>
     </v-card>
 
-    <app-user-modal-confirm-password
+    <!-- сonfirm the change with your current password -->
+    <app-user-modal-current-password
       :modalCurrentPassword="modalCurrentPassword"
       :isCheckedCurrentPassword="isCheckedCurrentPassword"
       @close="modalCurrentPassword = false"
       @passwordAccepted="passwordAccepted"
-    ></app-user-modal-confirm-password>
+    ></app-user-modal-current-password>
   </v-dialog>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import UserModalConfirmPassword from './UserModalConfirmPassword';
+import UserModalCurrentPassword from './UserModalCurrentPassword';
 
 export default {
   components: {
-    appUserModalConfirmPassword: UserModalConfirmPassword,
+    appUserModalCurrentPassword: UserModalCurrentPassword,
   },
   props: {
     currentUser: Object,
