@@ -197,17 +197,18 @@ export default {
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
 
-      const storage = await firebase.storage();
-      const storageRef = storage.ref();
-
-      const imageFullPath = storage.refFromURL(imageSrc).fullPath;
-
-      const imageReference = await storageRef.child(imageFullPath);
-
       try {
         //delete image
-        await imageReference.delete();
+        if (imageSrc) {
+          const storage = await firebase.storage();
+          const storageRef = storage.ref();
 
+          const imageFullPath = storage.refFromURL(imageSrc).fullPath;
+
+          const imageReference = await storageRef.child(imageFullPath);
+
+          await imageReference.delete();
+        }
         //delete ad in database
         await firebase
           .database()

@@ -84,7 +84,7 @@
           </v-col>
 
           <!-- button to show next ads -->
-          <v-row v-if="shownAds !== myAds.length">
+          <v-row v-if="shownAds !== myAds.length && !(myAds.length <= 5)">
             <v-col
               class="col-11 d-flex flex-column flex-sm-row mb-5 mx-auto py-0 col"
             >
