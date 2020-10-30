@@ -63,7 +63,7 @@
     <template v-if="error">
       <v-snackbar
         color="error"
-        :timeout="10000"
+        :timeout="20000"
         @click.native="closeError"
         :value="true"
         class="snackbar__mobile"

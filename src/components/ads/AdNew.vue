@@ -160,6 +160,7 @@ export default {
   },
   methods: {
     ...mapActions('ads', ['createAd']),
+    ...mapActions('shared', ['setError', 'clearError']),
 
     // Create new ad in Firebase and vuex
     submitAd() {
@@ -185,8 +186,17 @@ export default {
     },
 
     // event of file changed (upload image)
-    onFileChange(event) {
+    async onFileChange(event) {
       const file = event.target.files[0];
+
+      await this.clearError();
+
+      if (file.size > 1024 * 1024) {
+        await this.setError(
+          `Max upload image is 1 Mb. Your image is ${file.size / 1000} Kb`
+        );
+        return;
+      }
       const reader = new FileReader();
       reader.onload = () => {
         this.imageSrc = reader.result;

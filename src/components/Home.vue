@@ -14,7 +14,7 @@
             interval="5000"
           >
             <v-carousel-item
-              v-for="ad in promoAds"
+              v-for="ad in sortPromoAds"
               :key="ad.id"
               :src="ad.imageSrc"
               :to="'/ad/' + ad.id"
@@ -49,7 +49,7 @@
       <v-row>
         <!-- ad list of home page -->
         <v-col
-          v-for="ad in ads"
+          v-for="ad in sortAds"
           :key="ad.id"
           class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"
         >
@@ -106,6 +106,13 @@ export default {
     ...mapState('shared', ['loading']),
     ...mapState('ads', ['ads']),
     ...mapGetters('ads', ['promoAds']),
+
+    sortAds() {
+      return [...this.ads].reverse();
+    },
+    sortPromoAds() {
+      return [...this.promoAds].reverse();
+    },
   },
 };
 </script>

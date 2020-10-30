@@ -8,7 +8,7 @@
         <v-row>
           <!-- ad list -->
           <v-col
-            v-for="ad of myAds.slice(0, this.shownAds)"
+            v-for="ad of sortMyAds.slice(0, this.shownAds)"
             :key="ad.id"
             class="ad-list__item col-11 d-flex flex-column flex-sm-row mb-5 mx-auto py-0"
           >
@@ -127,6 +127,10 @@ export default {
   computed: {
     ...mapState('shared', ['loading']),
     ...mapGetters('ads', ['myAds']),
+
+    sortMyAds() {
+      return [...this.myAds].reverse();
+    },
   },
   methods: {
     increaseShownAds() {

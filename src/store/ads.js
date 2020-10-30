@@ -56,6 +56,8 @@ export default {
 
       const image = payload.image;
 
+      if (!image) return;
+
       try {
         const AdNew = new Ad(
           payload.title,
@@ -233,7 +235,7 @@ export default {
       });
     },
     myAds(state, getters, rootState) {
-      return state.ads.reverse().filter((ad) => {
+      return state.ads.filter((ad) => {
         return ad.ownerId === rootState['user'].currentUser.id;
       });
     },
