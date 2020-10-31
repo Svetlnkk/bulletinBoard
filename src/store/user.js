@@ -1,12 +1,5 @@
 import * as firebase from 'firebase';
-
-class User {
-  constructor({ id, email, name = '' }) {
-    this.email = email;
-    this.id = id;
-    this.name = name;
-  }
-}
+import { User } from './essentials';
 
 export default {
   namespaced: true,
