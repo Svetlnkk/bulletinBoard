@@ -84,7 +84,7 @@
               v-if="imageSrc"
               :src="imageSrc"
               alt=""
-              class="d-block"
+              class="ad-new__image d-block"
               contain
               max-height="350"
             ></v-img>
@@ -207,3 +207,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.ad-new__image {
+  border-radius: 4px;
+}
+</style>

@@ -50,7 +50,13 @@ export default {
     },
   },
   actions: {
-    async createAd({ commit, dispatch, rootState }, payload) {
+    async createAd({ commit, dispatch, getters, rootState }, payload) {
+      if (getters.myAds >= 10) {
+        dispatch('shared/clearError', null, { root: true });
+        dispatch('shared/setError', 'You most have no more than 10 ads', {
+          root: true,
+        });
+      }
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
 
