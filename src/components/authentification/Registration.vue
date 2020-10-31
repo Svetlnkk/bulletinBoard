@@ -79,8 +79,8 @@
 
             <!-- registration form submit button -->
             <v-btn
-              :disabled="!valid || loadingButton"
-              :loading="loadingButton"
+              :disabled="!valid || loadingBoolean"
+              :loading="loadingBoolean"
               color="teal"
               text
               @click.prevent="onSubmit"
@@ -107,10 +107,14 @@ export default {
       showConfirmPassword: false,
       showPassword: false,
       valid: false,
+
+      // rules on email validation
       emailRules: [
         (v) => !!v || 'E-mail is required',
         (v) => /.+@.+/.test(v) || 'E-mail must be valid',
       ],
+
+      // rules on password validation
       passwordRules: [
         (v) => !!v || 'Password is required',
         (v) =>
@@ -126,10 +130,14 @@ export default {
           !/\W/.test(v) ||
           'You can not enter anything other than Latin letters and digits',
       ],
+
+      // rules on confirm password validation
       confirmPasswordRules: [
         (v) => !!v || 'Password is required',
         (v) => v === this.password || 'Password must match',
       ],
+
+      // rules on name validation
       nameRules: [
         (v) => !!v || 'Name is required',
         (v) =>
@@ -141,7 +149,8 @@ export default {
   computed: {
     ...mapState('shared', ['loading']),
 
-    loadingButton() {
+    // returned boolean from 'loading'
+    loadingBoolean() {
       if (this.loading) {
         return true;
       } else {

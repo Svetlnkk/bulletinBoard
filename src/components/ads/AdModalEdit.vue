@@ -115,6 +115,8 @@ export default {
       editedTitle: this.ad.title,
       modal: false,
       valid: false,
+
+      // rules on title validation
       editedTitleRules: [
         (v) => !!v || 'Title is required',
         (v) =>
@@ -124,6 +126,8 @@ export default {
           (v && v.length <= 60) ||
           'Title must be equal or less than 60 characters',
       ],
+
+      // rules on description validation
       editedDescriptionRules: [
         (v) => !!v || 'Description is required',
         (v) =>
@@ -133,6 +137,8 @@ export default {
           (v && v.length <= 1000) ||
           'Description must be equal or less than 1000 characters',
       ],
+
+      // rules on price validation
       editedPriceRules: [
         (v) =>
           (v && v.length <= 20) ||

@@ -61,10 +61,6 @@ export default {
   methods: {
     ...mapActions('ads', ['deleteAd']),
     ...mapActions('shared', ['setError']),
-    //  cancel to deleting ad
-    onCancel() {
-      this.modal = false;
-    },
 
     // deleting ad
     async onDelete() {
@@ -79,6 +75,11 @@ export default {
         this.setError(error.message);
         throw error;
       }
+    },
+
+    // cancel to deleting ad
+    onCancel() {
+      this.modal = false;
     },
   },
 };

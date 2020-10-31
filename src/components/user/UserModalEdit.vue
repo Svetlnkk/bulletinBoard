@@ -152,10 +152,14 @@ export default {
       modal: false,
       modalCurrentPassword: false,
       valid: false,
+
+      // rules on edited email validation
       emailEditRules: [
         (v) => !!v || 'E-mail is required',
         (v) => /.+@.+/.test(v) || 'E-mail must be valid',
       ],
+
+      // rules on edited password validation
       passwordEditRules: [
         (v) =>
           (v && v.length >= 6) ||
@@ -176,9 +180,13 @@ export default {
           v.length === 0 ||
           'You can not enter anything other than Latin letters and digits',
       ],
+
+      // rules on confirm edited password validation
       confirmEditPasswordRules: [
         (v) => v === this.editedPassword || 'Password must match',
       ],
+
+      // rules on edited name validation
       nameEditRules: [
         (v) => !!v || 'Name is required',
         (v) =>
@@ -192,16 +200,6 @@ export default {
   },
   methods: {
     ...mapActions('user', ['updateUser']),
-
-    // cancel of all changes
-    onCancel() {
-      this.editedName = this.currentUser.name;
-      this.editedEmail = this.currentUser.email;
-      this.editedPassword = '';
-      this.editedConfirmPassword = '';
-      this.modal = false;
-      this.modalCurrentPassword = false;
-    },
 
     // submit of all changes
     async onSave() {
@@ -237,10 +235,22 @@ export default {
         this.modal = false;
       }
     },
+
+    // executed when the current password is confirmed
     async passwordAccepted() {
       this.isCheckedCurrentPassword = true;
       await this.onSave();
       this.modal = false;
+    },
+
+    // cancel of all changes
+    onCancel() {
+      this.editedConfirmPassword = '';
+      this.editedEmail = this.currentUser.email;
+      this.editedName = this.currentUser.name;
+      this.editedPassword = '';
+      this.modal = false;
+      this.modalCurrentPassword = false;
     },
   },
 };

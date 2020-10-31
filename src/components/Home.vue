@@ -1,6 +1,6 @@
 <template>
   <div v-if="!loading">
-    <!-- carousel home page -->
+    <!-- home page carousel  -->
     <v-container fluid class="pt-0">
       <v-row>
         <v-col class="col-md-12 pt-3">
@@ -48,6 +48,8 @@
     <v-container>
       <v-row>
         <!-- ad list of home page -->
+
+        <!-- show part of all all ads (12) -->
         <v-col
           v-for="ad in sortAds.slice(0, this.shownAds)"
           :key="ad.id"
@@ -123,14 +125,18 @@ export default {
     ...mapState('ads', ['ads']),
     ...mapGetters('ads', ['promoAds']),
 
+    // sort array of all ads by date (newest to oldest)
     sortAds() {
       return [...this.ads].reverse();
     },
+
+    // sort array of promo ads by date (newest to oldest)
     sortPromoAds() {
       return [...this.promoAds].reverse();
     },
   },
   methods: {
+    // increase number of shown ads (+5)
     increaseShownAds() {
       if (this.shownAds + 12 > this.sortAds.length) {
         this.shownAds = this.sortAds.length;

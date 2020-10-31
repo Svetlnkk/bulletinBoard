@@ -10,7 +10,7 @@
           </v-card-title>
 
           <v-list>
-            <!-- name -->
+            <!-- current user name -->
             <v-list-item>
               <v-list-item-action>
                 <v-icon>mdi-face</v-icon>
@@ -25,7 +25,7 @@
 
             <v-divider inset></v-divider>
 
-            <!-- email -->
+            <!-- current user email -->
             <v-list-item>
               <v-list-item-action>
                 <v-icon>mdi-email</v-icon>
@@ -40,7 +40,7 @@
 
             <v-divider inset></v-divider>
 
-            <!-- password -->
+            <!-- current user password -->
             <v-list-item>
               <v-list-item-action>
                 <v-icon>mdi-account-key-outline</v-icon>
@@ -54,8 +54,9 @@
             <v-divider inset></v-divider>
           </v-list>
 
-          <!-- actions -->
+          <!-- current user actions -->
           <v-card-actions>
+            <!-- dialog to delete current user -->
             <app-user-modal-delete
               :loading="loading"
               :currentUser="currentUser"
@@ -63,6 +64,7 @@
 
             <v-spacer></v-spacer>
 
+            <!-- dialog to edit current user -->
             <app-user-modal-edit
               :loading="loading"
               :currentUser="currentUser"

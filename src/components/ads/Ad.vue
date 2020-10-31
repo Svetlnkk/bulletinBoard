@@ -89,8 +89,13 @@
 
           <!-- ad actions -->
           <v-col class="d-flex justify-end">
+            <!-- modal to delete current ad -->
             <app-ad-modal-delete :ad="ad" v-if="isOwner"></app-ad-modal-delete>
+
+            <!-- modal to edit current ad -->
             <app-ad-modal-edit :ad="ad" v-if="isOwner"></app-ad-modal-edit>
+
+            <!-- modal to buy current ad -->
             <app-ad-modal-buy :ad="ad" v-if="!isOwner"></app-ad-modal-buy>
           </v-col>
         </v-row>
@@ -128,31 +133,31 @@ export default {
     id: String,
   },
   computed: {
-    ...mapState('shared', ['loading']),
-    ...mapState('user', ['currentUser']),
     ...mapGetters('ads', ['adById']),
     ...mapGetters('user', ['userById']),
+    ...mapState('shared', ['loading']),
+    ...mapState('user', ['currentUser']),
 
-    // Get ad by id
+    // get ad by id
     ad() {
       const id = this.id;
       return this.adById(id);
     },
 
-    // Check. Whether the owner is the current user
+    // check. Whether the owner is the current user
     isOwner() {
       if (!this.currentUser) return;
       return this.ad.ownerId === this.currentUser.id;
     },
 
-    // Get the owner to this ad
+    // get the owner of this ad
     ownerAd() {
       const ownerId = this.ad.ownerId;
       return this.userById(ownerId);
     },
   },
   beforeUpdate() {
-    // 404 page, if ad of this id is not
+    // 404 page, if ad of this id is not find
     if (!this.loading && !this.ad) {
       this.$router.replace('/404');
       return;

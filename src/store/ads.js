@@ -2,14 +2,16 @@ import * as firebase from 'firebase';
 
 class Ad {
   constructor(
-    title,
-    description,
-    ownerId,
-    imageSrc = '',
-    promo = false,
-    id = null,
-    dateAdded = '',
-    price = 0
+    ...[
+      title,
+      description,
+      ownerId,
+      imageSrc = '',
+      promo = false,
+      id = null,
+      dateAdded = '',
+      price = 0,
+    ]
   ) {
     this.title = title;
     this.description = description;
@@ -31,6 +33,12 @@ export default {
     createAd(state, payload) {
       state.ads.push(payload);
     },
+    deleteAd(state, payload) {
+      let adRemovableIndex = state.ads.findIndex((ad) => {
+        return ad.id === payload;
+      });
+      state.ads.splice(adRemovableIndex, 1);
+    },
     getAds(state, payload) {
       state.ads = payload;
     },
@@ -42,14 +50,9 @@ export default {
       ad.description = description;
       ad.price = price;
     },
-    deleteAd(state, payload) {
-      let adRemovableIndex = state.ads.findIndex((ad) => {
-        return ad.id === payload;
-      });
-      state.ads.splice(adRemovableIndex, 1);
-    },
   },
   actions: {
+    // create ad in state and firebase
     async createAd({ commit, dispatch, getters, rootState }, payload) {
       if (getters.myAds >= 10) {
         dispatch('shared/clearError', null, { root: true });
@@ -130,6 +133,43 @@ export default {
       }
     },
 
+    /* delete ad in state and firebase 
+      @param adId - ad current ad in state. 
+      @param ImageSrc - image adress in firebase of current ad)*/
+    async deleteAd({ commit, dispatch }, { adId, imageSrc }) {
+      dispatch('shared/clearError', null, { root: true });
+      dispatch('shared/startLoading', null, { root: true });
+
+      const storage = await firebase.storage();
+      const storageRef = storage.ref();
+
+      const imageFullPath = storage.refFromURL(imageSrc).fullPath;
+
+      try {
+        //delete image
+        if (imageSrc) {
+          const imageReference = await storageRef.child(imageFullPath);
+
+          await imageReference.delete();
+        }
+        //delete ad in database
+        await firebase
+          .database()
+          .ref('ads')
+          .child(adId)
+          .remove();
+
+        commit('deleteAd', adId);
+
+        dispatch('shared/finishLoading', null, { root: true });
+      } catch (error) {
+        dispatch('shared/setError', error.message, { root: true });
+        dispatch('shared/finishLoading', null, { root: true });
+        throw error;
+      }
+    },
+
+    // fetch ads in firebase to state
     async fetchAds({ commit, dispatch }) {
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
@@ -174,6 +214,12 @@ export default {
       }
     },
 
+    /* update ad in state and firebase 
+      @param title - updatable title of current ad 
+      @param description - updatable description of current ad 
+      @param id - id of current ad 
+      @param price - updatable price of current ad 
+    */
     async updateAd({ commit, dispatch }, { title, description, id, price }) {
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
@@ -200,57 +246,29 @@ export default {
         throw error;
       }
     },
-
-    async deleteAd({ commit, dispatch }, { adId, imageSrc }) {
-      dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/startLoading', null, { root: true });
-
-      const storage = await firebase.storage();
-      const storageRef = storage.ref();
-
-      const imageFullPath = storage.refFromURL(imageSrc).fullPath;
-
-      try {
-        //delete image
-        if (imageSrc) {
-          const imageReference = await storageRef.child(imageFullPath);
-
-          await imageReference.delete();
-        }
-        //delete ad in database
-        await firebase
-          .database()
-          .ref('ads')
-          .child(adId)
-          .remove();
-
-        commit('deleteAd', adId);
-
-        dispatch('shared/finishLoading', null, { root: true });
-      } catch (error) {
-        dispatch('shared/setError', error.message, { root: true });
-        dispatch('shared/finishLoading', null, { root: true });
-        throw error;
-      }
-    },
   },
   getters: {
-    promoAds(state) {
-      return state.ads.filter((ad) => {
-        return ad.promo;
-      });
-    },
-    myAds(state, getters, rootState) {
-      return state.ads.filter((ad) => {
-        return ad.ownerId === rootState['user'].currentUser.id;
-      });
-    },
+    // ad filtered by id
     adById(state) {
       return function(adId) {
         return state.ads.find((ad) => {
           return ad.id === adId;
         });
       };
+    },
+
+    // array of ads, filtered by current user id
+    myAds(state, getters, rootState) {
+      return state.ads.filter((ad) => {
+        return ad.ownerId === rootState['user'].currentUser.id;
+      });
+    },
+
+    // array of ads, filtered by promo
+    promoAds(state) {
+      return state.ads.filter((ad) => {
+        return ad.promo;
+      });
     },
   },
 };

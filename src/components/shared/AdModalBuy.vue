@@ -108,6 +108,8 @@ export default {
       name: '',
       phone: '',
       valid: false,
+
+      // rules on name validation
       nameRules: [
         (v) => !!v || 'Name is required',
         (v) =>
@@ -117,6 +119,8 @@ export default {
           (v && v.length <= 60) ||
           'Name must be equal or less than 60 characters',
       ],
+
+      // rules on phone validation
       phoneRules: [
         (v) => !!v || 'Phone is required',
         (v) =>
@@ -134,7 +138,7 @@ export default {
   computed: {
     ...mapState('user', ['currentUser']),
 
-    // Check. Whether the owner is the current user
+    // check - whether the owner is the current user
     isOwner() {
       if (!this.currentUser) return;
       return this.ad.ownerId === this.currentUser.id;

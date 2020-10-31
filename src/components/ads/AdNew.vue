@@ -123,6 +123,8 @@ export default {
       promo: false,
       title: '',
       valid: false,
+
+      // rules on title validation
       titleRules: [
         (v) => !!v || 'Title is required',
         (v) =>
@@ -132,6 +134,8 @@ export default {
           (v && v.length <= 60) ||
           'Title must be equal or less than 60 characters',
       ],
+
+      // rules on description validation
       descriptionRules: [
         (v) => !!v || 'Description is required',
         (v) =>
@@ -141,6 +145,8 @@ export default {
           (v && v.length <= 1000) ||
           'Description must be equal or less than 1000 characters',
       ],
+
+      // rules on price validation
       priceRules: [
         (v) =>
           (v && v.length <= 20) ||
@@ -162,7 +168,7 @@ export default {
     ...mapActions('ads', ['createAd']),
     ...mapActions('shared', ['setError', 'clearError']),
 
-    // Create new ad in Firebase and vuex
+    // create new ad in Firebase and vuex
     submitAd() {
       if (this.$refs.form.validate() && this.image) {
         const ad = {

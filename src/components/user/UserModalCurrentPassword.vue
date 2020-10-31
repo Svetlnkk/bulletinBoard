@@ -39,9 +39,6 @@
             <v-card-actions class="px-0">
               <v-spacer></v-spacer>
 
-              <!-- dialog old (current) cancel button 
-                  $emit('close') - created event 'close' for parent
-              -->
               <v-btn text @click="$emit('close')">Cancel</v-btn>
 
               <!-- dialog old (current) save button -->

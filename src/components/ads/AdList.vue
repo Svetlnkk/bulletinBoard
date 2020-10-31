@@ -7,6 +7,8 @@
         </h1>
         <v-row>
           <!-- ad list -->
+
+          <!-- show part of all user ads (5) -->
           <v-col
             v-for="ad of sortMyAds.slice(0, this.shownAds)"
             :key="ad.id"
@@ -125,14 +127,16 @@ export default {
     };
   },
   computed: {
-    ...mapState('shared', ['loading']),
     ...mapGetters('ads', ['myAds']),
+    ...mapState('shared', ['loading']),
 
+    // sort array of user ads by date (newest to oldest)
     sortMyAds() {
       return [...this.myAds].reverse();
     },
   },
   methods: {
+    // increase number of shown ads (+5)
     increaseShownAds() {
       if (this.shownAds + 5 > this.myAds.length) {
         this.shownAds = this.myAds.length;

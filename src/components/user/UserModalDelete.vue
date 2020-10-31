@@ -6,6 +6,7 @@
     @click:outside="onCancel"
     @keydown.esc="onCancel"
   >
+    <!-- dialog delete activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" class="red--text mr-3" text v-on="on">
         Delete Account
@@ -16,7 +17,7 @@
       <v-container>
         <v-row>
           <v-col class="col-xs-12 py-0 red">
-            <!-- delete title -->
+            <!-- dialog title -->
             <v-card-title class="white--text">
               Delete your account?
             </v-card-title>
@@ -24,16 +25,16 @@
         </v-row>
         <v-row>
           <v-col>
-            <!-- delete actions -->
+            <!-- dialog actions -->
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <!-- delete "cancel" button -->
+              <!-- dialog "cancel" button -->
               <v-btn text @click="onCancel">
                 Cancel
               </v-btn>
 
-              <!-- delete "ok" button -->
+              <!-- dialog "ok" button -->
               <v-btn
                 class="red white--text"
                 depressed
@@ -45,8 +46,8 @@
 
             <!-- сonfirm the change with your current password -->
             <app-user-modal-current-password
-              :modalCurrentPassword="modalCurrentPassword"
               :isCheckedCurrentPassword="isCheckedCurrentPassword"
+              :modalCurrentPassword="modalCurrentPassword"
               @close="modalCurrentPassword = false"
               @passwordAccepted="passwordAccepted"
             ></app-user-modal-current-password>
@@ -75,6 +76,7 @@ export default {
   methods: {
     ...mapActions('user', ['deleteCurrentUser']),
 
+    // deleting current user
     async onDeleteCurrentUser() {
       if (!this.isCheckedCurrentPassword) {
         this.modalCurrentPassword = true;
@@ -84,10 +86,14 @@ export default {
         this.modalCurrentPassword = false;
       }
     },
+
+    // cancel deleting current user
     onCancel() {
       this.modal = false;
       this.modalCurrentPassword = false;
     },
+
+    // executed when the current password is confirmed
     passwordAccepted() {
       this.isCheckedCurrentPassword = true;
       this.onDeleteCurrentUser();
