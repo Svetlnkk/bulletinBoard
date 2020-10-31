@@ -1,26 +1,24 @@
 import * as firebase from 'firebase';
 
 class Ad {
-  constructor(
-    ...[
-      title,
-      description,
-      ownerId,
-      imageSrc = '',
-      promo = false,
-      id = null,
-      dateAdded = '',
-      price = 0,
-    ]
-  ) {
-    this.title = title;
-    this.description = description;
-    this.ownerId = ownerId;
-    this.imageSrc = imageSrc;
-    this.promo = promo;
-    this.id = id;
+  constructor({
+    dateAdded = '',
+    description = '',
+    id = null,
+    imageSrc = '',
+    ownerId = '',
+    price = 0,
+    promo = false,
+    title = '',
+  }) {
     this.dateAdded = dateAdded;
+    this.description = description;
+    this.id = id;
+    this.imageSrc = imageSrc;
+    this.ownerId = ownerId;
     this.price = price;
+    this.promo = promo;
+    this.title = title;
   }
 }
 
@@ -29,6 +27,7 @@ export default {
   state: {
     ads: [],
   },
+
   mutations: {
     createAd(state, payload) {
       state.ads.push(payload);
@@ -46,20 +45,24 @@ export default {
       const ad = state.ads.find((ad) => {
         return ad.id === id;
       });
-      ad.title = title;
       ad.description = description;
       ad.price = price;
+      ad.title = title;
     },
   },
+
   actions: {
     // create ad in state and firebase
     async createAd({ commit, dispatch, getters, rootState }, payload) {
-      if (getters.myAds >= 10) {
+      // max ads of user (10)
+      if (getters.myAds.length >= 10) {
         dispatch('shared/clearError', null, { root: true });
         dispatch('shared/setError', 'You most have no more than 10 ads', {
           root: true,
         });
+        return;
       }
+
       dispatch('shared/clearError', null, { root: true });
       dispatch('shared/startLoading', null, { root: true });
 
@@ -68,16 +71,14 @@ export default {
       if (!image) return;
 
       try {
-        const AdNew = new Ad(
-          payload.title,
-          payload.description,
-          rootState['user'].currentUser.id,
-          '',
-          payload.promo,
-          null,
-          '',
-          payload.price
-        );
+        const AdNew = new Ad({
+          description: payload.description,
+          id: null,
+          ownerId: rootState['user'].currentUser.id,
+          price: payload.price,
+          promo: payload.promo,
+          title: payload.title,
+        });
 
         const ad = await firebase
           .database()
@@ -86,6 +87,7 @@ export default {
 
         const imageExt = image.name.slice(image.name.lastIndexOf('.')).slice(1);
 
+        // add image to firebase (storage)
         const fileData = await firebase
           .storage()
           .ref(`ads/${ad.key}.${imageExt}`)
@@ -93,6 +95,7 @@ export default {
 
         const imageSrc = await fileData.ref.getDownloadURL();
 
+        // add ad to firebase (database)
         await firebase
           .database()
           .ref('ads')
@@ -102,7 +105,6 @@ export default {
           });
 
         // add current date
-
         const date = new Date();
 
         const hours =
@@ -119,6 +121,7 @@ export default {
             dateAdded,
           });
 
+        // add ad in state
         commit('createAd', {
           ...AdNew,
           id: ad.key,
@@ -192,16 +195,16 @@ export default {
         Object.keys(ads).forEach((key) => {
           const ad = ads[key];
           resultAds.push(
-            new Ad(
-              ad.title,
-              ad.description,
-              ad.ownerId,
-              ad.imageSrc,
-              ad.promo,
-              key,
-              ad.dateAdded,
-              ad.price
-            )
+            new Ad({
+              id: key,
+              dateAdded: ad.dateAdded,
+              description: ad.description,
+              imageSrc: ad.imageSrc,
+              ownerId: ad.ownerId,
+              price: ad.price,
+              promo: ad.promo,
+              title: ad.title,
+            })
           );
         });
 
@@ -229,9 +232,9 @@ export default {
           .ref('ads')
           .child(id)
           .update({
-            title,
             description,
             price,
+            title,
           });
         commit('updateAd', {
           title,
@@ -247,6 +250,7 @@ export default {
       }
     },
   },
+
   getters: {
     // ad filtered by id
     adById(state) {

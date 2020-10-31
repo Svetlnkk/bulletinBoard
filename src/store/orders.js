@@ -1,12 +1,12 @@
 import * as firebase from 'firebase';
 
 class Order {
-  constructor(name, phone, adId, done = false, id = null) {
-    this.name = name;
-    this.phone = phone;
+  constructor({ adId = '', done = false, id = null, name = '', phone = '' }) {
     this.adId = adId;
     this.done = done;
     this.id = id;
+    this.name = name;
+    this.phone = phone;
   }
 }
 
@@ -21,8 +21,9 @@ export default {
     },
   },
   actions: {
+    // create order to the owner ad
     async createOrder({ dispatch }, { name, phone, adId, ownerId }) {
-      const order = new Order(name, phone, adId);
+      const order = new Order({ adId, name, phone });
       dispatch('shared/clearError', null, { root: true });
 
       try {
@@ -35,9 +36,12 @@ export default {
         throw error;
       }
     },
+
+    // fetch orders to current user
     async fetchOrders({ commit, dispatch, rootState }) {
       dispatch('shared/startLoading', null, { root: true });
       dispatch('shared/clearError', null, { root: true });
+
       const resultOrders = [];
 
       try {
@@ -56,7 +60,13 @@ export default {
         Object.keys(orders).forEach((key) => {
           const order = orders[key];
           resultOrders.push(
-            new Order(order.name, order.phone, order.adId, order.done, key)
+            new Order({
+              adId: order.adId,
+              done: order.done,
+              id: key,
+              name: order.name,
+              phone: order.phone,
+            })
           );
         });
 
@@ -68,6 +78,8 @@ export default {
         throw error;
       }
     },
+
+    // mark to the done order
     async markOrderDone({ dispatch, rootState }, payload) {
       try {
         await firebase
@@ -83,15 +95,21 @@ export default {
       }
     },
   },
+
   getters: {
+    // return filtered array by done orders
     doneOrders(state) {
       return state.orders.filter((order) => order.done);
     },
-    undoneOrders(state) {
-      return state.orders.filter((order) => !order.done);
-    },
+
+    // return filtered array by all orders + sort (done + undone orders)
     orders(state, getters) {
       return getters.undoneOrders.concat(getters.doneOrders);
+    },
+
+    // return filtered array by undone orders
+    undoneOrders(state) {
+      return state.orders.filter((order) => !order.done);
     },
   },
 };

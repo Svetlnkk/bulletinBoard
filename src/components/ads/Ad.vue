@@ -163,6 +163,13 @@ export default {
       return;
     }
   },
+  created() {
+    // 404 page, if ad of this id is not find
+    if (!this.loading && !this.ad) {
+      this.$router.replace('/404');
+      return;
+    }
+  },
 };
 </script>
 
