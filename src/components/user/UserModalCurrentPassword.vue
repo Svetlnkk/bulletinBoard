@@ -1,6 +1,12 @@
 <template>
   <!-- dialog old (current) password -->
-  <v-dialog v-model="modalCurrentPassword" max-width="400">
+  <v-dialog
+    v-model="modalCurrentPassword"
+    eager
+    max-width="400"
+    @click:outside="$emit('close')"
+    @keydown.esc="$emit('close')"
+  >
     <v-card>
       <v-container>
         <!-- dialog old (current) title -->

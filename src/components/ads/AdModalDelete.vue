@@ -1,5 +1,10 @@
 <template>
-  <v-dialog v-model="modal" max-width="400">
+  <v-dialog
+    v-model="modal"
+    max-width="400"
+    @keydown.esc="onCancel"
+    @click:outside="onCancel"
+  >
     <!-- activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" class="red white--text mr-3" depressed v-on="on">

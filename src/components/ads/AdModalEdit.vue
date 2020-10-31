@@ -1,5 +1,11 @@
 <template>
-  <v-dialog v-model="modal" width="400">
+  <v-dialog
+    v-model="modal"
+    eager
+    width="400"
+    @click:outside="onCancel"
+    @keydown.esc="onCancel"
+  >
     <!-- ad edit dialog activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" class="orange white--text mr-3" depressed v-on="on">

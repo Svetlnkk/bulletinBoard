@@ -1,9 +1,10 @@
 <template>
   <v-dialog
     v-model="modal"
+    eager
     max-width="400"
-    @keydown="onCancelKeydown"
     @click:outside="onCancel"
+    @keydown.esc="onCancel"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" class="red--text mr-3" text v-on="on">
@@ -86,13 +87,6 @@ export default {
     onCancel() {
       this.modal = false;
       this.modalCurrentPassword = false;
-    },
-    onCancelKeydown(event) {
-      if (event.code === 'Escape') {
-        this.onCancel();
-      } else {
-        return;
-      }
     },
     passwordAccepted() {
       this.isCheckedCurrentPassword = true;

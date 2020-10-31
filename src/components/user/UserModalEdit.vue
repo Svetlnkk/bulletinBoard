@@ -1,9 +1,10 @@
 <template>
   <v-dialog
     v-model="modal"
+    eager
     width="400"
     @click:outside="onCancel"
-    @keydown="onCancelKeydown"
+    @keydown.esc="onCancel"
   >
     <!-- user edit dialog activator -->
     <template v-slot:activator="{ on, attrs }">
@@ -191,14 +192,6 @@ export default {
   },
   methods: {
     ...mapActions('user', ['updateUser']),
-
-    onCancelKeydown(event) {
-      if (event.code === 'Escape') {
-        this.onCancel();
-      } else {
-        return;
-      }
-    },
 
     // cancel of all changes
     onCancel() {
