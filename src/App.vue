@@ -138,15 +138,37 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 /* App.vue - changed standart vuetify element's 'min-width' prop (smaller than before) */
 .snackbar__mobile .v-snack__wrapper {
   min-width: 270px;
 }
 
-/* AdModalBuy.vue - changed standart vuetify prop 'word-break: break-word' in the card title*/
+/* AdModalBuy.vue - changed standart vuetify prop 'word-break: break-word' in the card title */
 .v-card__title .modal__title {
   word-break: normal;
+}
+
+/* AdList.vue - changed standart vuetify prop 'word-break: break-word' in the card title */
+.v-card__title {
+  word-break: normal;
+}
+
+/* Home.vue - changed standart vuetify carousel element, to show background */
+.v-carousel__item .v-image__image {
+  z-index: 1;
+}
+
+/* Home.vue - changed standart vuetify carousel item, to smaller height on mobile devices. And add new border */
+.v-carousel__item {
+  height: 500px !important;
+
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+
+  @media (max-width: 599px) {
+    height: 270px !important;
+  }
 }
 </style>
 

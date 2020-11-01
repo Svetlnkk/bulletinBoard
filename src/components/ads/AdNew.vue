@@ -213,6 +213,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .ad-new__image {
   border-radius: 4px;

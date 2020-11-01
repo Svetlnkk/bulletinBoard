@@ -148,23 +148,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.v-carousel__item .v-image__image {
-  z-index: 1;
-}
-
-.v-carousel__item {
-  height: 500px !important;
-
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-
-  @media (max-width: 599px) {
-    height: 270px !important;
-  }
-}
-</style>
-
 <style scoped lang="scss">
 .carousel__link {
   position: absolute;

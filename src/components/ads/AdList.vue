@@ -148,12 +148,6 @@ export default {
 };
 </script>
 
-<style>
-.v-card__title {
-  word-break: normal;
-}
-</style>
-
 <style scoped lang="scss">
 .ad-list__item {
   border-radius: 4px;
