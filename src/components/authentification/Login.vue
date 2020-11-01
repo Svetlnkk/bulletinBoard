@@ -127,12 +127,16 @@ export default {
           .catch(() => {});
       }
     },
+
+    // denying access without authorization
+    denyAccess() {
+      if (this.$route.query['loginError']) {
+        this.setError('Please log in to access this page');
+      }
+    },
   },
   created() {
-    // denying access without authorization
-    if (this.$route.query['loginError']) {
-      this.setError('Please log in to access this page');
-    }
+    this.denyAccess();
   },
 };
 </script>
