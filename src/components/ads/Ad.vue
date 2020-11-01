@@ -157,14 +157,14 @@ export default {
     },
   },
   beforeUpdate() {
-    // 404 page, if ad of this id is not find
+    // 404 page, if ad of this id was not found
     if (!this.loading && !this.ad) {
       this.$router.replace('/404');
       return;
     }
   },
   created() {
-    // 404 page, if ad of this id is not find
+    // 404 page, if ad of this id was not found
     if (!this.loading && !this.ad) {
       this.$router.replace('/404');
       return;

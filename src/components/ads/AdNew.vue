@@ -156,12 +156,10 @@ export default {
   },
   computed: {
     ...mapState('shared', ['loading']),
+
+    // state 'loading' now return a boolean
     loadingButton() {
-      if (this.loading) {
-        return true;
-      } else {
-        return false;
-      }
+      return !!this.loading;
     },
   },
   methods: {
