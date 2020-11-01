@@ -175,10 +175,3 @@ export default {
   },
 };
 </script>
-
-<style>
-/* removes word break in the card title */
-.v-card__title .modal__title {
-  word-break: normal;
-}
-</style>

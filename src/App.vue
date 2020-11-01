@@ -139,8 +139,14 @@ export default {
 </script>
 
 <style>
+/* App.vue - changed standart vuetify element's 'min-width' prop (smaller than before) */
 .snackbar__mobile .v-snack__wrapper {
   min-width: 270px;
+}
+
+/* AdModalBuy.vue - changed standart vuetify prop 'word-break: break-word' in the card title*/
+.v-card__title .modal__title {
+  word-break: normal;
 }
 </style>
 

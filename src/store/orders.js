@@ -30,7 +30,7 @@ export default {
 
     // fetch orders to current user
     async fetchOrders({ commit, dispatch, rootState }) {
-      dispatch('shared/startLoading', null, { root: true });
+      dispatch('shared/increaseLoading', null, { root: true });
       dispatch('shared/clearError', null, { root: true });
 
       const resultOrders = [];
@@ -44,7 +44,7 @@ export default {
         const orders = firebaseValue.val();
 
         if (!orders) {
-          dispatch('shared/finishLoading', null, { root: true });
+          dispatch('shared/decreaseLoading', null, { root: true });
           return;
         }
 
@@ -62,9 +62,9 @@ export default {
         });
 
         commit('setOrders', resultOrders);
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
         dispatch('shared/setError', error, { root: true });
         throw error;
       }

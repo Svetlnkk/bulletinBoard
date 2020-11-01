@@ -44,7 +44,7 @@ export default {
     async changeName({ commit, dispatch, state }, payload) {
       if (!payload) return;
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/startLoading', null, { root: true });
+      dispatch('shared/increaseLoading', null, { root: true });
       try {
         await firebase
           .database()
@@ -55,9 +55,9 @@ export default {
         currentUser.name = payload;
 
         commit('setCurrentUser', currentUser);
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
@@ -97,7 +97,7 @@ export default {
     // delete current user from state and firebase
     async deleteCurrentUser({ commit, dispatch, rootGetters, state }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/startLoading', null, { root: true });
+      dispatch('shared/increaseLoading', null, { root: true });
 
       let ads = rootGetters['ads/myAds'];
 
@@ -126,9 +126,9 @@ export default {
         //delete user from state
         commit('setCurrentUser', null);
 
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
@@ -137,7 +137,7 @@ export default {
     // fetch all users data from firebase (database)
     async fetchAllUsers({ commit, dispatch }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/startLoading', null, { root: true });
+      dispatch('shared/increaseLoading', null, { root: true });
 
       let databaseUsersResult = [];
 
@@ -158,9 +158,9 @@ export default {
 
         // add all users to state
         commit('getAllUsers', databaseUsersResult);
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
@@ -169,7 +169,7 @@ export default {
     // fetch current user data from firebase (database)
     async fetchCurrentUser({ commit, dispatch, state }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/startLoading', null, { root: true });
+      dispatch('shared/increaseLoading', null, { root: true });
 
       try {
         // get current user data in database
@@ -184,9 +184,9 @@ export default {
 
         // set current user data to state
         commit('setCurrentUser', currentUser);
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
@@ -195,7 +195,7 @@ export default {
     // login user
     async loginUser({ commit, dispatch }, { email, password }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/startLoading', null, { root: true });
+      dispatch('shared/increaseLoading', null, { root: true });
 
       try {
         // authentication user in firebase
@@ -220,9 +220,9 @@ export default {
           })
         );
 
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
@@ -237,7 +237,7 @@ export default {
     // register new user in firebase and state
     async registerUser({ commit, dispatch }, { email, name, password }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/startLoading', null, { root: true });
+      dispatch('shared/increaseLoading', null, { root: true });
 
       try {
         // register new user in firebase
@@ -261,9 +261,9 @@ export default {
           .ref(`/users/${user.user.uid}/personal`)
           .set({ name: name, email: email });
 
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }
@@ -272,7 +272,7 @@ export default {
     // update the current user after editing
     async updateUser({ dispatch }, { name, email, password }) {
       dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/startLoading', null, { root: true });
+      dispatch('shared/increaseLoading', null, { root: true });
       try {
         // change name of current user
         await dispatch('changeName', name);
@@ -283,9 +283,9 @@ export default {
         // change password of current user
         await dispatch('changePassword', password);
 
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
-        dispatch('shared/finishLoading', null, { root: true });
+        dispatch('shared/decreaseLoading', null, { root: true });
         dispatch('shared/setError', error.message, { root: true });
         throw error;
       }

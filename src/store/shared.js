@@ -9,7 +9,7 @@ export default {
       state.error = null;
     },
 
-    finishLoading(state) {
+    decreaseLoading(state) {
       state.loading--;
     },
 
@@ -17,7 +17,7 @@ export default {
       state.error = payload;
     },
 
-    startLoading(state) {
+    increaseLoading(state) {
       state.loading++;
     },
   },
@@ -26,16 +26,16 @@ export default {
       commit('clearError');
     },
 
-    finishLoading({ commit }) {
-      commit('finishLoading');
+    decreaseLoading({ commit }) {
+      commit('decreaseLoading');
     },
 
     setError({ commit }, payload) {
       commit('setError', payload);
     },
 
-    startLoading({ commit }) {
-      commit('startLoading');
+    increaseLoading({ commit }) {
+      commit('increaseLoading');
     },
   },
 };
