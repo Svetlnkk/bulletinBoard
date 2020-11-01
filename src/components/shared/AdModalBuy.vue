@@ -73,7 +73,7 @@
               <v-spacer></v-spacer>
 
               <!-- buy dialog cancel button -->
-              <v-btn :disabled="localLoading" class="" text @click="onCancel"
+              <v-btn :disabled="localLoading" class="" text @click="cancelBuy"
                 >Close</v-btn
               >
 
@@ -83,7 +83,7 @@
                 :loading="localLoading"
                 class="primary"
                 depressed
-                @click="onSave"
+                @click="submitMessageBuy"
                 >Buy it</v-btn
               >
             </v-card-actions>
@@ -148,7 +148,7 @@ export default {
     ...mapActions('orders', ['createOrder']),
 
     // cancel buy
-    onCancel() {
+    cancelBuy() {
       this.name = '';
       this.phone = '';
       this.modal = false;
@@ -156,7 +156,7 @@ export default {
     },
 
     // submit the name and phone to ad owner
-    onSave() {
+    submitMessageBuy() {
       if (this.$refs.formEdit.validate()) {
         this.localLoading = true;
         this.createOrder({

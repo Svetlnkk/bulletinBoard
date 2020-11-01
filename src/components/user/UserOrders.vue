@@ -8,7 +8,7 @@
       </v-col>
     </v-row>
 
-    <v-row v-else-if="!loading && orders.length !== 0">
+    <v-row v-else-if="loadingOrders()">
       <v-col class="col-sm-8 col-lg-6 mx-auto">
         <!-- title -->
         <h1 class="text--secondary mb-3">Orders</h1>
@@ -69,6 +69,11 @@ export default {
   },
   methods: {
     ...mapActions('orders', ['fetchOrders', 'markOrderDone']),
+
+    // checking to 'this.loading' for loading and checking for loading 'this.orders'
+    loadingOrders() {
+      return !this.loading && this.orders.length;
+    },
 
     // sort user's orders
     markDone(order) {

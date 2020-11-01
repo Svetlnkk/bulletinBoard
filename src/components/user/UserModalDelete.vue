@@ -3,8 +3,8 @@
     v-model="modal"
     eager
     max-width="400"
-    @click:outside="onCancel"
-    @keydown.esc="onCancel"
+    @click:outside="cancelDeleteUser"
+    @keydown.esc="cancelDeleteUser"
   >
     <!-- dialog delete activator -->
     <template v-slot:activator="{ on, attrs }">
@@ -30,7 +30,7 @@
               <v-spacer></v-spacer>
 
               <!-- dialog "cancel" button -->
-              <v-btn text @click="onCancel">
+              <v-btn text @click="cancelDeleteUser">
                 Cancel
               </v-btn>
 
@@ -88,7 +88,7 @@ export default {
     },
 
     // cancel deleting current user
-    onCancel() {
+    cancelDeleteUser() {
       this.modal = false;
       this.modalCurrentPassword = false;
     },

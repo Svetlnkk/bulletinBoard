@@ -3,8 +3,8 @@
     v-model="modal"
     eager
     width="400"
-    @click:outside="onCancel"
-    @keydown.esc="onCancel"
+    @click:outside="cancelEditing"
+    @keydown.esc="cancelEditing"
   >
     <!-- ad edit dialog activator -->
     <template v-slot:activator="{ on, attrs }">
@@ -87,10 +87,10 @@
               <v-spacer></v-spacer>
 
               <!-- cancel edit ad button -->
-              <v-btn text @click="onCancel">Cancel</v-btn>
+              <v-btn text @click="cancelEditing">Cancel</v-btn>
 
               <!-- save changes in this ad after editing -->
-              <v-btn class="orange white--text" depressed @click="onSave"
+              <v-btn class="orange white--text" depressed @click="saveChangesAd"
                 >Save</v-btn
               >
             </v-card-actions>
@@ -150,7 +150,7 @@ export default {
     ...mapActions('ads', ['updateAd']),
 
     // cancel editing ad
-    onCancel() {
+    cancelEditing() {
       this.editedTitle = this.ad.title;
       this.editedDescription = this.ad.description;
       this.editedPrice = String(this.ad.price);
@@ -158,7 +158,7 @@ export default {
     },
 
     // save changes in this ad after editing
-    onSave() {
+    saveChangesAd() {
       if (this.$refs.formEdit.validate()) {
         this.updateAd({
           title: this.editedTitle,

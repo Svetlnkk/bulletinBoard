@@ -3,8 +3,8 @@
     v-model="modal"
     eager
     width="400"
-    @click:outside="onCancel"
-    @keydown.esc="onCancel"
+    @click:outside="cancelEditing"
+    @keydown.esc="cancelEditing"
   >
     <!-- user edit dialog activator -->
     <template v-slot:activator="{ on, attrs }">
@@ -104,14 +104,14 @@
               <v-spacer></v-spacer>
 
               <!-- user edit dialog cancel button -->
-              <v-btn text @click="onCancel">Cancel</v-btn>
+              <v-btn text @click="cancelEditing">Cancel</v-btn>
 
               <!-- user edit dialog save button -->
               <v-btn
                 :disabled="!valid"
                 class="teal darken-2 white--text"
                 depressed
-                @click="onSave"
+                @click="saveChangesUser"
               >
                 Save
               </v-btn>
@@ -201,8 +201,8 @@ export default {
   methods: {
     ...mapActions('user', ['updateUser']),
 
-    // submit of all changes
-    async onSave() {
+    // save of all changes of current user
+    async saveChangesUser() {
       const user = {
         name:
           this.editedName === this.currentUser.name ? null : this.editedName,
@@ -239,12 +239,12 @@ export default {
     // executed when the current password is confirmed
     async passwordAccepted() {
       this.isCheckedCurrentPassword = true;
-      await this.onSave();
+      await this.saveChangesUser();
       this.modal = false;
     },
 
     // cancel of all changes
-    onCancel() {
+    cancelEditing() {
       this.editedConfirmPassword = '';
       this.editedEmail = this.currentUser.email;
       this.editedName = this.currentUser.name;

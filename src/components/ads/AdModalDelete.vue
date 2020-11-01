@@ -2,8 +2,8 @@
   <v-dialog
     v-model="modal"
     max-width="400"
-    @keydown.esc="onCancel"
-    @click:outside="onCancel"
+    @keydown.esc="cancelDeleting"
+    @click:outside="cancelDeleting"
   >
     <!-- activator -->
     <template v-slot:activator="{ on, attrs }">
@@ -30,12 +30,12 @@
               <v-spacer></v-spacer>
 
               <!-- delete "cancel" button -->
-              <v-btn text @click="onCancel">
+              <v-btn text @click="cancelDeleting">
                 Cancel
               </v-btn>
 
               <!-- delete "ok" button -->
-              <v-btn class="red white--text" depressed @click="onDelete">
+              <v-btn class="red white--text" depressed @click="deleteCurrentAd">
                 Ok
               </v-btn>
             </v-card-actions>
@@ -62,8 +62,8 @@ export default {
     ...mapActions('ads', ['deleteAd']),
     ...mapActions('shared', ['setError']),
 
-    // deleting ad
-    async onDelete() {
+    // delete the current ad
+    async deleteCurrentAd() {
       try {
         this.deleteAd({
           adId: this.ad.id,
@@ -78,7 +78,7 @@ export default {
     },
 
     // cancel to deleting ad
-    onCancel() {
+    cancelDeleting() {
       this.modal = false;
     },
   },

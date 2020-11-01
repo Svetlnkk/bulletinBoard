@@ -3,7 +3,7 @@
     <v-row>
       <v-col class="col-12 col-sm-10 col-md-10 col-lg-8 col-xl-6 mx-auto">
         <v-row
-          v-if="!loading && this.ad"
+          v-if="loadingAd()"
           class="ad-main__item col-12 col-sm-11 flex-column mx-auto"
         >
           <!-- ad title -->
@@ -156,19 +156,24 @@ export default {
       return this.userById(ownerId);
     },
   },
-  beforeUpdate() {
+  methods: {
+    // checking to 'this.loading' for loading and checking for loading 'this.ad'
+    loadingAd() {
+      return !this.loading && this.ad;
+    },
+
     // 404 page, if ad of this id was not found
-    if (!this.loading && !this.ad) {
-      this.$router.replace('/404');
-      return;
-    }
+    loadingEmptyAd() {
+      if (!this.loading && !this.ad) {
+        this.$router.replace('/404');
+      }
+    },
+  },
+  beforeUpdate() {
+    this.loadingEmptyAd();
   },
   created() {
-    // 404 page, if ad of this id was not found
-    if (!this.loading && !this.ad) {
-      this.$router.replace('/404');
-      return;
-    }
+    this.loadingEmptyAd();
   },
 };
 </script>

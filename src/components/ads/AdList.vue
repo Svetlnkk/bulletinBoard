@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row v-if="!loading && myAds">
+    <v-row v-if="loadingMyAds()">
       <v-col class="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-6 mx-auto">
         <h1 class="text--secondary text-h5 font-weight-medium mb-5 ml-3">
           {{ `Ad List (${myAds.length})` }}
@@ -101,7 +101,7 @@
     </v-row>
 
     <!-- if no ads -->
-    <v-row v-else-if="!loading && myAds.length === 0">
+    <v-row v-else-if="loadingEmptyMyAds()">
       <v-col class="col-12 col-sm-8 mx-auto">
         <h1 class="text--secondary">You have no ads</h1>
       </v-col>
@@ -138,11 +138,20 @@ export default {
   methods: {
     // increase number of shown ads (+5)
     increaseShownAds() {
-      if (this.shownAds + 5 > this.myAds.length) {
-        this.shownAds = this.myAds.length;
-      } else {
-        this.shownAds += 5;
-      }
+      this.shownAds =
+        this.shownAds + 5 > this.myAds.length
+          ? this.myAds.length
+          : (this.shownAds += 5);
+    },
+
+    // checking to 'this.loading' for loading and checking for loading 'this.myAds'
+    loadingMyAds() {
+      return !this.loading && this.myAds.length;
+    },
+
+    // checking to 'this.myAds' on no have ads
+    loadingEmptyMyAds() {
+      return !this.loading && !this.myAds.length;
     },
   },
 };

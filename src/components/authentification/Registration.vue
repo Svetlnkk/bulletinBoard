@@ -79,8 +79,8 @@
 
             <!-- registration form submit button -->
             <v-btn
-              :disabled="!valid || loadingBoolean"
-              :loading="loadingBoolean"
+              :disabled="!valid || loadingButton"
+              :loading="loadingButton"
               color="teal"
               text
               @click.prevent="onSubmit"
@@ -150,12 +150,8 @@ export default {
     ...mapState('shared', ['loading']),
 
     // returned boolean from 'loading'
-    loadingBoolean() {
-      if (this.loading) {
-        return true;
-      } else {
-        return false;
-      }
+    loadingButton() {
+      return !!this.loading;
     },
   },
   methods: {
