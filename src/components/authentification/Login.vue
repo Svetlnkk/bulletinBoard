@@ -10,18 +10,19 @@
 
           <!-- login form -->
           <v-card-text>
-            <v-form ref="form" v-model="valid">
+            <v-form ref="form">
               <!-- login email input -->
               <v-text-field
                 v-model="email"
-                :rules="emailRules"
+                :error-messages="emailErrors"
                 color="teal"
                 counter
                 label="Email"
                 name="email"
                 prepend-icon="mdi-account"
                 type="email"
-                validate-on-blur
+                @blur="$v.email.$touch()"
+                @input="$v.email.$touch()"
               >
               </v-text-field>
 
@@ -29,15 +30,16 @@
               <v-text-field
                 v-model="password"
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="passwordRules"
+                :error-messages="passwordErrors"
                 :type="show ? 'text' : 'password'"
                 color="teal"
                 counter
                 label="Password"
                 name="password"
                 prepend-icon="mdi-lock"
-                validate-on-blur
+                @blur="$v.password.$touch()"
                 @click:append="show = !show"
+                @input="$v.password.$touch()"
               >
               </v-text-field>
             </v-form>
@@ -49,7 +51,7 @@
 
             <!-- log in button -->
             <v-btn
-              :disabled="!valid || loadingButton"
+              :disabled="$v.$invalid || loadingButton"
               :loading="loadingButton"
               color="teal"
               text
@@ -66,45 +68,61 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import { validationMixin } from 'vuelidate';
+import {
+  email,
+  maxLength,
+  minLength,
+  required,
+} from 'vuelidate/lib/validators';
 
 export default {
+  mixins: [validationMixin],
+  validations: {
+    email: {
+      email,
+      maxLength: maxLength(1000),
+      minLength: minLength(3),
+      required,
+    },
+    password: { required, maxLength: maxLength(1000) },
+  },
   data() {
     return {
       email: '',
       password: '',
       show: false,
-      valid: false,
-
-      // rules on email validation
-      emailRules: [
-        (v) => !!v || 'E-mail is required',
-        (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-      ],
-
-      // rules on password validation
-      passwordRules: [
-        (v) => !!v || 'Password is required',
-        (v) =>
-          (v && v.length >= 6) ||
-          'Password must be equal or more than 6 characters',
-        (v) => !/\s/.test(v) || 'No spaces are allowed',
-        (v) =>
-          /[a-z]/.test(v) || 'Need at least one latin letter with lowercase',
-        (v) =>
-          /[A-Z]/.test(v) || 'Need at least one latin letter with uppercase',
-        (v) => /\d/.test(v) || 'Need at least one digit',
-        (v) =>
-          !/\W/.test(v) ||
-          'You can not enter anything other than Latin letters and digits',
-      ],
     };
   },
   computed: {
     ...mapState('shared', ['loading']),
 
+    // rules on email validation
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.email.$dirty) return errors;
+      !this.$v.email.email && errors.push('Must be valid email');
+      !this.$v.email.maxLength &&
+        errors.push('Email must be equal or less than 1000 characters');
+      !this.$v.email.minLength &&
+        errors.push('Email must be equal or more than 3 characters');
+      !this.$v.email.required && errors.push('Email is required');
+      return errors;
+    },
+
     // returned boolean from 'this.loading'
     loadingButton() {
       return !!this.loading;
+    },
+
+    // rules on password validation
+    passwordErrors() {
+      const errors = [];
+      if (!this.$v.password.$dirty) return errors;
+      !this.$v.password.maxLength &&
+        errors.push('Password must be equal or less than 1000 characters');
+      !this.$v.password.required && errors.push('Password is required');
+      return errors;
     },
   },
   methods: {
@@ -113,11 +131,10 @@ export default {
 
     // submit user login form
     onSubmit() {
-      if (this.$refs.form.validate()) {
+      if (!this.$v.$invalid) {
         const user = {
           email: this.email,
           password: this.password,
-          valid: this.valid,
         };
 
         this.loginUser(user)
