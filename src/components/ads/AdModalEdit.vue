@@ -33,44 +33,46 @@
         <v-row>
           <v-col class="col-xs-12">
             <v-card-text>
-              <v-form ref="formEdit" v-model="valid">
+              <v-form>
                 <!-- ad edit dialog title input -->
                 <v-text-field
                   v-model="editedTitle"
-                  :rules="editedTitleRules"
+                  :error-messages="titleErrors"
                   color="teal"
                   counter="60"
                   label="Ad title"
                   name="title"
-                  required
                   type="text"
-                  validate-on-blur
+                  @blur="$v.editedTitle.$touch()"
+                  @input="$v.editedTitle.$touch()"
                 >
                 </v-text-field>
 
                 <!-- ad edit dialog description input -->
                 <v-textarea
                   v-model="editedDescription"
-                  :rules="editedDescriptionRules"
+                  :error-messages="descriptionErrors"
                   color="teal"
                   counter="1000"
                   label="Ad description"
                   name="description"
                   type="text"
-                  validate-on-blur
+                  @blur="$v.editedDescription.$touch()"
+                  @input="$v.editedDescription.$touch()"
                 >
                 </v-textarea>
 
                 <!-- ad edit dialog price input -->
                 <v-text-field
                   v-model="editedPrice"
-                  :rules="editedPriceRules"
+                  :error-messages="priceErrors"
                   color="teal"
                   counter="20"
                   label="Price"
                   name="price"
                   type="number"
-                  validate-on-blur
+                  @blur="$v.editedPrice.$touch()"
+                  @input="$v.editedPrice.$touch()"
                 >
                 </v-text-field>
               </v-form>
@@ -103,8 +105,29 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { validationMixin } from 'vuelidate';
+import {
+  maxLength,
+  minLength,
+  numeric,
+  required,
+} from 'vuelidate/lib/validators';
 
 export default {
+  mixins: [validationMixin],
+  validations: {
+    editedTitle: {
+      maxLength: maxLength(60),
+      minLength: minLength(4),
+      required,
+    },
+    editedDescription: {
+      maxLength: maxLength(1000),
+      minLength: minLength(30),
+      required,
+    },
+    editedPrice: { maxLength: maxLength(20), numeric, required },
+  },
   props: {
     ad: Object,
   },
@@ -114,37 +137,44 @@ export default {
       editedPrice: String(this.ad.price),
       editedTitle: this.ad.title,
       modal: false,
-      valid: false,
-
-      // rules on title validation
-      editedTitleRules: [
-        (v) => !!v || 'Title is required',
-        (v) =>
-          (v && v.length >= 4) ||
-          'Title must be equal or more than 4 characters',
-        (v) =>
-          (v && v.length <= 60) ||
-          'Title must be equal or less than 60 characters',
-      ],
-
-      // rules on description validation
-      editedDescriptionRules: [
-        (v) => !!v || 'Description is required',
-        (v) =>
-          (v && v.length >= 30) ||
-          'Description must be equal or more than 30 characters',
-        (v) =>
-          (v && v.length <= 1000) ||
-          'Description must be equal or less than 1000 characters',
-      ],
-
-      // rules on price validation
-      editedPriceRules: [
-        (v) =>
-          (v && v.length <= 20) ||
-          'The price must be equal or less than 20 only digits',
-      ],
     };
+  },
+  computed: {
+    // rules on title validation
+    titleErrors() {
+      const errors = [];
+      if (!this.$v.editedTitle.$dirty) return errors;
+      !this.$v.editedTitle.maxLength &&
+        errors.push('Title must be equal or less than 60 characters');
+      !this.$v.editedTitle.minLength &&
+        errors.push('Title must be equal or more than 4 characters');
+      !this.$v.editedTitle.required && errors.push('Title is required');
+      return errors;
+    },
+
+    // rules on description validation
+    descriptionErrors() {
+      const errors = [];
+      if (!this.$v.editedDescription.$dirty) return errors;
+      !this.$v.editedDescription.maxLength &&
+        errors.push('Description must be equal or less than 1000 characters');
+      !this.$v.editedDescription.minLength &&
+        errors.push('Description must be equal or more than 30 characters');
+      !this.$v.editedDescription.required &&
+        errors.push('Description is required');
+      return errors;
+    },
+
+    // rules on price validation
+    priceErrors() {
+      const errors = [];
+      if (!this.$v.editedPrice.$dirty) return errors;
+      !this.$v.editedPrice.maxLength &&
+        errors.push('Price must be equal or less than 20 digits');
+      !this.$v.editedPrice.numeric && errors.push('Price must be a number');
+      !this.$v.editedPrice.required && errors.push('Price is required');
+      return errors;
+    },
   },
   methods: {
     ...mapActions('ads', ['updateAd']),
@@ -159,7 +189,7 @@ export default {
 
     // save changes in this ad after editing
     saveChangesAd() {
-      if (this.$refs.formEdit.validate()) {
+      if (!this.$v.$invalid) {
         this.updateAd({
           title: this.editedTitle,
           description: this.editedDescription,

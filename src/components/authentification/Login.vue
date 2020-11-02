@@ -10,7 +10,7 @@
 
           <!-- login form -->
           <v-card-text>
-            <v-form ref="form">
+            <v-form>
               <!-- login email input -->
               <v-text-field
                 v-model="email"
@@ -85,7 +85,7 @@ export default {
       minLength: minLength(3),
       required,
     },
-    password: { required, maxLength: maxLength(1000) },
+    password: { maxLength: maxLength(1000), required },
   },
   data() {
     return {
