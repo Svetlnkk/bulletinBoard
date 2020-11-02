@@ -10,32 +10,34 @@
 
           <!-- registration form -->
           <v-card-text>
-            <v-form ref="form" v-model="valid">
+            <v-form>
               <!-- registration name input -->
               <v-text-field
                 v-model="name"
-                :rules="nameRules"
+                :error-messages="nameErrors"
                 color="teal"
                 counter="30"
                 label="Your name"
                 name="name"
                 prepend-icon="mdi-account"
                 type="text"
-                validate-on-blur
+                @blur="$v.name.$touch()"
+                @input="$v.name.$touch()"
               >
               </v-text-field>
 
               <!-- registration email input -->
               <v-text-field
                 v-model="email"
-                :rules="emailRules"
+                :error-messages="emailErrors"
                 color="teal"
                 counter
                 label="Email"
                 name="email"
                 prepend-icon="mdi-email"
                 type="email"
-                validate-on-blur
+                @blur="$v.email.$touch()"
+                @input="$v.email.$touch()"
               >
               </v-text-field>
 
@@ -43,15 +45,16 @@
               <v-text-field
                 v-model="password"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="passwordRules"
+                :error-messages="passwordErrors"
                 :type="showPassword ? 'text' : 'password'"
                 color="teal"
                 counter
                 label="Password"
                 name="password"
                 prepend-icon="mdi-lock"
-                validate-on-blur
+                @blur="$v.password.$touch()"
                 @click:append="showPassword = !showPassword"
+                @input="$v.password.$touch()"
               >
               </v-text-field>
 
@@ -59,15 +62,16 @@
               <v-text-field
                 v-model="confirmPassword"
                 :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="confirmPasswordRules"
+                :error-messages="confirmPasswordErrors"
                 :type="showConfirmPassword ? 'text' : 'password'"
                 color="teal"
                 counter
                 label="Confirm password"
                 name="confirm-password"
                 prepend-icon="mdi-lock"
-                validate-on-blur
+                @blur="$v.confirmPassword.$touch()"
                 @click:append="showConfirmPassword = !showConfirmPassword"
+                @input="$v.confirmPassword.$touch()"
               >
               </v-text-field>
             </v-form>
@@ -79,7 +83,7 @@
 
             <!-- registration form submit button -->
             <v-btn
-              :disabled="!valid || loadingButton"
+              :disabled="$v.$invalid || loadingButton"
               :loading="loadingButton"
               color="teal"
               text
@@ -96,8 +100,49 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import { validationMixin } from 'vuelidate';
+import {
+  alpha,
+  email,
+  maxLength,
+  minLength,
+  required,
+  sameAs,
+} from 'vuelidate/lib/validators';
+import {
+  hasLowercaseLetter,
+  hasNumber,
+  hasUppercaseLetter,
+} from '../../validators/password';
 
 export default {
+  mixins: [validationMixin],
+  validations: {
+    confirmPassword: {
+      sameAsPassword: sameAs('password'),
+      required,
+    },
+    email: {
+      email,
+      maxLength: maxLength(100),
+      minLength: minLength(3),
+      required,
+    },
+    name: {
+      alpha,
+      maxLength: maxLength(30),
+      minLength: minLength(2),
+      required,
+    },
+    password: {
+      hasLowercaseLetter,
+      hasNumber,
+      hasUppercaseLetter,
+      maxLength: maxLength(50),
+      minLength: minLength(6),
+      required,
+    },
+  },
   data() {
     return {
       confirmPassword: '',
@@ -107,51 +152,68 @@ export default {
       showConfirmPassword: false,
       showPassword: false,
       valid: false,
-
-      // rules on email validation
-      emailRules: [
-        (v) => !!v || 'E-mail is required',
-        (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-      ],
-
-      // rules on password validation
-      passwordRules: [
-        (v) => !!v || 'Password is required',
-        (v) =>
-          (v && v.length >= 6) ||
-          'Password must be equal or more than 6 characters',
-        (v) => !/\s/.test(v) || 'No spaces are allowed',
-        (v) =>
-          /[a-z]/.test(v) || 'Need at least one latin letter with lowercase',
-        (v) =>
-          /[A-Z]/.test(v) || 'Need at least one latin letter with uppercase',
-        (v) => /\d/.test(v) || 'Need at least one digit',
-        (v) =>
-          !/\W/.test(v) ||
-          'You can not enter anything other than Latin letters and digits',
-      ],
-
-      // rules on confirm password validation
-      confirmPasswordRules: [
-        (v) => !!v || 'Password is required',
-        (v) => v === this.password || 'Password must match',
-      ],
-
-      // rules on name validation
-      nameRules: [
-        (v) => !!v || 'Name is required',
-        (v) =>
-          (v && v.length <= 30) ||
-          'Name must be equal or less than 30 characters',
-      ],
     };
   },
   computed: {
     ...mapState('shared', ['loading']),
 
+    // rules on confirmPassword validation
+    confirmPasswordErrors() {
+      const errors = [];
+      if (!this.$v.confirmPassword.$dirty) return errors;
+      !this.$v.confirmPassword.sameAsPassword &&
+        errors.push('Passwords must match');
+      !this.$v.confirmPassword.required &&
+        errors.push('Confirm password is required');
+      return errors;
+    },
+
+    // rules on email validation
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.email.$dirty) return errors;
+      !this.$v.email.email && errors.push('Email must be valid');
+      !this.$v.email.maxLength &&
+        errors.push('Email must be equal or less than 30 characters');
+      !this.$v.email.minLength &&
+        errors.push('Email must be equal or more than 3 characters');
+      !this.$v.email.required && errors.push('Email is required');
+      return errors;
+    },
+
     // returned boolean from 'loading'
     loadingButton() {
       return !!this.loading;
+    },
+
+    // rules on name validation
+    nameErrors() {
+      const errors = [];
+      if (!this.$v.name.$dirty) return errors;
+      !this.$v.name.alpha && errors.push('Name must be only letters');
+      !this.$v.name.maxLength &&
+        errors.push('Name must be equal or less than 30 characters');
+      !this.$v.name.minLength &&
+        errors.push('Name must be equal or more than 3 characters');
+      !this.$v.name.required && errors.push('Name is required');
+      return errors;
+    },
+
+    // rules on password validation
+    passwordErrors() {
+      const errors = [];
+      if (!this.$v.password.$dirty) return errors;
+      !this.$v.password.hasLowercaseLetter &&
+        errors.push('Need at least one latin letter with lowercase');
+      !this.$v.password.hasNumber && errors.push('Need at least one digit');
+      !this.$v.password.hasUppercaseLetter &&
+        errors.push('Need at least one latin letter with uppercase');
+      !this.$v.password.maxLength &&
+        errors.push('Password must be equal or less than 50 characters');
+      !this.$v.password.minLength &&
+        errors.push('Password must be equal or more than 6 characters');
+      !this.$v.password.required && errors.push('Title is required');
+      return errors;
     },
   },
   methods: {

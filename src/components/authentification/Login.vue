@@ -81,7 +81,7 @@ export default {
   validations: {
     email: {
       email,
-      maxLength: maxLength(1000),
+      maxLength: maxLength(100),
       minLength: minLength(3),
       required,
     },
