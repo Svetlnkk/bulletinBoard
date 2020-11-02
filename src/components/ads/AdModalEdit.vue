@@ -116,17 +116,17 @@ import {
 export default {
   mixins: [validationMixin],
   validations: {
-    editedTitle: {
-      maxLength: maxLength(60),
-      minLength: minLength(4),
-      required,
-    },
     editedDescription: {
       maxLength: maxLength(1000),
       minLength: minLength(30),
       required,
     },
     editedPrice: { maxLength: maxLength(20), numeric, required },
+    editedTitle: {
+      maxLength: maxLength(60),
+      minLength: minLength(4),
+      required,
+    },
   },
   props: {
     ad: Object,
