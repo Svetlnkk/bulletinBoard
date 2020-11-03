@@ -208,7 +208,7 @@ export default {
         errors.push('Password must be equal or less than 50 characters');
       !this.$v.password.minLength &&
         errors.push('Password must be equal or more than 6 characters');
-      !this.$v.password.required && errors.push('Title is required');
+      !this.$v.password.required && errors.push('Password is required');
       return errors;
     },
   },

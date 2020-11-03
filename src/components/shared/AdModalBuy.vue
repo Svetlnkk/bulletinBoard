@@ -157,11 +157,11 @@ export default {
     phoneErrors() {
       const errors = [];
       if (!this.$v.phone.$dirty) return errors;
-      !this.$v.phone.numeric && errors.push('Name must be only digits');
+      !this.$v.phone.numeric && errors.push('Phone number must be only digits');
       !this.$v.phone.maxLength &&
-        errors.push('Name must be equal or less than 30 characters');
+        errors.push('Phone number must be equal or less than 30 digits');
       !this.$v.phone.minLength &&
-        errors.push('Name must be equal or more than 5 characters');
+        errors.push('Phone number must be equal or more than 5 digits');
       !this.$v.phone.required && errors.push('Phone number is required');
       return errors;
     },

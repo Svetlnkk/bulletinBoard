@@ -36,58 +36,56 @@
         <v-row>
           <v-col class="col-12">
             <v-card-text>
-              <v-form ref="formEdit" v-model="valid">
+              <v-form>
                 <!-- user edit dialog name input -->
                 <v-text-field
                   v-model="editedName"
-                  :rules="nameEditRules"
+                  :error-messages="editedNameErrors"
                   color="teal"
                   counter="30"
                   label="User name"
                   name="name"
-                  required
                   type="text"
-                  validate-on-blur
+                  @blur="$v.editedName.$touch()"
                 >
                 </v-text-field>
 
                 <!-- user edit dialog email input -->
                 <v-text-field
                   v-model="editedEmail"
-                  :rules="emailEditRules"
+                  :error-messages="editedEmailErrors"
                   color="teal"
                   counter
                   label="Email"
                   name="email"
-                  required
                   type="email"
-                  validate-on-blur
+                  @blur="$v.editedEmail.$touch()"
                 >
                 </v-text-field>
 
                 <!-- user edit dialog password input -->
                 <v-text-field
                   v-model="editedPassword"
-                  :rules="passwordEditRules"
+                  :error-messages="editedPasswordErrors"
                   color="teal"
                   counter
                   label="New password"
                   name="password"
                   type="password"
-                  validate-on-blur
+                  @blur="$v.editedPassword.$touch()"
                 >
                 </v-text-field>
 
                 <!-- user edit dialog confirm password input -->
                 <v-text-field
                   v-model="editedConfirmPassword"
-                  :rules="confirmEditPasswordRules"
+                  :error-messages="editedConfirmPasswordErrors"
                   color="teal"
                   counter
                   label="Confirm new password"
                   name="confirmPassword"
                   type="password"
-                  validate-on-blur
+                  @blur="$v.editedConfirmPassword.$touch()"
                 >
                 </v-text-field>
               </v-form>
@@ -108,7 +106,7 @@
 
               <!-- user edit dialog save button -->
               <v-btn
-                :disabled="!valid"
+                :disabled="!validateInput()"
                 class="teal darken-2 white--text"
                 depressed
                 @click="saveChangesUser"
@@ -134,8 +132,49 @@
 <script>
 import { mapActions } from 'vuex';
 import UserModalCurrentPassword from './UserModalCurrentPassword';
+import { validationMixin } from 'vuelidate';
+import {
+  alpha,
+  email,
+  maxLength,
+  minLength,
+  required,
+  sameAs,
+} from 'vuelidate/lib/validators';
+import {
+  hasLowercaseLetter,
+  hasNumber,
+  hasUppercaseLetter,
+} from '../../validators/password';
 
 export default {
+  mixins: [validationMixin],
+  validations: {
+    editedConfirmPassword: {
+      sameAsPassword: sameAs('editedPassword'),
+      required,
+    },
+    editedEmail: {
+      email,
+      maxLength: maxLength(100),
+      minLength: minLength(3),
+      required,
+    },
+    editedName: {
+      alpha,
+      maxLength: maxLength(30),
+      minLength: minLength(2),
+      required,
+    },
+    editedPassword: {
+      hasLowercaseLetter,
+      hasNumber,
+      hasUppercaseLetter,
+      maxLength: maxLength(50),
+      minLength: minLength(6),
+      required,
+    },
+  },
   components: {
     appUserModalCurrentPassword: UserModalCurrentPassword,
   },
@@ -151,55 +190,92 @@ export default {
       isCheckedCurrentPassword: false,
       modal: false,
       modalCurrentPassword: false,
-      valid: false,
-
-      // rules on edited email validation
-      emailEditRules: [
-        (v) => !!v || 'E-mail is required',
-        (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-      ],
-
-      // rules on edited password validation
-      passwordEditRules: [
-        (v) =>
-          (v && v.length >= 6) ||
-          v.length === 0 ||
-          'Password must be equal or more than 6 characters',
-        (v) => !/\s/.test(v) || v.length === 0 || 'No spaces are allowed',
-        (v) =>
-          /[a-z]/.test(v) ||
-          v.length === 0 ||
-          'Need at least one latin letter with lowercase',
-        (v) =>
-          /[A-Z]/.test(v) ||
-          v.length === 0 ||
-          'Need at least one latin letter with uppercase',
-        (v) => /\d/.test(v) || v.length === 0 || 'Need at least one digit',
-        (v) =>
-          !/\W/.test(v) ||
-          v.length === 0 ||
-          'You can not enter anything other than Latin letters and digits',
-      ],
-
-      // rules on confirm edited password validation
-      confirmEditPasswordRules: [
-        (v) => v === this.editedPassword || 'Password must match',
-      ],
-
-      // rules on edited name validation
-      nameEditRules: [
-        (v) => !!v || 'Name is required',
-        (v) =>
-          (v && v.length >= 2) ||
-          'Name must be equal or more than 2 characters',
-        (v) =>
-          (v && v.length <= 30) ||
-          'Name must be equal or less than 30 characters',
-      ],
     };
+  },
+  computed: {
+    // rules on confirmPassword validation. Not cheсked if this.editedPassword is none.
+    editedConfirmPasswordErrors() {
+      const errors = [];
+      if (!this.$v.editedConfirmPassword.$dirty) return errors;
+      !this.$v.editedConfirmPassword.sameAsPassword &&
+        this.editedPassword &&
+        errors.push('Passwords must match');
+      !this.$v.editedConfirmPassword.required &&
+        this.editedPassword &&
+        errors.push('Confirm password is required');
+      return errors;
+    },
+
+    // rules on email validation
+    editedEmailErrors() {
+      const errors = [];
+      if (!this.$v.editedEmail.$dirty) return errors;
+      !this.$v.editedEmail.email && errors.push('Email must be valid');
+      !this.$v.editedEmail.maxLength &&
+        errors.push('Email must be equal or less than 30 characters');
+      !this.$v.editedEmail.minLength &&
+        errors.push('Email must be equal or more than 3 characters');
+      !this.$v.editedEmail.required && errors.push('Email is required');
+      return errors;
+    },
+
+    // rules on name validation
+    editedNameErrors() {
+      const errors = [];
+      if (!this.$v.editedName.$dirty) return errors;
+      !this.$v.editedName.alpha && errors.push('Name must be only letters');
+      !this.$v.editedName.maxLength &&
+        errors.push('Name must be equal or less than 30 characters');
+      !this.$v.editedName.minLength &&
+        errors.push('Name must be equal or more than 3 characters');
+      !this.$v.editedName.required && errors.push('Name is required');
+      return errors;
+    },
+
+    // rules on password validation.Not cheсked if this.editedPassword is none.
+    editedPasswordErrors() {
+      const errors = [];
+      if (!this.$v.editedPassword.$dirty) return errors;
+      !this.$v.editedPassword.hasLowercaseLetter &&
+        this.editedPassword &&
+        errors.push('Need at least one latin letter with lowercase');
+      !this.$v.editedPassword.hasNumber &&
+        this.editedPassword &&
+        errors.push('Need at least one digit');
+      !this.$v.editedPassword.hasUppercaseLetter &&
+        this.editedPassword &&
+        errors.push('Need at least one latin letter with uppercase');
+      !this.$v.editedPassword.maxLength &&
+        this.editedPassword &&
+        errors.push('Password must be equal or less than 50 characters');
+      !this.$v.editedPassword.minLength &&
+        this.editedPassword &&
+        errors.push('Password must be equal or more than 6 characters');
+      !this.$v.editedPassword.required &&
+        this.editedPassword &&
+        errors.push('Password is required');
+      return errors;
+    },
   },
   methods: {
     ...mapActions('user', ['updateUser']),
+
+    /* custom validator of checking 'vuelidate'.
+    Return 'true' if password did not change but change (valid) other input.
+    And return 'true' if all is valid */
+    validateInput() {
+      if (
+        !this.editedPassword &&
+        !this.editedEmail.$invalid &&
+        !this.editedName.$invalid
+      ) {
+        return true;
+      } else if (!this.$v.$invalid) {
+        return true;
+      } else {
+        return false;
+      }
+    },
 
     // save of all changes of current user
     async saveChangesUser() {
@@ -211,10 +287,7 @@ export default {
         password: !this.editedPassword ? null : this.editedPassword,
       };
 
-      if (
-        this.$refs.formEdit.validate() &&
-        (user.name || user.email || user.password)
-      ) {
+      if (this.validateInput() && (user.name || user.email || user.password)) {
         if (user.name && !user.email && !user.password) {
           await this.updateUser(user);
 
