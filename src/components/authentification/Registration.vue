@@ -22,7 +22,6 @@
                 prepend-icon="mdi-account"
                 type="text"
                 @blur="$v.name.$touch()"
-                @input="$v.name.$touch()"
               >
               </v-text-field>
 
