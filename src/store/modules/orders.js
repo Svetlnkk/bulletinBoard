@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { Order } from '../entities/Order';
+import { Order } from '../../entities/Order';
 
 export default {
   namespaced: true,
@@ -7,7 +7,7 @@ export default {
     orders: [],
   },
   mutations: {
-    setOrders(state, payload) {
+    SET_ALL_ORDERS(state, payload) {
       state.orders = payload;
     },
   },
@@ -61,7 +61,7 @@ export default {
           );
         });
 
-        commit('setOrders', resultOrders);
+        commit('SET_ALL_ORDERS', resultOrders);
         dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/decreaseLoading', null, { root: true });

@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { Ad } from '../entities/Ad';
+import { Ad } from '../../entities/Ad';
 
 export default {
   namespaced: true,
@@ -8,19 +8,19 @@ export default {
   },
 
   mutations: {
-    createAd(state, payload) {
+    ADD_AD(state, payload) {
       state.ads.push(payload);
     },
-    deleteAd(state, payload) {
+    DELETE_AD(state, payload) {
       let adRemovableIndex = state.ads.findIndex((ad) => {
         return ad.id === payload;
       });
       state.ads.splice(adRemovableIndex, 1);
     },
-    getAds(state, payload) {
+    SET_ALL_ADS(state, payload) {
       state.ads = payload;
     },
-    updateAd(state, { title, description, id, price }) {
+    SET_AD(state, { title, description, id, price }) {
       const ad = state.ads.find((ad) => {
         return ad.id === id;
       });
@@ -101,7 +101,7 @@ export default {
           });
 
         // add ad in state
-        commit('createAd', {
+        commit('ADD_AD', {
           ...AdNew,
           id: ad.key,
           imageSrc,
@@ -141,7 +141,7 @@ export default {
           .child(adId)
           .remove();
 
-        commit('deleteAd', adId);
+        commit('DELETE_AD', adId);
 
         dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
@@ -187,7 +187,7 @@ export default {
           );
         });
 
-        commit('getAds', resultAds);
+        commit('SET_ALL_ADS', resultAds);
         dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/setError', error.message, { root: true });
@@ -215,7 +215,7 @@ export default {
             price,
             title,
           });
-        commit('updateAd', {
+        commit('SET_AD', {
           title,
           description,
           id,

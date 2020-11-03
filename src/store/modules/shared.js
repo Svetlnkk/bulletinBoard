@@ -5,37 +5,37 @@ export default {
     loading: 0,
   },
   mutations: {
-    clearError(state) {
+    CLEAR_ERROR(state) {
       state.error = null;
     },
 
-    decreaseLoading(state) {
+    DECREASE_LOADING(state) {
       state.loading--;
     },
 
-    setError(state, payload) {
+    SET_ERROR(state, payload) {
       state.error = payload;
     },
 
-    increaseLoading(state) {
+    INCREASE_LOADING(state) {
       state.loading++;
     },
   },
   actions: {
     clearError({ commit }) {
-      commit('clearError');
+      commit('CLEAR_ERROR');
     },
 
     decreaseLoading({ commit }) {
-      commit('decreaseLoading');
+      commit('DECREASE_LOADING');
     },
 
     setError({ commit }, payload) {
-      commit('setError', payload);
+      commit('SET_ERROR', payload);
     },
 
     increaseLoading({ commit }) {
-      commit('increaseLoading');
+      commit('INCREASE_LOADING');
     },
   },
 };

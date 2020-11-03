@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { User } from '../entities/User';
+import { User } from '../../entities/User';
 
 export default {
   namespaced: true,
@@ -8,10 +8,10 @@ export default {
     currentUser: null,
   },
   mutations: {
-    setCurrentUser(state, payload) {
+    SET_CURRENT_USER(state, payload) {
       state.currentUser = payload;
     },
-    getAllUsers(state, payload) {
+    SET_ALL_USERS(state, payload) {
       state.allUsers = payload;
     },
   },
@@ -33,7 +33,7 @@ export default {
           .ref(`/users/${state.currentUser.id}/personal/email`)
           .set(payload);
 
-        commit('setCurrentUser', currentUser);
+        commit('SET_CURRENT_USER', currentUser);
       } catch (error) {
         dispatch('shared/setError', error.message, { root: true });
         throw error;
@@ -54,7 +54,7 @@ export default {
         const currentUser = state.currentUser;
         currentUser.name = payload;
 
-        commit('setCurrentUser', currentUser);
+        commit('SET_CURRENT_USER', currentUser);
         dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/decreaseLoading', null, { root: true });
@@ -124,7 +124,7 @@ export default {
           .remove();
 
         //delete user from state
-        commit('setCurrentUser', null);
+        commit('SET_CURRENT_USER', null);
 
         dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
@@ -157,7 +157,7 @@ export default {
         });
 
         // add all users to state
-        commit('getAllUsers', databaseUsersResult);
+        commit('SET_ALL_USERS', databaseUsersResult);
         dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/decreaseLoading', null, { root: true });
@@ -183,7 +183,7 @@ export default {
         currentUser.name = databasePersonalName;
 
         // set current user data to state
-        commit('setCurrentUser', currentUser);
+        commit('SET_CURRENT_USER', currentUser);
         dispatch('shared/decreaseLoading', null, { root: true });
       } catch (error) {
         dispatch('shared/decreaseLoading', null, { root: true });
@@ -212,7 +212,7 @@ export default {
 
         // set user in state
         commit(
-          'setCurrentUser',
+          'SET_CURRENT_USER',
           new User({
             email: user.user.email,
             id: user.user.uid,
@@ -231,7 +231,7 @@ export default {
     // logout the current user
     async logoutUser({ commit }) {
       await firebase.auth().signOut();
-      commit('setCurrentUser', null);
+      commit('SET_CURRENT_USER', null);
     },
 
     // register new user in firebase and state
@@ -247,7 +247,7 @@ export default {
 
         // add new user in state
         commit(
-          'setCurrentUser',
+          'SET_CURRENT_USER',
           new User({
             email: user.user.email,
             id: user.user.uid,
@@ -294,7 +294,7 @@ export default {
     // auto login after reload page.
     autoLoginUser({ commit }, payload) {
       commit(
-        'setCurrentUser',
+        'SET_CURRENT_USER',
         new User({
           email: payload.email,
           id: payload.uid,
