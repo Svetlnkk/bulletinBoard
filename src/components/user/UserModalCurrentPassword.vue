@@ -60,6 +60,7 @@
 <script>
 import { mapActions } from 'vuex';
 export default {
+  name: 'UserModalCurrentPassword',
   props: {
     modalCurrentPassword: Boolean,
   },

@@ -111,6 +111,7 @@ import {
 } from 'vuelidate/lib/validators';
 
 export default {
+  name: 'AdModalEdit',
   mixins: [validationMixin],
   validations: {
     editedDescription: {

@@ -120,6 +120,7 @@ import {
 } from 'vuelidate/lib/validators';
 
 export default {
+  name: 'AdNew',
   mixins: [validationMixin],
   validations: {
     description: {

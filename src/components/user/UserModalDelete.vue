@@ -63,6 +63,7 @@ import { mapActions } from 'vuex';
 import UserModalCurrentPassword from './UserModalCurrentPassword';
 
 export default {
+  name: 'UserModalDelete',
   components: {
     AppUserModalCurrentPassword: UserModalCurrentPassword,
   },

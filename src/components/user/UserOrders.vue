@@ -59,6 +59,7 @@
 import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
+  name: 'UserOrders',
   computed: {
     ...mapState('shared', ['loading']),
     ...mapGetters('orders', ['orders']),

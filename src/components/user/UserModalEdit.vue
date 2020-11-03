@@ -148,6 +148,7 @@ import {
 } from '../../validators/password';
 
 export default {
+  name: 'UserModalEdit',
   mixins: [validationMixin],
   validations: {
     editedConfirmPassword: {

@@ -99,6 +99,7 @@ import UserModalDelete from './UserModalDelete';
 import UserModalEdit from './UserModalEdit';
 
 export default {
+  name: 'UserAccount',
   components: {
     AppUserModalDelete: UserModalDelete,
     AppUserModalEdit: UserModalEdit,

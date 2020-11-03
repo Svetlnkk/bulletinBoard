@@ -14,7 +14,7 @@
             interval="5000"
           >
             <v-carousel-item
-              v-for="ad in sortPromoAds"
+              v-for="ad in promoAds"
               :key="ad.id"
               :src="ad.imageSrc"
               :to="'/ad/' + ad.id"
@@ -44,6 +44,13 @@
       </v-row>
     </v-container>
 
+    <!-- Filters module -->
+    <app-ad-filters
+      v-bind:processedAds.sync="processedAds"
+      v-bind:shownAds.sync="shownAds"
+      :ads="ads"
+    ></app-ad-filters>
+
     <!-- content of home page -->
     <v-container>
       <v-row>
@@ -51,7 +58,7 @@
 
         <!-- show part of all ads (12) -->
         <v-col
-          v-for="ad in sortAds.slice(0, this.shownAds)"
+          v-for="ad in processedAds.slice(0, this.shownAds)"
           :key="ad.id"
           class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"
         >
@@ -86,7 +93,9 @@
       </v-row>
 
       <!-- button to show next ads -->
-      <v-row v-if="shownAds !== sortAds.length && !(sortAds.length <= 12)">
+      <v-row
+        v-if="shownAds !== processedAds.length && !(processedAds.length <= 12)"
+      >
         <v-col
           class="col-12 d-flex flex-column flex-sm-row my-4 mx-auto py-0 px-xl-6 px-lg-3 px-md-6"
         >
@@ -113,33 +122,29 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import AdFilters from './ads/AdFilters';
 
 export default {
+  name: 'Home',
+  components: {
+    AppAdFilters: AdFilters,
+  },
   data() {
     return {
       shownAds: 12,
+      processedAds: [],
     };
   },
   computed: {
     ...mapState('shared', ['loading']),
     ...mapState('ads', ['ads']),
     ...mapGetters('ads', ['promoAds']),
-
-    // sort array of all ads by date (newest to oldest)
-    sortAds() {
-      return [...this.ads].reverse();
-    },
-
-    // sort array of promo ads by date (newest to oldest)
-    sortPromoAds() {
-      return [...this.promoAds].reverse();
-    },
   },
   methods: {
     // increase number of shown ads (+12)
     increaseShownAds() {
-      if (this.shownAds + 12 > this.sortAds.length) {
-        this.shownAds = this.sortAds.length;
+      if (this.shownAds + 12 > this.processedAds.length) {
+        this.shownAds = this.processedAds.length;
       } else {
         this.shownAds += 12;
       }

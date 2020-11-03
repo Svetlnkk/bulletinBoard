@@ -121,6 +121,7 @@
 import { mapGetters, mapState } from 'vuex';
 
 export default {
+  name: 'AdList',
   data() {
     return {
       shownAds: 5,

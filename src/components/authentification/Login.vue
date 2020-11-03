@@ -75,6 +75,7 @@ import {
 } from 'vuelidate/lib/validators';
 
 export default {
+  name: 'Login',
   mixins: [validationMixin],
   validations: {
     email: {

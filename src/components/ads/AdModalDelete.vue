@@ -50,6 +50,7 @@
 import { mapActions } from 'vuex';
 
 export default {
+  name: 'AdModalDelete',
   props: {
     ad: Object,
   },

@@ -125,6 +125,7 @@ import AdModalEdit from './AdModalEdit';
 import AdModalDelete from './AdModalDelete';
 
 export default {
+  name: 'Ad',
   components: {
     AppAdModalEdit: AdModalEdit,
     AppAdModalDelete: AdModalDelete,

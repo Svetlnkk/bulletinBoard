@@ -104,6 +104,7 @@ import {
   required,
 } from 'vuelidate/lib/validators';
 export default {
+  name: 'AdModalBuy',
   mixins: [validationMixin],
   validations: {
     name: {

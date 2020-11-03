@@ -112,6 +112,7 @@ import {
 } from '../../validators/password';
 
 export default {
+  name: 'Registration',
   mixins: [validationMixin],
   validations: {
     confirmPassword: {
