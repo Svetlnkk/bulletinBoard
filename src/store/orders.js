@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { Order } from './essentials';
+import { Order } from '../entities/Order';
 
 export default {
   namespaced: true,

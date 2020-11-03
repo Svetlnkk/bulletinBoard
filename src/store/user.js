@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { User } from './essentials';
+import { User } from '../entities/User';
 
 export default {
   namespaced: true,

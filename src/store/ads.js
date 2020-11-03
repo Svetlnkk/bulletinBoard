@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { Ad } from './essentials';
+import { Ad } from '../entities/Ad';
 
 export default {
   namespaced: true,
