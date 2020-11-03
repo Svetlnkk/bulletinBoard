@@ -37,7 +37,6 @@
                 prepend-icon="mdi-email"
                 type="email"
                 @blur="$v.email.$touch()"
-                @input="$v.email.$touch()"
               >
               </v-text-field>
 
@@ -54,7 +53,6 @@
                 prepend-icon="mdi-lock"
                 @blur="$v.password.$touch()"
                 @click:append="showPassword = !showPassword"
-                @input="$v.password.$touch()"
               >
               </v-text-field>
 
@@ -71,7 +69,6 @@
                 prepend-icon="mdi-lock"
                 @blur="$v.confirmPassword.$touch()"
                 @click:append="showConfirmPassword = !showConfirmPassword"
-                @input="$v.confirmPassword.$touch()"
               >
               </v-text-field>
             </v-form>
@@ -221,7 +218,7 @@ export default {
 
     // submit new user on Firebase and Vuex
     onSubmit() {
-      if (this.$refs.form.validate()) {
+      if (!this.$v.$invalid) {
         const user = {
           email: this.email,
           password: this.password,

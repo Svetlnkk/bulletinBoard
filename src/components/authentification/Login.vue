@@ -22,7 +22,6 @@
                 prepend-icon="mdi-account"
                 type="email"
                 @blur="$v.email.$touch()"
-                @input="$v.email.$touch()"
               >
               </v-text-field>
 
@@ -39,7 +38,6 @@
                 prepend-icon="mdi-lock"
                 @blur="$v.password.$touch()"
                 @click:append="show = !show"
-                @input="$v.password.$touch()"
               >
               </v-text-field>
             </v-form>

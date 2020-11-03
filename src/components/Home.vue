@@ -49,7 +49,7 @@
       <v-row>
         <!-- ad list of home page -->
 
-        <!-- show part of all all ads (12) -->
+        <!-- show part of all ads (12) -->
         <v-col
           v-for="ad in sortAds.slice(0, this.shownAds)"
           :key="ad.id"
@@ -136,7 +136,7 @@ export default {
     },
   },
   methods: {
-    // increase number of shown ads (+5)
+    // increase number of shown ads (+12)
     increaseShownAds() {
       if (this.shownAds + 12 > this.sortAds.length) {
         this.shownAds = this.sortAds.length;

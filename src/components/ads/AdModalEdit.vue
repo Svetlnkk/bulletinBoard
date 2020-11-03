@@ -44,7 +44,6 @@
                   name="title"
                   type="text"
                   @blur="$v.editedTitle.$touch()"
-                  @input="$v.editedTitle.$touch()"
                 >
                 </v-text-field>
 
@@ -58,7 +57,6 @@
                   name="description"
                   type="text"
                   @blur="$v.editedDescription.$touch()"
-                  @input="$v.editedDescription.$touch()"
                 >
                 </v-textarea>
 
@@ -72,7 +70,6 @@
                   name="price"
                   type="number"
                   @blur="$v.editedPrice.$touch()"
-                  @input="$v.editedPrice.$touch()"
                 >
                 </v-text-field>
               </v-form>
