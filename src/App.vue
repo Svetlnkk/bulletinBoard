@@ -170,6 +170,14 @@ export default {
     height: 270px !important;
   }
 }
+/* delete arrows in number type input */
+::-webkit-outer-spin-button,
+::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
 </style>
 
 <style scoped>

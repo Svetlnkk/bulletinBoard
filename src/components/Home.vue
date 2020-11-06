@@ -76,9 +76,17 @@
             </v-img>
 
             <!-- title of home page -->
-            <v-card-title class="mb-auto">
+            <v-card-title class="pb-1">
               <h2 class="text-h6">{{ ad.title }}</h2>
             </v-card-title>
+
+            <!-- price of home page -->
+            <v-card-text class="pb-1">
+              <h3 class="text-subtitle-2 teal--text text--capitalize">
+                <span class="black--text">Price:</span>
+                {{ ad.price }}
+              </h3>
+            </v-card-text>
 
             <!-- actions of home page -->
             <v-card-actions>
