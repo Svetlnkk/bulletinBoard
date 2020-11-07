@@ -10,26 +10,29 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col class="col-9 pt-0 pb-1">
+          <v-col class="col-9 pt-0 pr-0 pb-1">
             <v-text-field
               v-model.trim="inputSearch"
               clearable
+              class="rounded-r-0"
               color="teal"
               counter="30"
               dense
+              filled
               label="Search"
               name="search"
-              outlined
               type="text"
-              @click:clear="clearProcessedAds()"
+              outlined
+              @click:clear="clearFilterWords()"
               @keydown.enter="updateProcessedAds(filteredAdsByWords)"
-              @keydown.esc="clearProcessedAds()"
+              @keydown.esc="clearFilterWords()"
             ></v-text-field>
           </v-col>
           <v-col class="col-2 pt-0 pl-0">
             <v-btn
-              class="teal"
-              min-height="39"
+              class="teal rounded-l-0"
+              min-height="40"
+              text
               @click="updateProcessedAds(filteredAdsByWords)"
             >
               <v-icon text class="white--text">mdi-magnify</v-icon>
@@ -52,10 +55,11 @@
               color="teal"
               counter="20"
               clearable
+              height="34"
               dense
               label="From"
               type="number"
-              @input="filteredAdsByPrice()"
+              @change="updateProcessedAds(filteredAdsByPrice)"
             ></v-text-field>
           </v-col>
           <v-col class="col-6 py-0">
@@ -64,9 +68,11 @@
               color="teal"
               counter="20"
               clearable
+              height="34"
               dense
               label="To"
               type="number"
+              @change="updateProcessedAds(filteredAdsByPrice)"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -83,7 +89,10 @@
           <v-col class="py-0">
             <v-select
               v-model="selectedSelectFilter"
+              class="text-body-2 ad-filters__select"
+              item-color="teal"
               dense
+              filled
               outlined
               color="teal"
               :items="itemsSelectFilter"
@@ -96,7 +105,11 @@
     </v-row>
     <v-row>
       <v-col class="d-flex justify-center pb-0 teal--text">
-        <p class="text-uppercase mb-0" v-if="this.processedAds !== ads">
+        <!-- prettier-ignore -->
+        <p
+          class="text-uppercase mb-0"
+          v-if="showQuantityFilteredAds"
+        >
           {{ quantityFilteredAds }}
         </p>
       </v-col>
@@ -116,20 +129,21 @@ export default {
   data() {
     return {
       inputSearch: '',
+      showQuantityFilteredAds: false,
       itemsSelectFilter: [
-        'Alphabet a -> z',
-        'Reverse alphabet z -> a',
-        'Data new -> old',
-        'Data old -> new',
+        'BY ALPHABET: A >>> Z',
+        'BY ALPHABET: REVERSE Z >>> A',
+        'BY DATA: NEW >>> OLD',
+        'BY DATA: OLD >>> NEW',
       ],
-      selectedSelectFilter: 'Alphabet a -> z',
+      selectedSelectFilter: 'BY DATA: NEW >>> OLD',
       maxPrice: null,
       minPrice: null,
     };
   },
   computed: {
     filteredAdsByWords() {
-      if (!this.inputSearch) return this.ads;
+      if (!this.inputSearch) return;
       return this.ads.filter((ad) => {
         return (
           ad.title.toLowerCase().indexOf(this.inputSearch.toLowerCase()) !== -1
@@ -137,13 +151,16 @@ export default {
       });
     },
     filteredAdsByPrice() {
-      if ((!this.maxPrice && !this.minPrice) || this.maxPrice > this.minPrice) {
+      if (
+        (!this.maxPrice && !this.minPrice) ||
+        (this.maxPrice && this.minPrice > this.maxPrice)
+      ) {
         return this.processedAds;
       }
 
-      return this.processedAds.filter((ad) => {
+      return this.ads.filter((ad) => {
         if (this.minPrice && this.maxPrice)
-          return ad.price >= this.minPrice && ad.price <= this.minPrice;
+          return ad.price >= this.minPrice && ad.price <= this.maxPrice;
         if (this.minPrice) return ad.price >= this.minPrice;
         if (this.maxPrice) return ad.price <= this.maxPrice;
       });
@@ -161,15 +178,15 @@ export default {
   },
   methods: {
     sortAds(sortType) {
-      if (sortType === 'Alphabet a -> z') {
+      if (sortType === 'BY ALPHABET: A >>> Z') {
         return [...this.ads].sort((a, b) => a.title.localeCompare(b.title));
-      } else if (sortType === 'Reverse alphabet z -> a') {
+      } else if (sortType === 'BY ALPHABET: REVERSE Z >>> A') {
         return [...this.ads].sort((a, b) => b.title.localeCompare(a.title));
-      } else if (sortType === 'Data old -> new') {
+      } else if (sortType === 'BY DATA: OLD >>> NEW') {
         return [...this.ads].sort(
           (a, b) => dateParse(a.dateAdded) - dateParse(b.dateAdded)
         );
-      } else if (sortType === 'Data new -> old') {
+      } else if (sortType === 'BY DATA: NEW >>> OLD') {
         return [...this.ads].sort(
           (a, b) => dateParse(b.dateAdded) - dateParse(a.dateAdded)
         );
@@ -177,14 +194,20 @@ export default {
     },
 
     updateProcessedAds(arrayAds) {
+      if (!arrayAds) return;
+      if (this.inputSearch || this.minPrice || this.maxPrice) {
+        this.showQuantityFilteredAds = true;
+      } else {
+        this.showQuantityFilteredAds = false;
+      }
       return (
         this.$emit('update:processedAds', arrayAds),
         this.$emit('update:shownAds', 12)
       );
     },
-    clearProcessedAds() {
+    clearFilterWords() {
       this.inputSearch = '';
-      this.updateProcessedAds(this.filteredAdsByWords);
+      this.updateProcessedAds(this.sortAds(this.selectedSelectFilter));
     },
   },
   created() {
