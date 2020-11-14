@@ -1,7 +1,9 @@
 <template>
   <v-container class="py-0">
     <v-row class="ad-filters__row mx-3 mx-lg-0 mx-xl-3">
+      <!-- ad filters search by word column-->
       <v-col class="col-4">
+        <!-- ad filters search by words title -->
         <v-row>
           <v-col class="pt-0 pb-1">
             <h3 class="text-subtitle-2 teal--text text-uppercase">
@@ -9,25 +11,29 @@
             </h3>
           </v-col>
         </v-row>
+
         <v-row>
+          <!-- ad filters search by words input -->
           <v-col class="col-9 pt-0 pr-0 pb-1">
             <v-text-field
               v-model.trim="inputSearch"
-              clearable
               class="rounded-r-0"
+              clearable
               color="teal"
               counter="30"
               dense
               filled
               label="Search"
               name="search"
-              type="text"
               outlined
+              type="text"
               @click:clear="clearFilterWords()"
               @keydown.enter="updateProcessedAds(filteredAdsByWords)"
               @keydown.esc="clearFilterWords()"
             ></v-text-field>
           </v-col>
+
+          <!-- ad filters search by words button -->
           <v-col class="col-2 pt-0 pl-0">
             <v-btn
               class="teal rounded-l-0"
@@ -40,7 +46,10 @@
           </v-col>
         </v-row>
       </v-col>
+
+      <!-- ad filters search by price column -->
       <v-col class="col-4">
+        <!-- ad filters search by price title -->
         <v-row>
           <v-col class="pt-0 pb-1">
             <h3 class="text-subtitle-2 teal--text text-uppercase">
@@ -48,28 +57,32 @@
             </h3>
           </v-col>
         </v-row>
+
         <v-row>
+          <!-- ad filters search by price (min price) input -->
           <v-col class="col-6 py-0">
             <v-text-field
               v-model="minPrice"
+              clearable
               color="teal"
               counter="20"
-              clearable
-              height="34"
               dense
+              height="34"
               label="From"
               type="number"
               @change="updateProcessedAds(filteredAdsByPrice)"
             ></v-text-field>
           </v-col>
+
+          <!-- ad filters search by price (max price) input -->
           <v-col class="col-6 py-0">
             <v-text-field
               v-model="maxPrice"
+              clearable
               color="teal"
               counter="20"
-              clearable
-              height="34"
               dense
+              height="34"
               label="To"
               type="number"
               @change="updateProcessedAds(filteredAdsByPrice)"
@@ -77,7 +90,10 @@
           </v-col>
         </v-row>
       </v-col>
+
+      <!-- ad filters sorts -->
       <v-col>
+        <!-- ad filters sorts (title) -->
         <v-row>
           <v-col class="pt-0 pb-1">
             <h3 class="text-subtitle-2 teal--text text-uppercase">
@@ -85,17 +101,19 @@
             </h3>
           </v-col>
         </v-row>
+
+        <!-- ad filters sorts select -->
         <v-row>
           <v-col class="py-0">
             <v-select
               v-model="selectedSelectFilter"
+              :items="itemsSelectFilter"
               class="text-body-2 ad-filters__select"
-              item-color="teal"
+              color="teal"
               dense
               filled
+              item-color="teal"
               outlined
-              color="teal"
-              :items="itemsSelectFilter"
               @change="updateProcessedAds(sortAds(selectedSelectFilter))"
             >
             </v-select>
