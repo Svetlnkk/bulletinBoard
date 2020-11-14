@@ -71,6 +71,7 @@
               label="From"
               type="number"
               @change="updateProcessedAds(filteredAdsByPrice)"
+              @input="updateProcessedAdsDelay(700, filteredAdsByPrice)"
             ></v-text-field>
           </v-col>
 
@@ -121,6 +122,8 @@
         </v-row>
       </v-col>
     </v-row>
+
+    <!-- show quantity filtered (only) ads -->
     <v-row>
       <v-col class="d-flex justify-center pb-0 teal--text">
         <!-- prettier-ignore -->
@@ -157,6 +160,7 @@ export default {
       selectedSelectFilter: 'BY DATA: NEW >>> OLD',
       maxPrice: null,
       minPrice: null,
+      setTimeoutCounter: null,
     };
   },
   computed: {
@@ -209,6 +213,23 @@ export default {
           (a, b) => dateParse(b.dateAdded) - dateParse(a.dateAdded)
         );
       }
+    },
+
+    updateProcessedAdsDelay(delay, arrayAds) {
+      if (this.setTimeoutCounter) clearTimeout(this.setTimeoutCounter);
+
+      this.setTimeoutCounter = setTimeout(() => {
+        if (!arrayAds) return;
+        if (this.inputSearch || this.minPrice || this.maxPrice) {
+          this.showQuantityFilteredAds = true;
+        } else {
+          this.showQuantityFilteredAds = false;
+        }
+        return (
+          this.$emit('update:processedAds', arrayAds),
+          this.$emit('update:shownAds', 12)
+        );
+      }, delay);
     },
 
     updateProcessedAds(arrayAds) {
