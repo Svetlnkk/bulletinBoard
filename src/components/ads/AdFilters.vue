@@ -2,57 +2,53 @@
   <v-container class="py-0">
     <v-row class="ad-filters__row mx-3 mx-lg-0 mx-xl-3">
       <!-- ad filters search by word column-->
-      <v-col class="col-4">
-        <!-- ad filters search by words title -->
+      <v-col class="col-12 col-sm-6 col-md-4">
+        <!-- ad filters search by word title -->
         <v-row>
-          <v-col class="pt-0 pb-1">
-            <h3 class="text-subtitle-2 teal--text text-uppercase">
+          <v-col class="pt-0 pb-1 col-lg-9 mx-auto">
+            <h3
+              class="text-center text-md-left text-subtitle-2 teal--text text-uppercase"
+            >
               Search ads by word:
             </h3>
           </v-col>
         </v-row>
 
         <v-row>
-          <!-- ad filters search by words input -->
-          <v-col class="col-9 pt-0 pr-0 pb-1">
+          <!-- ad filters search by word input -->
+          <v-col class="col-12 pt-0 pb-1 col-lg-9 mx-auto">
             <v-text-field
               v-model.trim="inputSearch"
-              class="rounded-r-0"
+              :error-messages="searchByWordErrors"
               clearable
               color="teal"
               counter="30"
               dense
               filled
               label="Search"
-              name="search"
+              name="searchByWord"
               outlined
               type="text"
-              @click:clear="clearFilterWords()"
-              @keydown.enter="updateProcessedAds(filteredAdsByWords)"
-              @keydown.esc="clearFilterWords()"
+              @change="updateProcessedAds(processingAds())"
+              @input="
+                $v.inputSearch.$touch(),
+                  updateProcessedAdsDelay(700, processingAds())
+              "
             ></v-text-field>
-          </v-col>
-
-          <!-- ad filters search by words button -->
-          <v-col class="col-2 pt-0 pl-0">
-            <v-btn
-              class="teal rounded-l-0"
-              min-height="40"
-              text
-              @click="updateProcessedAds(filteredAdsByWords)"
-            >
-              <v-icon text class="white--text">mdi-magnify</v-icon>
-            </v-btn>
           </v-col>
         </v-row>
       </v-col>
 
       <!-- ad filters search by price column -->
-      <v-col class="col-4">
+      <v-col
+        class="col-12 col-sm-9 mx-sm-auto col-md-4 pt-md-4 pt-0 order-1 order-md-0"
+      >
         <!-- ad filters search by price title -->
         <v-row>
-          <v-col class="pt-0 pb-1">
-            <h3 class="text-subtitle-2 teal--text text-uppercase">
+          <v-col class="pt-0 pb-0 pb-md-1">
+            <h3
+              class="text-center text-md-left text-subtitle-2 teal--text text-uppercase"
+            >
               Sort ads by price:
             </h3>
           </v-col>
@@ -63,15 +59,20 @@
           <v-col class="col-6 py-0">
             <v-text-field
               v-model="minPrice"
+              :error-messages="searchByminPriceErrors"
               clearable
               color="teal"
               counter="20"
               dense
               height="34"
               label="From"
+              name="minPrice"
               type="number"
-              @change="updateProcessedAds(filteredAdsByPrice)"
-              @input="updateProcessedAdsDelay(700, filteredAdsByPrice)"
+              @change="updateProcessedAds(processingAds())"
+              @input="
+                $v.minPrice.$touch(),
+                  updateProcessedAdsDelay(700, processingAds())
+              "
             ></v-text-field>
           </v-col>
 
@@ -79,25 +80,33 @@
           <v-col class="col-6 py-0">
             <v-text-field
               v-model="maxPrice"
+              :error-messages="searchBymaxPriceErrors"
               clearable
               color="teal"
               counter="20"
               dense
               height="34"
               label="To"
+              name="maxPrice"
               type="number"
-              @change="updateProcessedAds(filteredAdsByPrice)"
+              @change="updateProcessedAds(processingAds())"
+              @input="
+                $v.maxPrice.$touch(),
+                  updateProcessedAdsDelay(700, processingAds())
+              "
             ></v-text-field>
           </v-col>
         </v-row>
       </v-col>
 
       <!-- ad filters sorts -->
-      <v-col>
+      <v-col class="col-12 pb-0 col-sm-6 col-md-4 pb-md-3 ">
         <!-- ad filters sorts (title) -->
         <v-row>
-          <v-col class="pt-0 pb-1">
-            <h3 class="text-subtitle-2 teal--text text-uppercase">
+          <v-col class="pt-0 pb-1 col-lg-9 mx-auto">
+            <h3
+              class="text-center text-md-left text-subtitle-2 teal--text text-uppercase"
+            >
               Sort ads by condition:
             </h3>
           </v-col>
@@ -105,17 +114,18 @@
 
         <!-- ad filters sorts select -->
         <v-row>
-          <v-col class="py-0">
+          <v-col class="py-0 col-lg-9 mx-auto">
             <v-select
-              v-model="selectedSelectFilter"
+              v-model="selectedSelectSort"
               :items="itemsSelectFilter"
               class="text-body-2 ad-filters__select"
               color="teal"
               dense
               filled
               item-color="teal"
+              name="sort"
               outlined
-              @change="updateProcessedAds(sortAds(selectedSelectFilter))"
+              @change="updateProcessedAds(processingAds())"
             >
             </v-select>
           </v-col>
@@ -129,7 +139,7 @@
         <!-- prettier-ignore -->
         <p
           class="text-uppercase mb-0"
-          v-if="showQuantityFilteredAds"
+          v-if="displayQuantityFilteredAds"
         >
           {{ quantityFilteredAds }}
         </p>
@@ -139,55 +149,97 @@
 </template>
 <script>
 import { dateParse } from '../../helpers/dateParse';
+import { validationMixin } from 'vuelidate';
+import { maxLength } from 'vuelidate/lib/validators';
+import {
+  hasMaxMoreMinPrice,
+  hasMinLessMaxPrice,
+} from '../../validators/filters';
 
 export default {
   name: 'AdFilters',
+  mixins: [validationMixin],
+  validations: {
+    inputSearch: {
+      maxLength: maxLength(30),
+    },
+    maxPrice: {
+      maxLength: maxLength(20),
+      hasMaxMoreMinPrice,
+    },
+    minPrice: {
+      maxLength: maxLength(20),
+      hasMinLessMaxPrice,
+    },
+  },
   props: {
     ads: Array,
     processedAds: Array,
     shownAds: Number,
   },
+
   data() {
     return {
       inputSearch: '',
-      showQuantityFilteredAds: false,
+      displayQuantityFilteredAds: false,
       itemsSelectFilter: [
         'BY ALPHABET: A >>> Z',
         'BY ALPHABET: REVERSE Z >>> A',
         'BY DATA: NEW >>> OLD',
         'BY DATA: OLD >>> NEW',
       ],
-      selectedSelectFilter: 'BY DATA: NEW >>> OLD',
+      selectedSelectSort: 'BY DATA: NEW >>> OLD',
       maxPrice: null,
       minPrice: null,
-      setTimeoutCounter: null,
+      timeoutCounterProcessedAds: null,
     };
   },
   computed: {
-    filteredAdsByWords() {
+    // VUELIDATE. rules on search by max price input
+    searchBymaxPriceErrors() {
+      const errors = [];
+      if (!this.$v.maxPrice.$dirty) return errors;
+      !this.$v.maxPrice.maxLength && errors.push('Input max 20 digits');
+      !this.$v.maxPrice.hasMaxMoreMinPrice && errors.push('Error! max < min');
+      return errors;
+    },
+
+    // VUELIDATE. rules on search by min price input
+    searchByminPriceErrors() {
+      const errors = [];
+      if (!this.$v.minPrice.$dirty) return errors;
+      !this.$v.minPrice.maxLength && errors.push('Input max 20 digits');
+      !this.$v.minPrice.hasMinLessMaxPrice && errors.push('Error! min > max');
+      return errors;
+    },
+
+    // VUELIDATE. rules on search by word input
+    searchByWordErrors() {
+      const errors = [];
+      if (!this.$v.inputSearch.$dirty) return errors;
+      !this.$v.inputSearch.maxLength &&
+        errors.push(
+          'input search by word must be equal or less than 30 characters'
+        );
+      return errors;
+    },
+
+    // filter of ads by word
+    filterAdsByWord() {
+      if (this.$v.$invalid) return;
+      if (!this.inputSearch) {
+        return this.ads;
+      }
       if (!this.inputSearch) return;
+
       return this.ads.filter((ad) => {
         return (
           ad.title.toLowerCase().indexOf(this.inputSearch.toLowerCase()) !== -1
         );
       });
     },
-    filteredAdsByPrice() {
-      if (
-        (!this.maxPrice && !this.minPrice) ||
-        (this.maxPrice && this.minPrice > this.maxPrice)
-      ) {
-        return this.processedAds;
-      }
 
-      return this.ads.filter((ad) => {
-        if (this.minPrice && this.maxPrice)
-          return ad.price >= this.minPrice && ad.price <= this.maxPrice;
-        if (this.minPrice) return ad.price >= this.minPrice;
-        if (this.maxPrice) return ad.price <= this.maxPrice;
-      });
-    },
-
+    // return quantity of all filtered ads
     quantityFilteredAds() {
       if (this.processedAds.length > 1) {
         return `found ${this.processedAds.length} ads`;
@@ -198,59 +250,95 @@ export default {
       }
     },
   },
+
   methods: {
-    sortAds(sortType) {
+    // filter of ads by price
+    filterAdsByPrice(arrayAds) {
+      if (this.$v.$invalid) return;
+      if (!this.maxPrice && !this.minPrice) {
+        return arrayAds;
+      }
+
+      return arrayAds.filter((ad) => {
+        if (this.minPrice && this.maxPrice)
+          return ad.price >= this.minPrice && ad.price <= this.maxPrice;
+        if (this.minPrice) return ad.price >= this.minPrice;
+        if (this.maxPrice) return ad.price <= this.maxPrice;
+      });
+    },
+
+    // processing all ads by filters and sorts
+    processingAds() {
+      if (this.$v.$invalid) return;
+
+      const filteredByWord = this.filterAdsByWord;
+
+      const filteredByPrice = this.filterAdsByPrice(filteredByWord);
+
+      const sorted = this.sortAds(this.selectedSelectSort, filteredByPrice);
+
+      return sorted;
+    },
+
+    // show quantity current filtered and sorted ads
+    showQuantityFilteredAds() {
+      if (this.inputSearch || this.minPrice || this.maxPrice) {
+        this.displayQuantityFilteredAds = true;
+      } else {
+        this.displayQuantityFilteredAds = false;
+      }
+    },
+
+    // sort of ads by parameter
+    sortAds(sortType, ads) {
       if (sortType === 'BY ALPHABET: A >>> Z') {
-        return [...this.ads].sort((a, b) => a.title.localeCompare(b.title));
+        return [...ads].sort((a, b) => a.title.localeCompare(b.title));
       } else if (sortType === 'BY ALPHABET: REVERSE Z >>> A') {
-        return [...this.ads].sort((a, b) => b.title.localeCompare(a.title));
+        return [...ads].sort((a, b) => b.title.localeCompare(a.title));
       } else if (sortType === 'BY DATA: OLD >>> NEW') {
-        return [...this.ads].sort(
+        return [...ads].sort(
           (a, b) => dateParse(a.dateAdded) - dateParse(b.dateAdded)
         );
       } else if (sortType === 'BY DATA: NEW >>> OLD') {
-        return [...this.ads].sort(
+        return [...ads].sort(
           (a, b) => dateParse(b.dateAdded) - dateParse(a.dateAdded)
         );
       }
     },
 
-    updateProcessedAdsDelay(delay, arrayAds) {
-      if (this.setTimeoutCounter) clearTimeout(this.setTimeoutCounter);
+    // update to Home.vue 'processedAds' current with processed ads
+    updateProcessedAds(arrayAds) {
+      if (!arrayAds) return;
 
-      this.setTimeoutCounter = setTimeout(() => {
+      // show quantity of filtered ads on page
+      this.showQuantityFilteredAds();
+
+      return (
+        this.$emit('update:processedAds', arrayAds),
+        this.$emit('update:shownAds', 12)
+      );
+    },
+
+    // update to Home.vue 'processedAds' with current processed ads. With delay
+    updateProcessedAdsDelay(delay, arrayAds) {
+      if (this.timeoutCounterProcessedAds)
+        clearTimeout(this.timeoutCounterProcessedAds);
+
+      this.timeoutCounterProcessedAds = setTimeout(() => {
         if (!arrayAds) return;
-        if (this.inputSearch || this.minPrice || this.maxPrice) {
-          this.showQuantityFilteredAds = true;
-        } else {
-          this.showQuantityFilteredAds = false;
-        }
+
+        this.showQuantityFilteredAds();
+
         return (
           this.$emit('update:processedAds', arrayAds),
           this.$emit('update:shownAds', 12)
         );
       }, delay);
     },
-
-    updateProcessedAds(arrayAds) {
-      if (!arrayAds) return;
-      if (this.inputSearch || this.minPrice || this.maxPrice) {
-        this.showQuantityFilteredAds = true;
-      } else {
-        this.showQuantityFilteredAds = false;
-      }
-      return (
-        this.$emit('update:processedAds', arrayAds),
-        this.$emit('update:shownAds', 12)
-      );
-    },
-    clearFilterWords() {
-      this.inputSearch = '';
-      this.updateProcessedAds(this.sortAds(this.selectedSelectFilter));
-    },
   },
+
   created() {
-    this.updateProcessedAds(this.sortAds(this.selectedSelectFilter));
+    this.updateProcessedAds(this.processingAds());
   },
 };
 </script>
