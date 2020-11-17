@@ -100,7 +100,7 @@
       </v-col>
 
       <!-- ad filters sorts -->
-      <v-col class="col-12 py-0 col-sm-6 col-md-4 py-md-3 ">
+      <v-col class="col-12 py-0 col-sm-6 col-md-4 py-sm-3 ">
         <!-- ad filters sorts (title) -->
         <v-row>
           <v-col class="pt-0 pb-1 col-lg-9 mx-auto">
