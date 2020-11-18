@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { User } from '../../entities/User';
+import { User } from '../../js/entities/User';
 
 export default {
   namespaced: true,

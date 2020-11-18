@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { Ad } from '../../entities/Ad';
+import { Ad } from '../../js/entities/Ad';
 
 export default {
   namespaced: true,

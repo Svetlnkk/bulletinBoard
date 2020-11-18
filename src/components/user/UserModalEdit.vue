@@ -145,7 +145,7 @@ import {
   hasLowercaseLetter,
   hasNumber,
   hasUppercaseLetter,
-} from '../../validators/password';
+} from '../../js/validators/password';
 
 export default {
   name: 'UserModalEdit',

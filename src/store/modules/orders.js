@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { Order } from '../../entities/Order';
+import { Order } from '../../js/entities/Order';
 
 export default {
   namespaced: true,

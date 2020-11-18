@@ -148,13 +148,13 @@
   </v-container>
 </template>
 <script>
-import { dateParse } from '../../helpers/dateParse';
+import { dateParse } from '../../js/helpers/dateParse';
 import { validationMixin } from 'vuelidate';
 import { maxLength } from 'vuelidate/lib/validators';
 import {
   hasMaxMoreMinPrice,
   hasMinLessMaxPrice,
-} from '../../validators/filters';
+} from '../../js/validators/filters';
 
 export default {
   name: 'AdFilters',
