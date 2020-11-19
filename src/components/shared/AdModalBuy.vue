@@ -96,30 +96,15 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { validationMixin } from 'vuelidate';
-import {
-  alpha,
-  maxLength,
-  minLength,
-  numeric,
-  required,
-} from 'vuelidate/lib/validators';
+import { validationAdModalBuy } from '../../js/utils/validationsVuelidate.util';
+
 export default {
   name: 'AdModalBuy',
   mixins: [validationMixin],
-  validations: {
-    name: {
-      alpha,
-      maxLength: maxLength(60),
-      minLength: minLength(2),
-      required,
-    },
-    phone: {
-      maxLength: maxLength(30),
-      minLength: minLength(5),
-      numeric,
-      required,
-    },
-  },
+
+  // VUETIFY. Validations rules
+  validations: validationAdModalBuy.validations,
+
   props: {
     ad: Object,
   },
@@ -135,36 +120,13 @@ export default {
   computed: {
     ...mapState('user', ['currentUser']),
 
+    // VUETIFY. Validation errors
+    ...validationAdModalBuy.errorMessages,
+
     // check - whether the owner is the current user
     isOwner() {
       if (!this.currentUser) return;
       return this.ad.ownerId === this.currentUser.id;
-    },
-
-    // rules on name validation
-    nameErrors() {
-      const errors = [];
-      if (!this.$v.name.$dirty) return errors;
-      !this.$v.name.alpha && errors.push('Name must be only letters');
-      !this.$v.name.maxLength &&
-        errors.push('Name must be equal or less than 60 characters');
-      !this.$v.name.minLength &&
-        errors.push('Name must be equal or more than 2 characters');
-      !this.$v.name.required && errors.push('Name is required');
-      return errors;
-    },
-
-    // rules on phone number validation
-    phoneErrors() {
-      const errors = [];
-      if (!this.$v.phone.$dirty) return errors;
-      !this.$v.phone.numeric && errors.push('Phone number must be only digits');
-      !this.$v.phone.maxLength &&
-        errors.push('Phone number must be equal or less than 30 digits');
-      !this.$v.phone.minLength &&
-        errors.push('Phone number must be equal or more than 5 digits');
-      !this.$v.phone.required && errors.push('Phone number is required');
-      return errors;
     },
   },
   methods: {

@@ -67,25 +67,15 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { validationMixin } from 'vuelidate';
-import {
-  email,
-  maxLength,
-  minLength,
-  required,
-} from 'vuelidate/lib/validators';
+import { validationLogin } from '../../js/utils/validationsVuelidate.util';
 
 export default {
   name: 'Login',
   mixins: [validationMixin],
-  validations: {
-    email: {
-      email,
-      maxLength: maxLength(100),
-      minLength: minLength(3),
-      required,
-    },
-    password: { maxLength: maxLength(1000), required },
-  },
+
+  // VUETIFY. Validations rules
+  validations: validationLogin.validations,
+
   data() {
     return {
       email: '',
@@ -96,32 +86,12 @@ export default {
   computed: {
     ...mapState('shared', ['loading']),
 
-    // rules on email validation
-    emailErrors() {
-      const errors = [];
-      if (!this.$v.email.$dirty) return errors;
-      !this.$v.email.email && errors.push('Must be valid email');
-      !this.$v.email.maxLength &&
-        errors.push('Email must be equal or less than 1000 characters');
-      !this.$v.email.minLength &&
-        errors.push('Email must be equal or more than 3 characters');
-      !this.$v.email.required && errors.push('Email is required');
-      return errors;
-    },
+    // VUETIFY. Validation errors
+    ...validationLogin.errorMessages,
 
     // returned boolean from 'this.loading'
     loadingButton() {
       return !!this.loading;
-    },
-
-    // rules on password validation
-    passwordErrors() {
-      const errors = [];
-      if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.maxLength &&
-        errors.push('Password must be equal or less than 1000 characters');
-      !this.$v.password.required && errors.push('Password is required');
-      return errors;
     },
   },
   methods: {

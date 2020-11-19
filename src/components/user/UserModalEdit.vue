@@ -133,49 +133,15 @@
 import { mapActions } from 'vuex';
 import UserModalCurrentPassword from './UserModalCurrentPassword';
 import { validationMixin } from 'vuelidate';
-import {
-  alpha,
-  email,
-  maxLength,
-  minLength,
-  required,
-  sameAs,
-} from 'vuelidate/lib/validators';
-import {
-  hasLowercaseLetter,
-  hasNumber,
-  hasUppercaseLetter,
-} from '../../js/validators/password';
+import { validationUserModalEdit } from '../../js/utils/validationsVuelidate.util';
 
 export default {
   name: 'UserModalEdit',
   mixins: [validationMixin],
-  validations: {
-    editedConfirmPassword: {
-      sameAsPassword: sameAs('editedPassword'),
-      required,
-    },
-    editedEmail: {
-      email,
-      maxLength: maxLength(100),
-      minLength: minLength(3),
-      required,
-    },
-    editedName: {
-      alpha,
-      maxLength: maxLength(30),
-      minLength: minLength(2),
-      required,
-    },
-    editedPassword: {
-      hasLowercaseLetter,
-      hasNumber,
-      hasUppercaseLetter,
-      maxLength: maxLength(50),
-      minLength: minLength(6),
-      required,
-    },
-  },
+
+  // VUETIFY. Validations rules
+  validations: validationUserModalEdit.validations,
+
   components: {
     appUserModalCurrentPassword: UserModalCurrentPassword,
   },
@@ -194,69 +160,8 @@ export default {
     };
   },
   computed: {
-    // rules on confirmPassword validation. Not cheсked if this.editedPassword is none.
-    editedConfirmPasswordErrors() {
-      const errors = [];
-      if (!this.$v.editedConfirmPassword.$dirty) return errors;
-      !this.$v.editedConfirmPassword.sameAsPassword &&
-        this.editedPassword &&
-        errors.push('Passwords must match');
-      !this.$v.editedConfirmPassword.required &&
-        this.editedPassword &&
-        errors.push('Confirm password is required');
-      return errors;
-    },
-
-    // rules on email validation
-    editedEmailErrors() {
-      const errors = [];
-      if (!this.$v.editedEmail.$dirty) return errors;
-      !this.$v.editedEmail.email && errors.push('Email must be valid');
-      !this.$v.editedEmail.maxLength &&
-        errors.push('Email must be equal or less than 30 characters');
-      !this.$v.editedEmail.minLength &&
-        errors.push('Email must be equal or more than 3 characters');
-      !this.$v.editedEmail.required && errors.push('Email is required');
-      return errors;
-    },
-
-    // rules on name validation
-    editedNameErrors() {
-      const errors = [];
-      if (!this.$v.editedName.$dirty) return errors;
-      !this.$v.editedName.alpha && errors.push('Name must be only letters');
-      !this.$v.editedName.maxLength &&
-        errors.push('Name must be equal or less than 30 characters');
-      !this.$v.editedName.minLength &&
-        errors.push('Name must be equal or more than 3 characters');
-      !this.$v.editedName.required && errors.push('Name is required');
-      return errors;
-    },
-
-    // rules on password validation.Not cheсked if this.editedPassword is none.
-    editedPasswordErrors() {
-      const errors = [];
-      if (!this.$v.editedPassword.$dirty) return errors;
-      !this.$v.editedPassword.hasLowercaseLetter &&
-        this.editedPassword &&
-        errors.push('Need at least one latin letter with lowercase');
-      !this.$v.editedPassword.hasNumber &&
-        this.editedPassword &&
-        errors.push('Need at least one digit');
-      !this.$v.editedPassword.hasUppercaseLetter &&
-        this.editedPassword &&
-        errors.push('Need at least one latin letter with uppercase');
-      !this.$v.editedPassword.maxLength &&
-        this.editedPassword &&
-        errors.push('Password must be equal or less than 50 characters');
-      !this.$v.editedPassword.minLength &&
-        this.editedPassword &&
-        errors.push('Password must be equal or more than 6 characters');
-      !this.$v.editedPassword.required &&
-        this.editedPassword &&
-        errors.push('Password is required');
-      return errors;
-    },
+    // VUETIFY. Validation errors
+    ...validationUserModalEdit.errorMessages,
   },
   methods: {
     ...mapActions('user', ['updateUser']),

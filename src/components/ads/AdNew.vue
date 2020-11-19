@@ -112,29 +112,15 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { validationMixin } from 'vuelidate';
-import {
-  maxLength,
-  minLength,
-  numeric,
-  required,
-} from 'vuelidate/lib/validators';
+import { validationAdNew } from '../../js/utils/validationsVuelidate.util';
 
 export default {
   name: 'AdNew',
   mixins: [validationMixin],
-  validations: {
-    description: {
-      maxLength: maxLength(1000),
-      minLength: minLength(30),
-      required,
-    },
-    price: { maxLength: maxLength(20), numeric, required },
-    title: {
-      maxLength: maxLength(60),
-      minLength: minLength(4),
-      required,
-    },
-  },
+
+  // VUETIFY. Validations rules
+  validations: validationAdNew.validations,
+
   data() {
     return {
       description: '',
@@ -148,44 +134,12 @@ export default {
   computed: {
     ...mapState('shared', ['loading']),
 
-    // rules on description validation
-    descriptionErrors() {
-      const errors = [];
-      if (!this.$v.description.$dirty) return errors;
-      !this.$v.description.maxLength &&
-        errors.push('Description must be equal or less than 1000 characters');
-      !this.$v.description.minLength &&
-        errors.push('Description must be equal or more than 30 characters');
-      !this.$v.description.required && errors.push('Description is required');
-      return errors;
-    },
+    // VUETIFY. Validation errors
+    ...validationAdNew.errorMessages,
 
     // state 'loading' now return a boolean
     loadingButton() {
       return !!this.loading;
-    },
-
-    // rules on price validation
-    priceErrors() {
-      const errors = [];
-      if (!this.$v.price.$dirty) return errors;
-      !this.$v.price.maxLength &&
-        errors.push('Price must be equal or less than 20 digits');
-      !this.$v.price.numeric && errors.push('Price must be a number');
-      !this.$v.price.required && errors.push('Price is required');
-      return errors;
-    },
-
-    // rules on title validation
-    titleErrors() {
-      const errors = [];
-      if (!this.$v.title.$dirty) return errors;
-      !this.$v.title.maxLength &&
-        errors.push('Title must be equal or less than 60 characters');
-      !this.$v.title.minLength &&
-        errors.push('Title must be equal or more than 4 characters');
-      !this.$v.title.required && errors.push('Title is required');
-      return errors;
     },
   },
   methods: {

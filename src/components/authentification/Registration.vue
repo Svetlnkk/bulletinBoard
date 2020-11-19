@@ -97,49 +97,15 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { validationMixin } from 'vuelidate';
-import {
-  alpha,
-  email,
-  maxLength,
-  minLength,
-  required,
-  sameAs,
-} from 'vuelidate/lib/validators';
-import {
-  hasLowercaseLetter,
-  hasNumber,
-  hasUppercaseLetter,
-} from '../../js/validators/password';
+import { validationRegistration } from '../../js/utils/validationsVuelidate.util';
 
 export default {
   name: 'Registration',
   mixins: [validationMixin],
-  validations: {
-    confirmPassword: {
-      sameAsPassword: sameAs('password'),
-      required,
-    },
-    email: {
-      email,
-      maxLength: maxLength(100),
-      minLength: minLength(3),
-      required,
-    },
-    name: {
-      alpha,
-      maxLength: maxLength(30),
-      minLength: minLength(2),
-      required,
-    },
-    password: {
-      hasLowercaseLetter,
-      hasNumber,
-      hasUppercaseLetter,
-      maxLength: maxLength(50),
-      minLength: minLength(6),
-      required,
-    },
-  },
+
+  // VUETIFY. Validations rules
+  validations: validationRegistration.validations,
+
   data() {
     return {
       confirmPassword: '',
@@ -154,63 +120,12 @@ export default {
   computed: {
     ...mapState('shared', ['loading']),
 
-    // rules on confirmPassword validation
-    confirmPasswordErrors() {
-      const errors = [];
-      if (!this.$v.confirmPassword.$dirty) return errors;
-      !this.$v.confirmPassword.sameAsPassword &&
-        errors.push('Passwords must match');
-      !this.$v.confirmPassword.required &&
-        errors.push('Confirm password is required');
-      return errors;
-    },
-
-    // rules on email validation
-    emailErrors() {
-      const errors = [];
-      if (!this.$v.email.$dirty) return errors;
-      !this.$v.email.email && errors.push('Email must be valid');
-      !this.$v.email.maxLength &&
-        errors.push('Email must be equal or less than 30 characters');
-      !this.$v.email.minLength &&
-        errors.push('Email must be equal or more than 3 characters');
-      !this.$v.email.required && errors.push('Email is required');
-      return errors;
-    },
+    // VUETIFY. Validation errors
+    ...validationRegistration.errorMessages,
 
     // returned boolean from 'loading'
     loadingButton() {
       return !!this.loading;
-    },
-
-    // rules on name validation
-    nameErrors() {
-      const errors = [];
-      if (!this.$v.name.$dirty) return errors;
-      !this.$v.name.alpha && errors.push('Name must be only letters');
-      !this.$v.name.maxLength &&
-        errors.push('Name must be equal or less than 30 characters');
-      !this.$v.name.minLength &&
-        errors.push('Name must be equal or more than 3 characters');
-      !this.$v.name.required && errors.push('Name is required');
-      return errors;
-    },
-
-    // rules on password validation
-    passwordErrors() {
-      const errors = [];
-      if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.hasLowercaseLetter &&
-        errors.push('Need at least one latin letter with lowercase');
-      !this.$v.password.hasNumber && errors.push('Need at least one digit');
-      !this.$v.password.hasUppercaseLetter &&
-        errors.push('Need at least one latin letter with uppercase');
-      !this.$v.password.maxLength &&
-        errors.push('Password must be equal or less than 50 characters');
-      !this.$v.password.minLength &&
-        errors.push('Password must be equal or more than 6 characters');
-      !this.$v.password.required && errors.push('Password is required');
-      return errors;
     },
   },
   methods: {

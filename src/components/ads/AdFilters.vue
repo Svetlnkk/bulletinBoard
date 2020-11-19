@@ -150,28 +150,15 @@
 <script>
 import { dateParse } from '../../js/helpers/dateParse';
 import { validationMixin } from 'vuelidate';
-import { maxLength } from 'vuelidate/lib/validators';
-import {
-  hasMaxMoreMinPrice,
-  hasMinLessMaxPrice,
-} from '../../js/validators/filters';
+import { validationAdFilters } from '../../js/utils/validationsVuelidate.util';
 
 export default {
   name: 'AdFilters',
   mixins: [validationMixin],
-  validations: {
-    inputSearch: {
-      maxLength: maxLength(30),
-    },
-    maxPrice: {
-      maxLength: maxLength(20),
-      hasMaxMoreMinPrice,
-    },
-    minPrice: {
-      maxLength: maxLength(20),
-      hasMinLessMaxPrice,
-    },
-  },
+
+  // VUETIFY. Validations rules
+  validations: validationAdFilters.validations,
+
   props: {
     ads: Array,
     processedAds: Array,
@@ -195,34 +182,8 @@ export default {
     };
   },
   computed: {
-    // VUELIDATE. rules on search by max price input
-    searchBymaxPriceErrors() {
-      const errors = [];
-      if (!this.$v.maxPrice.$dirty) return errors;
-      !this.$v.maxPrice.maxLength && errors.push('Input max 20 digits');
-      !this.$v.maxPrice.hasMaxMoreMinPrice && errors.push('Error! max < min');
-      return errors;
-    },
-
-    // VUELIDATE. rules on search by min price input
-    searchByminPriceErrors() {
-      const errors = [];
-      if (!this.$v.minPrice.$dirty) return errors;
-      !this.$v.minPrice.maxLength && errors.push('Input max 20 digits');
-      !this.$v.minPrice.hasMinLessMaxPrice && errors.push('Error! min > max');
-      return errors;
-    },
-
-    // VUELIDATE. rules on search by word input
-    searchByWordErrors() {
-      const errors = [];
-      if (!this.$v.inputSearch.$dirty) return errors;
-      !this.$v.inputSearch.maxLength &&
-        errors.push(
-          'input search by word must be equal or less than 30 characters'
-        );
-      return errors;
-    },
+    // VUETIFY. Validation errors
+    ...validationAdFilters.errorMessages,
 
     // filter of ads by word
     filterAdsByWord() {

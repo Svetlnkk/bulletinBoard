@@ -103,29 +103,15 @@
 <script>
 import { mapActions } from 'vuex';
 import { validationMixin } from 'vuelidate';
-import {
-  maxLength,
-  minLength,
-  numeric,
-  required,
-} from 'vuelidate/lib/validators';
+import { validationAdModalEdit } from '../../js/utils/validationsVuelidate.util';
 
 export default {
   name: 'AdModalEdit',
   mixins: [validationMixin],
-  validations: {
-    editedDescription: {
-      maxLength: maxLength(1000),
-      minLength: minLength(30),
-      required,
-    },
-    editedPrice: { maxLength: maxLength(20), numeric, required },
-    editedTitle: {
-      maxLength: maxLength(60),
-      minLength: minLength(4),
-      required,
-    },
-  },
+
+  // VUETIFY. Validations rules
+  validations: validationAdModalEdit.validations,
+
   props: {
     ad: Object,
   },
@@ -138,41 +124,8 @@ export default {
     };
   },
   computed: {
-    // rules on title validation
-    titleErrors() {
-      const errors = [];
-      if (!this.$v.editedTitle.$dirty) return errors;
-      !this.$v.editedTitle.maxLength &&
-        errors.push('Title must be equal or less than 60 characters');
-      !this.$v.editedTitle.minLength &&
-        errors.push('Title must be equal or more than 4 characters');
-      !this.$v.editedTitle.required && errors.push('Title is required');
-      return errors;
-    },
-
-    // rules on description validation
-    descriptionErrors() {
-      const errors = [];
-      if (!this.$v.editedDescription.$dirty) return errors;
-      !this.$v.editedDescription.maxLength &&
-        errors.push('Description must be equal or less than 1000 characters');
-      !this.$v.editedDescription.minLength &&
-        errors.push('Description must be equal or more than 30 characters');
-      !this.$v.editedDescription.required &&
-        errors.push('Description is required');
-      return errors;
-    },
-
-    // rules on price validation
-    priceErrors() {
-      const errors = [];
-      if (!this.$v.editedPrice.$dirty) return errors;
-      !this.$v.editedPrice.maxLength &&
-        errors.push('Price must be equal or less than 20 digits');
-      !this.$v.editedPrice.numeric && errors.push('Price must be a number');
-      !this.$v.editedPrice.required && errors.push('Price is required');
-      return errors;
-    },
+    // VUETIFY. Validation errors
+    ...validationAdModalEdit.errorMessages,
   },
   methods: {
     ...mapActions('ads', ['updateAd']),
