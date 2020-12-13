@@ -79,9 +79,9 @@
               <v-icon class="ad-main__icon pr-1 mb-1" color="teal"
                 >mdi-calendar-clock</v-icon
               >Ad created:
-              <span class="text--secondary text-subtitle-2">{{
-                ad.dateAdded
-              }}</span>
+              <span class="text--secondary text-subtitle-2">
+                {{ ad.dateAdded }}
+              </span>
             </div>
           </v-col>
 
