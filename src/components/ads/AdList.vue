@@ -10,7 +10,7 @@
 
           <!-- show part of all user ads (5) -->
           <v-col
-            v-for="ad of sortMyAds.slice(0, this.shownAds)"
+            v-for="ad of sortMyAds.slice(0, this.quantityShownAds)"
             :key="ad.id"
             class="ad-list__item col-11 d-flex flex-column flex-sm-row mb-5 mx-auto py-0"
           >
@@ -66,7 +66,7 @@
                     </v-icon>
                     Price:
                     <span class="text--secondary text-subtitle-2">
-                      {{ ad.price ? ad.price : 'not specified' }}
+                      {{ showAdPrice(ad) }}
                     </span>
                   </div>
                 </div>
@@ -86,13 +86,19 @@
           </v-col>
 
           <!-- button to show next ads -->
-          <v-row v-if="shownAds !== myAds.length && !(myAds.length <= 5)">
+          <v-row
+            v-if="quantityShownAds !== myAds.length && !(myAds.length <= 5)"
+          >
             <v-col
               class="col-11 d-flex flex-column flex-sm-row my-4 mx-auto py-0"
             >
-              <v-btn block class="green white--text " @click="increaseShownAds">
-                Load more {{ myAds.length - shownAds }}
-                {{ myAds.length - shownAds === 1 ? 'ad...' : 'ads' }}
+              <v-btn
+                block
+                class="green white--text "
+                @click="increaseQuantityShownAds"
+              >
+                Load more
+                {{ `${showQuantityNotShownAds} ${showWordsQuantityShownAds}` }}
               </v-btn>
             </v-col>
           </v-row>
@@ -124,7 +130,7 @@ export default {
   name: 'AdList',
   data() {
     return {
-      shownAds: 5,
+      quantityShownAds: 5,
     };
   },
   computed: {
@@ -135,14 +141,32 @@ export default {
     sortMyAds() {
       return [...this.myAds].reverse();
     },
+
+    // return quantity of not shown ads
+    showQuantityNotShownAds() {
+      return this.myAds.length - this.quantityShownAds;
+    },
+
+    // return words of quantity shown ads
+    showWordsQuantityShownAds() {
+      const word =
+        this.myAds.length - this.quantityShownAds === 1 ? 'ad...' : 'ads';
+      return word;
+    },
   },
   methods: {
-    // increase number of shown ads (+5)
-    increaseShownAds() {
-      this.shownAds =
-        this.shownAds + 5 > this.myAds.length
-          ? this.myAds.length
-          : (this.shownAds += 5);
+    // increase number of quantity shown ads (+5)
+    increaseQuantityShownAds() {
+      const numberIncreaseShownAds = 5;
+      const maxQuantityShownAds = this.myAds.length;
+      const newQuantityShownAds =
+        this.quantityShownAds + numberIncreaseShownAds;
+
+      if (newQuantityShownAds <= maxQuantityShownAds) {
+        this.quantityShownAds = newQuantityShownAds;
+      } else {
+        this.quantityShownAds = maxQuantityShownAds;
+      }
     },
 
     // checking to 'this.loading' for loading and checking for loading 'this.myAds'
@@ -153,6 +177,12 @@ export default {
     // checking to 'this.myAds' on no have ads
     loadingEmptyMyAds() {
       return !this.loading && !this.myAds.length;
+    },
+
+    // show current ad's price
+    showAdPrice(ad) {
+      const adPrice = ad.price ? ad.price : 'not specified';
+      return adPrice;
     },
   },
 };

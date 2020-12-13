@@ -28,7 +28,7 @@
             </h3>
             <h3 v-else class="text-subtitle-2">
               <span class="text-uppercase">Owner:</span>
-              {{ ownerAd.name ? ownerAd.name : 'No name' }}
+              {{ ownerAdName }}
             </h3>
           </v-col>
 
@@ -151,10 +151,12 @@ export default {
       return this.ad.ownerId === this.currentUser.id;
     },
 
-    // get the owner of this ad
-    ownerAd() {
+    // get the owner name of this ad
+    ownerAdName() {
       const ownerId = this.ad.ownerId;
-      return this.userById(ownerId);
+      const ownerUser = this.userById(ownerId);
+      const ownerName = ownerUser.name ? ownerUser.name : 'No name';
+      return ownerName;
     },
   },
   methods: {
