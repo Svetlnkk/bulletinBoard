@@ -188,7 +188,7 @@ export default {
 
     // show current ad's price
     showAdPrice(ad) {
-      const adPrice = ad.price ? ad.price : 'not specified';
+      const adPrice = ad.price || 'not specified';
       return adPrice;
     },
   },

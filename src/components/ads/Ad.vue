@@ -162,7 +162,7 @@ export default {
      */
     ownerAdName() {
       const ownerUser = this.userById(this.ad.ownerId);
-      const ownerName = ownerUser.name ? ownerUser.name : 'No name';
+      const ownerName = ownerUser.name || 'No name';
       return ownerName;
     },
   },

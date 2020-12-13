@@ -163,8 +163,8 @@ export default {
         'BY DATA: OLD >>> NEW',
       ],
       selectedSelectSort: 'BY DATA: NEW >>> OLD',
-      maxPrice: null,
       minPrice: null,
+      maxPrice: null,
       timeoutCounterProcessedAds: null,
     };
   },
