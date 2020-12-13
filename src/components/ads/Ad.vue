@@ -123,6 +123,7 @@
 import { mapGetters, mapState } from 'vuex';
 import AdModalEdit from './AdModalEdit';
 import AdModalDelete from './AdModalDelete';
+import { redirect404 } from '../../js/helpers/redirect404';
 
 export default {
   name: 'Ad',
@@ -141,8 +142,7 @@ export default {
 
     // get ad by id
     ad() {
-      const id = this.id;
-      return this.adById(id);
+      return this.adById(this.id);
     },
 
     // check. Whether the owner is the current user
@@ -153,30 +153,32 @@ export default {
 
     // get the owner name of this ad
     ownerAdName() {
-      const ownerId = this.ad.ownerId;
-      const ownerUser = this.userById(ownerId);
+      const ownerUser = this.userById(this.ad.ownerId);
       const ownerName = ownerUser.name ? ownerUser.name : 'No name';
       return ownerName;
     },
   },
   methods: {
+    redirect404,
+
     // checking to 'this.loading' for loading and checking for loading 'this.ad'
     loadingAd() {
       return !this.loading && this.ad;
     },
 
-    // 404 page, if ad of this id was not found
-    loadingEmptyAd() {
+    redirectTest() {
       if (!this.loading && !this.ad) {
+        console.log(this, this.$router);
         this.$router.replace('/404');
       }
     },
   },
   beforeUpdate() {
-    this.loadingEmptyAd();
+    // 404 page, if ad of this id was not found
+    this.redirect404(!this.loading && !this.ad);
   },
   created() {
-    this.loadingEmptyAd();
+    this.redirect404(!this.loading && !this.ad);
   },
 };
 </script>
