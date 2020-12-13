@@ -94,8 +94,8 @@
         <v-row>
           <v-col class="sm-12">
             <v-btn
-              :disabled="$v.$invalid || !image || loadingButton"
-              :loading="loadingButton"
+              :disabled="$v.$invalid || !image || loadingButtonBoolean"
+              :loading="loadingButtonBoolean"
               block
               class="success"
               @click="submitAd"
@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { validationAdNew } from '../../js/utils/validationsVuelidate.util';
 
@@ -128,15 +128,10 @@ export default {
     };
   },
   computed: {
-    ...mapState('shared', ['loading']),
+    ...mapGetters('shared', ['loadingButtonBoolean']),
 
     // VUETIFY. Validation errors
     ...validationAdNew.errorMessages,
-
-    // state 'loading' now return a boolean
-    loadingButton() {
-      return !!this.loading;
-    },
   },
 
   // VUETIFY. Validations rules

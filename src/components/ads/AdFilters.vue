@@ -174,11 +174,9 @@ export default {
 
     // filter of ads by word
     filterAdsByWord() {
-      if (this.$v.$invalid) return;
       if (!this.inputSearch) {
         return this.ads;
       }
-      if (!this.inputSearch) return;
 
       return this.ads.filter((ad) => {
         return (
@@ -209,7 +207,6 @@ export default {
   methods: {
     // filter of ads by price
     filterAdsByPrice(arrayAds) {
-      if (this.$v.$invalid) return;
       if (!this.maxPrice && !this.minPrice) {
         return arrayAds;
       }
@@ -217,7 +214,9 @@ export default {
       return arrayAds.filter((ad) => {
         if (this.minPrice && this.maxPrice)
           return ad.price >= this.minPrice && ad.price <= this.maxPrice;
+
         if (this.minPrice) return ad.price >= this.minPrice;
+
         if (this.maxPrice) return ad.price <= this.maxPrice;
       });
     },
@@ -246,19 +245,41 @@ export default {
 
     // sort of ads by parameter
     sortAds(sortType, ads) {
-      if (sortType === 'BY ALPHABET: A >>> Z') {
-        return [...ads].sort((a, b) => a.title.localeCompare(b.title));
-      } else if (sortType === 'BY ALPHABET: REVERSE Z >>> A') {
-        return [...ads].sort((a, b) => b.title.localeCompare(a.title));
-      } else if (sortType === 'BY DATA: OLD >>> NEW') {
-        return [...ads].sort(
-          (a, b) => dateParse(a.dateAdded) - dateParse(b.dateAdded)
-        );
-      } else if (sortType === 'BY DATA: NEW >>> OLD') {
-        return [...ads].sort(
-          (a, b) => dateParse(b.dateAdded) - dateParse(a.dateAdded)
-        );
-      }
+      let sortTypes = {
+        'BY ALPHABET: A >>> Z': function() {
+          return [...ads].sort((a, b) => a.title.localeCompare(b.title));
+        },
+        'BY ALPHABET: REVERSE Z >>> A': function() {
+          return [...ads].sort((a, b) => b.title.localeCompare(a.title));
+        },
+        'BY DATA: OLD >>> NEW': function() {
+          return [...ads].sort(
+            (a, b) => dateParse(a.dateAdded) - dateParse(b.dateAdded)
+          );
+        },
+        'BY DATA: NEW >>> OLD': function() {
+          return [...ads].sort(
+            (a, b) => dateParse(b.dateAdded) - dateParse(a.dateAdded)
+          );
+        },
+      };
+
+      return sortTypes[sortType]();
+
+      // OLD CODE-----------------------------------------------------
+      // if (sortType === 'BY ALPHABET: A >>> Z') {
+      //   return [...ads].sort((a, b) => a.title.localeCompare(b.title));
+      // } else if (sortType === 'BY ALPHABET: REVERSE Z >>> A') {
+      //   return [...ads].sort((a, b) => b.title.localeCompare(a.title));
+      // } else if (sortType === 'BY DATA: OLD >>> NEW') {
+      //   return [...ads].sort(
+      //     (a, b) => dateParse(a.dateAdded) - dateParse(b.dateAdded)
+      //   );
+      // } else if (sortType === 'BY DATA: NEW >>> OLD') {
+      //   return [...ads].sort(
+      //     (a, b) => dateParse(b.dateAdded) - dateParse(a.dateAdded)
+      //   );
+      // }
     },
 
     // update to Home.vue 'processedAds' current with processed ads

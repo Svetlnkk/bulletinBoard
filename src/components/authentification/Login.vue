@@ -49,8 +49,8 @@
 
             <!-- log in button -->
             <v-btn
-              :disabled="$v.$invalid || loadingButton"
-              :loading="loadingButton"
+              :disabled="$v.$invalid || loadingButtonBoolean"
+              :loading="loadingButtonBoolean"
               color="teal"
               text
               @click.prevent="onSubmit"
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { validationLogin } from '../../js/utils/validationsVuelidate.util';
 
@@ -80,15 +80,10 @@ export default {
     };
   },
   computed: {
-    ...mapState('shared', ['loading']),
+    ...mapGetters('shared', ['loadingButtonBoolean']),
 
     // VUETIFY. Validation errors
     ...validationLogin.errorMessages,
-
-    // returned boolean from 'this.loading'
-    loadingButton() {
-      return !!this.loading;
-    },
   },
 
   // VUETIFY. Validations rules

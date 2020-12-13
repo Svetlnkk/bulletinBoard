@@ -79,8 +79,8 @@
 
             <!-- registration form submit button -->
             <v-btn
-              :disabled="$v.$invalid || loadingButton"
-              :loading="loadingButton"
+              :disabled="$v.$invalid || loadingButtonBoolean"
+              :loading="loadingButtonBoolean"
               color="teal"
               text
               @click.prevent="onSubmit"
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { validationRegistration } from '../../js/utils/validationsVuelidate.util';
 
@@ -114,15 +114,10 @@ export default {
     };
   },
   computed: {
-    ...mapState('shared', ['loading']),
+    ...mapGetters('shared', ['loadingButtonBoolean']),
 
     // VUETIFY. Validation errors
     ...validationRegistration.errorMessages,
-
-    // returned boolean from 'loading'
-    loadingButton() {
-      return !!this.loading;
-    },
   },
 
   // VUETIFY. Validations rules
@@ -144,7 +139,9 @@ export default {
           .then(() => {
             this.$router.push('/');
           })
-          .catch(() => {});
+          .catch((error) => {
+            throw error;
+          });
       }
     },
   },

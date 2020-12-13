@@ -38,4 +38,9 @@ export default {
       commit('INCREASE_LOADING');
     },
   },
+  getters: {
+    loadingButtonBoolean(state) {
+      return Boolean(state.loading);
+    },
+  },
 };
