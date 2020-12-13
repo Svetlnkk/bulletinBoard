@@ -8,9 +8,9 @@
         <v-row>
           <!-- ad list -->
 
-          <!-- show part of all user ads (5) -->
+          <!-- show part of all user ads (params.quantityShownAdsOnUserProfile) -->
           <v-col
-            v-for="ad of sortMyAds.slice(0, this.quantityShownAds)"
+            v-for="ad of sortMyAds.slice(0, this.currentQuantityShownAds)"
             :key="ad.id"
             class="ad-list__item col-11 d-flex flex-column flex-sm-row mb-5 mx-auto py-0"
           >
@@ -87,7 +87,10 @@
 
           <!-- button to show next ads -->
           <v-row
-            v-if="quantityShownAds !== myAds.length && !(myAds.length <= 5)"
+            v-if="
+              currentQuantityShownAds !== myAds.length &&
+                !(myAds.length <= params.quantityShownAdsOnUserProfile)
+            "
           >
             <v-col
               class="col-11 d-flex flex-column flex-sm-row my-4 mx-auto py-0"
@@ -125,12 +128,14 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import params from '../../params';
 
 export default {
   name: 'AdList',
   data() {
     return {
-      quantityShownAds: 5,
+      params,
+      currentQuantityShownAds: params.quantityShownAdsOnUserProfile,
     };
   },
   computed: {
@@ -144,28 +149,30 @@ export default {
 
     // return quantity of not shown ads
     showQuantityNotShownAds() {
-      return this.myAds.length - this.quantityShownAds;
+      return this.myAds.length - this.currentQuantityShownAds;
     },
 
     // return words of quantity shown ads
     showWordsQuantityShownAds() {
       const word =
-        this.myAds.length - this.quantityShownAds === 1 ? 'ad...' : 'ads';
+        this.myAds.length - this.currentQuantityShownAds === 1
+          ? 'ad...'
+          : 'ads';
       return word;
     },
   },
   methods: {
-    // increase number of quantity shown ads (+5)
+    // increase number of quantity shown ads (+ params.quantityShownAdsOnUserProfile)
     increaseQuantityShownAds() {
-      const numberIncreaseShownAds = 5;
+      const numberIncreaseShownAds = params.quantityShownAdsOnUserProfile;
       const maxQuantityShownAds = this.myAds.length;
       const newQuantityShownAds =
-        this.quantityShownAds + numberIncreaseShownAds;
+        this.currentQuantityShownAds + numberIncreaseShownAds;
 
       if (newQuantityShownAds <= maxQuantityShownAds) {
-        this.quantityShownAds = newQuantityShownAds;
+        this.currentQuantityShownAds = newQuantityShownAds;
       } else {
-        this.quantityShownAds = maxQuantityShownAds;
+        this.currentQuantityShownAds = maxQuantityShownAds;
       }
     },
 

@@ -47,7 +47,7 @@
     <!-- Filters module -->
     <app-ad-filters
       v-bind:processedAds.sync="processedAds"
-      v-bind:shownAds.sync="shownAds"
+      v-bind:shownAds.sync="currentQuantityShownAds"
       :ads="ads"
     ></app-ad-filters>
 
@@ -56,9 +56,9 @@
       <v-row>
         <!-- ad list of home page -->
 
-        <!-- show part of all ads (12) -->
+        <!-- show part of all ads (params.quantityShownAdsOnMain) -->
         <v-col
-          v-for="ad in processedAds.slice(0, this.shownAds)"
+          v-for="ad in processedAds.slice(0, this.currentQuantityShownAds)"
           :key="ad.id"
           class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"
         >
@@ -102,7 +102,10 @@
 
       <!-- button to show next ads -->
       <v-row
-        v-if="shownAds !== processedAds.length && !(processedAds.length <= 12)"
+        v-if="
+          currentQuantityShownAds !== processedAds.length &&
+            !(processedAds.length <= params.quantityShownAdsOnMain)
+        "
       >
         <v-col
           class="col-12 d-flex flex-column flex-sm-row my-4 mx-auto py-0 px-xl-6 px-lg-3 px-md-6"
@@ -131,6 +134,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import AdFilters from './ads/AdFilters';
+import params from '../params';
 
 export default {
   name: 'Home',
@@ -139,7 +143,8 @@ export default {
   },
   data() {
     return {
-      shownAds: 12,
+      params,
+      currentQuantityShownAds: params.quantityShownAdsOnMain,
       processedAds: [],
     };
   },
@@ -149,12 +154,15 @@ export default {
     ...mapGetters('ads', ['promoAds']),
   },
   methods: {
-    // increase number of shown ads (+12)
+    // increase number of shown ads
     increaseShownAds() {
-      if (this.shownAds + 12 > this.processedAds.length) {
-        this.shownAds = this.processedAds.length;
+      if (
+        this.currentQuantityShownAds + params.quantityShownAdsOnMain >
+        this.processedAds.length
+      ) {
+        this.currentQuantityShownAds = this.processedAds.length;
       } else {
-        this.shownAds += 12;
+        this.currentQuantityShownAds += params.quantityShownAdsOnMain;
       }
     },
   },
