@@ -39,8 +39,8 @@
               <!-- open this ad -->
               <v-list-item-action>
                 <v-btn :to="/ad/ + order.adId" class="teal white--text">
-                  Open</v-btn
-                >
+                  Open
+                </v-btn>
               </v-list-item-action>
             </template>
           </v-list-item>

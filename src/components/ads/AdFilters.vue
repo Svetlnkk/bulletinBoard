@@ -14,8 +14,8 @@
           </v-col>
         </v-row>
 
+        <!-- ad filters search by word input -->
         <v-row>
-          <!-- ad filters search by word input -->
           <v-col class="col-12 pt-0 pb-1 col-lg-9 mx-auto">
             <v-text-field
               v-model.trim="inputSearch"
@@ -30,10 +30,7 @@
               outlined
               type="text"
               @change="updateProcessedAds(processingAds())"
-              @input="
-                $v.inputSearch.$touch(),
-                  updateProcessedAdsDelay(700, processingAds())
-              "
+              @input="inputEventHandler"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -69,10 +66,7 @@
               name="minPrice"
               type="number"
               @change="updateProcessedAds(processingAds())"
-              @input="
-                $v.minPrice.$touch(),
-                  updateProcessedAdsDelay(700, processingAds())
-              "
+              @input="inputEventHandler"
             ></v-text-field>
           </v-col>
 
@@ -90,10 +84,7 @@
               name="maxPrice"
               type="number"
               @change="updateProcessedAds(processingAds())"
-              @input="
-                $v.maxPrice.$touch(),
-                  updateProcessedAdsDelay(700, processingAds())
-              "
+              @input="inputEventHandler"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -299,6 +290,12 @@ export default {
           this.$emit('update:shownAds', 12)
         );
       }, delay);
+    },
+
+    // handler of input event of text-fields tag
+    inputEventHandler() {
+      this.$v.inputSearch.$touch();
+      this.updateProcessedAdsDelay(700, this.processingAds());
     },
   },
 };
