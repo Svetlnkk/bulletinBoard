@@ -1,3 +1,8 @@
+/**
+ * parse date string to date object string
+ * @param  {String} dateString
+ * @returns {Object}
+ */
 export function dateParse(dateString) {
   const date = dateString.split('.');
   const day = +date[0];

@@ -140,18 +140,27 @@ export default {
     ...mapState('shared', ['loading']),
     ...mapState('user', ['currentUser']),
 
-    // get ad by id
+    /**
+     * get ad by id
+     * @returns {Object}
+     */
     ad() {
       return this.adById(this.id);
     },
 
-    // check. Whether the owner is the current user
+    /**
+     * check. Whether the owner is the current user
+     * @returns {Object}
+     */
     isOwner() {
       if (!this.currentUser) return;
       return this.ad.ownerId === this.currentUser.id;
     },
 
-    // get the owner name of this ad
+    /**
+     * get the owner name of this ad
+     * @returns {String}
+     */
     ownerAdName() {
       const ownerUser = this.userById(this.ad.ownerId);
       const ownerName = ownerUser.name ? ownerUser.name : 'No name';
@@ -160,25 +169,32 @@ export default {
   },
 
   beforeUpdate() {
-    // 404 page, if ad of this id was not found
+    /**
+     * 404 page, if ad of this id was not found
+     * @params {Boolean}
+     */
     this.redirect404(!this.loading && !this.ad);
   },
   created() {
+    /**
+     * 404 page, if ad of this id was not found
+     * @params {Boolean}
+     */
     this.redirect404(!this.loading && !this.ad);
   },
   methods: {
+    /**
+     * 404 page, if ad of this id was not found
+     * @params {Boolean}
+     */
     redirect404,
 
-    // checking to 'this.loading' for loading and checking for loading 'this.ad'
+    /**
+     * checking to 'this.loading' and 'this.ad' for loading
+     * @returns {Boolean}
+     */
     loadingAd() {
       return !this.loading && this.ad;
-    },
-
-    redirectTest() {
-      if (!this.loading && !this.ad) {
-        console.log(this, this.$router);
-        this.$router.replace('/404');
-      }
     },
   },
 };
