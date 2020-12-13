@@ -72,10 +72,6 @@ import { validationLogin } from '../../js/utils/validationsVuelidate.util';
 export default {
   name: 'Login',
   mixins: [validationMixin],
-
-  // VUETIFY. Validations rules
-  validations: validationLogin.validations,
-
   data() {
     return {
       email: '',
@@ -94,6 +90,9 @@ export default {
       return !!this.loading;
     },
   },
+
+  // VUETIFY. Validations rules
+  validations: validationLogin.validations,
 
   created() {
     this.denyAccess();

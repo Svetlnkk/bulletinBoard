@@ -138,10 +138,6 @@ import { validationUserModalEdit } from '../../js/utils/validationsVuelidate.uti
 export default {
   name: 'UserModalEdit',
   mixins: [validationMixin],
-
-  // VUETIFY. Validations rules
-  validations: validationUserModalEdit.validations,
-
   components: {
     appUserModalCurrentPassword: UserModalCurrentPassword,
   },
@@ -163,6 +159,10 @@ export default {
     // VUETIFY. Validation errors
     ...validationUserModalEdit.errorMessages,
   },
+
+  // VUETIFY. Validations rules
+  validations: validationUserModalEdit.validations,
+
   methods: {
     ...mapActions('user', ['updateUser']),
 

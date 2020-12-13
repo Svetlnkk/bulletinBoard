@@ -101,10 +101,6 @@ import { validationAdModalBuy } from '../../js/utils/validationsVuelidate.util';
 export default {
   name: 'AdModalBuy',
   mixins: [validationMixin],
-
-  // VUETIFY. Validations rules
-  validations: validationAdModalBuy.validations,
-
   props: {
     ad: Object,
   },
@@ -129,6 +125,10 @@ export default {
       return this.ad.ownerId === this.currentUser.id;
     },
   },
+
+  // VUETIFY. Validations rules
+  validations: validationAdModalBuy.validations,
+
   methods: {
     ...mapActions('orders', ['createOrder']),
 

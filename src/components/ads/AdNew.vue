@@ -117,10 +117,6 @@ import { validationAdNew } from '../../js/utils/validationsVuelidate.util';
 export default {
   name: 'AdNew',
   mixins: [validationMixin],
-
-  // VUETIFY. Validations rules
-  validations: validationAdNew.validations,
-
   data() {
     return {
       description: '',
@@ -142,6 +138,10 @@ export default {
       return !!this.loading;
     },
   },
+
+  // VUETIFY. Validations rules
+  validations: validationAdNew.validations,
+
   methods: {
     ...mapActions('ads', ['createAd']),
     ...mapActions('shared', ['setError', 'clearError']),

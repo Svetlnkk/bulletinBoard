@@ -129,8 +129,8 @@
       <v-col class="d-flex justify-center pb-0 teal--text">
         <!-- prettier-ignore -->
         <p
-          class="text-uppercase mb-0"
           v-if="displayQuantityFilteredAds"
+          class="text-uppercase mb-0"
         >
           {{ quantityFilteredAds }}
         </p>
@@ -146,10 +146,6 @@ import { validationAdFilters } from '../../js/utils/validationsVuelidate.util';
 export default {
   name: 'AdFilters',
   mixins: [validationMixin],
-
-  // VUETIFY. Validations rules
-  validations: validationAdFilters.validations,
-
   props: {
     ads: Array,
     processedAds: Array,
@@ -202,6 +198,9 @@ export default {
       }
     },
   },
+
+  // VUETIFY. Validations rules
+  validations: validationAdFilters.validations,
 
   created() {
     this.updateProcessedAds(this.processingAds());

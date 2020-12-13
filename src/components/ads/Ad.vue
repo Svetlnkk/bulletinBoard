@@ -38,9 +38,7 @@
 
             <!-- ad background image of main image -->
             <div
-              :style="{
-                backgroundImage: `url('${ad.imageSrc}')`,
-              }"
+              :style="{ backgroundImage: `url('${ad.imageSrc}')` }"
               class="ad-main__background"
             ></div>
           </v-col>
@@ -76,9 +74,10 @@
           <!-- ad date -->
           <v-col class="pa-2">
             <div class="ad-main__date text-body-2 text-sm-subtitle-1">
-              <v-icon class="ad-main__icon pr-1 mb-1" color="teal"
-                >mdi-calendar-clock</v-icon
-              >Ad created:
+              <v-icon class="ad-main__icon pr-1 mb-1" color="teal">
+                mdi-calendar-clock
+              </v-icon>
+              Ad created:
               <span class="text--secondary text-subtitle-2">
                 {{ ad.dateAdded }}
               </span>

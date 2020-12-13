@@ -108,10 +108,6 @@ import { validationAdModalEdit } from '../../js/utils/validationsVuelidate.util'
 export default {
   name: 'AdModalEdit',
   mixins: [validationMixin],
-
-  // VUETIFY. Validations rules
-  validations: validationAdModalEdit.validations,
-
   props: {
     ad: Object,
   },
@@ -127,6 +123,10 @@ export default {
     // VUETIFY. Validation errors
     ...validationAdModalEdit.errorMessages,
   },
+
+  // VUETIFY. Validations rules
+  validations: validationAdModalEdit.validations,
+
   methods: {
     ...mapActions('ads', ['updateAd']),
 

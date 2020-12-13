@@ -102,10 +102,6 @@ import { validationRegistration } from '../../js/utils/validationsVuelidate.util
 export default {
   name: 'Registration',
   mixins: [validationMixin],
-
-  // VUETIFY. Validations rules
-  validations: validationRegistration.validations,
-
   data() {
     return {
       confirmPassword: '',
@@ -128,6 +124,10 @@ export default {
       return !!this.loading;
     },
   },
+
+  // VUETIFY. Validations rules
+  validations: validationRegistration.validations,
+
   methods: {
     ...mapActions('user', ['registerUser']),
 
