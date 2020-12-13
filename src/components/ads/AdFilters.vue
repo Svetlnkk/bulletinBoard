@@ -212,6 +212,10 @@ export default {
     },
   },
 
+  created() {
+    this.updateProcessedAds(this.processingAds());
+  },
+
   methods: {
     // filter of ads by price
     filterAdsByPrice(arrayAds) {
@@ -296,10 +300,6 @@ export default {
         );
       }, delay);
     },
-  },
-
-  created() {
-    this.updateProcessedAds(this.processingAds());
   },
 };
 </script>

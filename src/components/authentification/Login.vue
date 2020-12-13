@@ -94,6 +94,11 @@ export default {
       return !!this.loading;
     },
   },
+
+  created() {
+    this.denyAccess();
+  },
+
   methods: {
     ...mapActions('shared', ['setError']),
     ...mapActions('user', ['loginUser']),
@@ -120,9 +125,6 @@ export default {
         this.setError('Please log in to access this page');
       }
     },
-  },
-  created() {
-    this.denyAccess();
   },
 };
 </script>

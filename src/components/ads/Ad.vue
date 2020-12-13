@@ -158,6 +158,14 @@ export default {
       return ownerName;
     },
   },
+
+  beforeUpdate() {
+    // 404 page, if ad of this id was not found
+    this.redirect404(!this.loading && !this.ad);
+  },
+  created() {
+    this.redirect404(!this.loading && !this.ad);
+  },
   methods: {
     redirect404,
 
@@ -172,13 +180,6 @@ export default {
         this.$router.replace('/404');
       }
     },
-  },
-  beforeUpdate() {
-    // 404 page, if ad of this id was not found
-    this.redirect404(!this.loading && !this.ad);
-  },
-  created() {
-    this.redirect404(!this.loading && !this.ad);
   },
 };
 </script>
