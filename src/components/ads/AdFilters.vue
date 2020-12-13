@@ -265,21 +265,6 @@ export default {
       };
 
       return sortTypes[sortType]();
-
-      // OLD CODE-----------------------------------------------------
-      // if (sortType === 'BY ALPHABET: A >>> Z') {
-      //   return [...ads].sort((a, b) => a.title.localeCompare(b.title));
-      // } else if (sortType === 'BY ALPHABET: REVERSE Z >>> A') {
-      //   return [...ads].sort((a, b) => b.title.localeCompare(a.title));
-      // } else if (sortType === 'BY DATA: OLD >>> NEW') {
-      //   return [...ads].sort(
-      //     (a, b) => dateParse(a.dateAdded) - dateParse(b.dateAdded)
-      //   );
-      // } else if (sortType === 'BY DATA: NEW >>> OLD') {
-      //   return [...ads].sort(
-      //     (a, b) => dateParse(b.dateAdded) - dateParse(a.dateAdded)
-      //   );
-      // }
     },
 
     // update to Home.vue 'processedAds' current with processed ads
