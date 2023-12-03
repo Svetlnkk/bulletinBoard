@@ -19,4 +19,4 @@ export function dateParse(dateString) {
   return adDate;
 }
 
-//19.10.2020 22:37
+//03.12.2023 22:37

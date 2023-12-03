@@ -9,7 +9,7 @@
     <!-- dialog delete activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" class="red--text mr-3" text v-on="on">
-        Delete Account
+        Удалить аккаунт
       </v-btn>
     </template>
 
@@ -19,7 +19,7 @@
           <v-col class="col-xs-12 py-0 red">
             <!-- dialog title -->
             <v-card-title class="white--text">
-              Delete your account?
+              Удалить аккаунт?
             </v-card-title>
           </v-col>
         </v-row>
@@ -31,7 +31,7 @@
 
               <!-- dialog "cancel" button -->
               <v-btn text @click="cancelDeleteUser">
-                Cancel
+                Отмена
               </v-btn>
 
               <!-- dialog "ok" button -->
@@ -40,7 +40,7 @@
                 depressed
                 @click="onDeleteCurrentUser"
               >
-                Ok
+                Удалить
               </v-btn>
             </v-card-actions>
 

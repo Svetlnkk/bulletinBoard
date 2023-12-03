@@ -9,7 +9,7 @@
             <h3
               class="text-center text-md-left text-subtitle-2 teal--text text-uppercase"
             >
-              Search ads by word:
+              Найти объявление:
             </h3>
           </v-col>
         </v-row>
@@ -25,7 +25,7 @@
               counter="30"
               dense
               filled
-              label="Search"
+              label="Поиск"
               name="searchByWord"
               outlined
               type="text"
@@ -46,7 +46,7 @@
             <h3
               class="text-center text-md-left text-subtitle-2 teal--text text-uppercase"
             >
-              Sort ads by price:
+              Фильтровать по цене:
             </h3>
           </v-col>
         </v-row>
@@ -62,7 +62,7 @@
               counter="20"
               dense
               height="34"
-              label="From"
+              label="От"
               name="minPrice"
               type="number"
               @change="updateProcessedAds(processingAds())"
@@ -80,7 +80,7 @@
               counter="20"
               dense
               height="34"
-              label="To"
+              label="До"
               name="maxPrice"
               type="number"
               @change="updateProcessedAds(processingAds())"
@@ -98,7 +98,7 @@
             <h3
               class="text-center text-md-left text-subtitle-2 teal--text text-uppercase"
             >
-              Sort ads by condition:
+              Сортировка объявлений:
             </h3>
           </v-col>
         </v-row>
@@ -157,12 +157,12 @@ export default {
       inputSearch: '',
       displayQuantityFilteredAds: false,
       itemsSelectFilter: [
-        'BY ALPHABET: A >>> Z',
-        'BY ALPHABET: REVERSE Z >>> A',
-        'BY DATA: NEW >>> OLD',
-        'BY DATA: OLD >>> NEW',
+        'По алфавиту А-Я',
+        'По алфавиту в обратном порядке',
+        'Сначала новые',
+        'Сначала старые',
       ],
-      selectedSelectSort: 'BY DATA: NEW >>> OLD',
+      selectedSelectSort: 'Сначала новые',
       minPrice: null,
       maxPrice: null,
       timeoutCounterProcessedAds: null,
@@ -188,11 +188,11 @@ export default {
     // return quantity of all filtered ads
     quantityFilteredAds() {
       if (this.processedAds.length > 1) {
-        return `found ${this.processedAds.length} ads`;
+        return `найдено ${this.processedAds.length} объявлений`;
       } else if (this.processedAds.length === 1) {
-        return `found ${this.processedAds.length} ad`;
+        return `найдено ${this.processedAds.length} объявление`;
       } else {
-        return 'ads not found';
+        return 'ничего не найдено';
       }
     },
   },
@@ -246,18 +246,18 @@ export default {
     // sort of ads by parameter
     sortAds(sortType, ads) {
       let sortTypes = {
-        'BY ALPHABET: A >>> Z': function() {
+        'По алфавиту А-Я': function() {
           return [...ads].sort((a, b) => a.title.localeCompare(b.title));
         },
-        'BY ALPHABET: REVERSE Z >>> A': function() {
+        'По алфавиту в обратном порядке': function() {
           return [...ads].sort((a, b) => b.title.localeCompare(a.title));
         },
-        'BY DATA: OLD >>> NEW': function() {
+        'Сначала старые': function() {
           return [...ads].sort(
             (a, b) => dateParse(a.dateAdded) - dateParse(b.dateAdded)
           );
         },
-        'BY DATA: NEW >>> OLD': function() {
+        'Сначала новые': function() {
           return [...ads].sort(
             (a, b) => dateParse(b.dateAdded) - dateParse(a.dateAdded)
           );

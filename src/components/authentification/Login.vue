@@ -5,7 +5,7 @@
         <v-card class="elevation-12">
           <!-- login title -->
           <v-app-bar dark color="teal">
-            <v-toolbar-title>Login form</v-toolbar-title>
+            <v-toolbar-title>Вход</v-toolbar-title>
           </v-app-bar>
 
           <!-- login form -->
@@ -33,7 +33,7 @@
                 :type="show ? 'text' : 'password'"
                 color="teal"
                 counter
-                label="Password"
+                label="Пароль"
                 name="password"
                 prepend-icon="mdi-lock"
                 @blur="$v.password.$touch()"
@@ -55,7 +55,7 @@
               text
               @click.prevent="onSubmit"
             >
-              Login</v-btn
+              Войти</v-btn
             >
           </v-card-actions>
         </v-card>
@@ -116,7 +116,7 @@ export default {
     // denying access without authorization
     denyAccess() {
       if (this.$route.query['loginError']) {
-        this.setError('Please log in to access this page');
+        this.setError('Пожалуйста, войдите в систему, чтобы получить доступ к этой странице');
       }
     },
   },

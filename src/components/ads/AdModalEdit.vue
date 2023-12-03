@@ -21,7 +21,7 @@
           <v-col class="col-xs-12 py-0 orange">
             <v-card-title>
               <h1 class="text-h5 text-sm-h4 font-weight-bold">
-                Edit ad
+                Редактирование объявления
               </h1>
             </v-card-title>
           </v-col>
@@ -40,7 +40,7 @@
                   :error-messages="titleErrors"
                   color="teal"
                   counter="60"
-                  label="Ad title"
+                  label="Заголовок"
                   name="title"
                   type="text"
                   @blur="$v.editedTitle.$touch()"
@@ -53,7 +53,7 @@
                   :error-messages="descriptionErrors"
                   color="teal"
                   counter="1000"
-                  label="Ad description"
+                  label="Описание"
                   name="description"
                   type="text"
                   @blur="$v.editedDescription.$touch()"
@@ -66,7 +66,7 @@
                   :error-messages="priceErrors"
                   color="teal"
                   counter="20"
-                  label="Price"
+                  label="Цена"
                   name="price"
                   type="number"
                   @blur="$v.editedPrice.$touch()"
@@ -86,11 +86,11 @@
               <v-spacer></v-spacer>
 
               <!-- cancel edit ad button -->
-              <v-btn text @click="cancelEditing">Cancel</v-btn>
+              <v-btn text @click="cancelEditing">Отмена</v-btn>
 
               <!-- save changes in this ad after editing -->
               <v-btn class="orange white--text" depressed @click="saveChangesAd"
-                >Save</v-btn
+                >Сохранить</v-btn
               >
             </v-card-actions>
           </v-col>

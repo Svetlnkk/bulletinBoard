@@ -9,9 +9,9 @@
         depressed
         v-on="on"
       >
-        Buy</v-btn
+        Купить</v-btn
       >
-      <v-btn v-else disabled>Your Ad</v-btn>
+      <v-btn v-else disabled>Ваше объявление</v-btn>
     </template>
 
     <!-- buy dialog body -->
@@ -22,7 +22,7 @@
           <v-col class="col-xs-12 py-0 primary">
             <v-card-title>
               <h2 class="white--text modal__title">
-                Do you want to buy it?
+                Хотите заказать?
               </h2>
             </v-card-title>
           </v-col>
@@ -40,7 +40,7 @@
                   :error-messages="nameErrors"
                   color="teal"
                   counter="60"
-                  label="Your name"
+                  label="Имя"
                   name="name"
                   type="text"
                   @blur="$v.name.$touch()"
@@ -53,7 +53,7 @@
                   :error-messages="phoneErrors"
                   color="teal"
                   counter
-                  label="Your phone"
+                  label="Номер телефона"
                   name="phone"
                   type="text"
                   @blur="$v.phone.$touch()"
@@ -73,7 +73,7 @@
 
               <!-- buy dialog cancel button -->
               <v-btn :disabled="localLoading" class="" text @click="cancelBuy"
-                >Close</v-btn
+                >Закрыть</v-btn
               >
 
               <!-- buy dialog save button -->
@@ -83,7 +83,7 @@
                 class="primary"
                 depressed
                 @click="submitMessageBuy"
-                >Buy it</v-btn
+                >Заказать</v-btn
               >
             </v-card-actions>
           </v-col>

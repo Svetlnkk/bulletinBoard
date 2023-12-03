@@ -5,7 +5,7 @@
         <v-card v-if="!loading">
           <!-- title -->
           <v-card-title class="teal darken-2">
-            <span class="white--text">Account settings</span>
+            <span class="white--text">Настройки аккаунта</span>
             <v-spacer></v-spacer>
           </v-card-title>
 

@@ -10,7 +10,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title v-text="link.title"></v-list-item-title>
+            <!-- <v-list-item-title v-text="link.title"></v-list-item-title> -->
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="onLogout" v-if="isUserLoggedIn">
@@ -19,7 +19,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>Logout</v-list-item-title>
+            <v-list-item-title>Выйти</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -35,7 +35,7 @@
       <!-- toolbar title -->
       <v-toolbar-title>
         <router-link to="/" tag="span" class="pointer"
-          >Bulletin Board</router-link
+          >Главная</router-link
         >
       </v-toolbar-title>
 
@@ -49,7 +49,7 @@
         </v-btn>
         <v-btn @click="onLogout" text v-if="isUserLoggedIn">
           <v-icon left>mdi-exit-to-app</v-icon>
-          Logout
+          Выйти
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
@@ -71,7 +71,7 @@
         {{ error }}
         <template v-slot:action>
           <v-btn class="white--text" text @click.native="clearError">
-            Close
+            Закрыть
           </v-btn>
         </template>
       </v-snackbar>
@@ -97,23 +97,23 @@ export default {
       if (this.isUserLoggedIn) {
         return [
           {
-            title: 'Orders',
+            title: 'Заказы',
             icon: 'mdi-bookmark-multiple-outline',
             url: '/orders',
           },
-          { title: 'New ad', icon: 'mdi-file-plus', url: '/new' },
+          { title: 'Создать новое объявление', icon: 'mdi-file-plus', url: '/new' },
           {
-            title: 'My ads',
+            title: 'Мои объявления',
             icon: 'mdi-format-list-bulleted-square',
             url: '/list',
           },
-          { title: 'Account', icon: 'mdi-face', url: '/account' },
+          { title: 'Профиль', icon: 'mdi-face', url: '/account' },
         ];
       } else {
         return [
           { title: 'Login', icon: 'mdi-lock', url: '/login' },
           {
-            title: 'Registration',
+            title: 'Регистрация',
             icon: 'mdi-face',
             url: '/registration',
           },

@@ -24,10 +24,10 @@
               <v-icon class="ad-main__circle teal--text" size="small">
                 mdi-circle
               </v-icon>
-              My ad
+              Мое объявление
             </h3>
             <h3 v-else class="text-subtitle-2">
-              <span class="text-uppercase">Owner:</span>
+              <span class="text-uppercase">Владелец:</span>
               {{ ownerAdName }}
             </h3>
           </v-col>
@@ -49,7 +49,7 @@
               <v-icon class="ad-main__icon pr-1 mb-1" color="teal">
                 mdi-currency-usd
               </v-icon>
-              Price:
+              Цена:
               <span class="text--secondary text-subtitle-2">
                 {{ ad.price ? ad.price : 'not specified' }}
               </span>
@@ -77,7 +77,7 @@
               <v-icon class="ad-main__icon pr-1 mb-1" color="teal">
                 mdi-calendar-clock
               </v-icon>
-              Ad created:
+              Созданное объявление:
               <span class="text--secondary text-subtitle-2">
                 {{ ad.dateAdded }}
               </span>

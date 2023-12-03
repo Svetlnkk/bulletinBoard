@@ -36,7 +36,7 @@ export default {
       // max ads of user (10)
       if (getters.myAds.length >= 10) {
         dispatch('shared/clearError', null, { root: true });
-        dispatch('shared/setError', 'You most have no more than 10 ads', {
+        dispatch('shared/setError', 'У вас может быть не больше 10 объявлений', {
           root: true,
         });
         return;
@@ -115,8 +115,8 @@ export default {
       }
     },
 
-    /* delete ad in state and firebase 
-      @param adId - ad current ad in state. 
+    /* delete ad in state and firebase
+      @param adId - ad current ad in state.
       @param ImageSrc - image adress in firebase of current ad)*/
     async deleteAd({ commit, dispatch }, { adId, imageSrc }) {
       dispatch('shared/clearError', null, { root: true });
@@ -196,11 +196,11 @@ export default {
       }
     },
 
-    /* update ad in state and firebase 
-      @param title - updatable title of current ad 
-      @param description - updatable description of current ad 
-      @param id - id of current ad 
-      @param price - updatable price of current ad 
+    /* update ad in state and firebase
+      @param title - updatable title of current ad
+      @param description - updatable description of current ad
+      @param id - id of current ad
+      @param price - updatable price of current ad
     */
     async updateAd({ commit, dispatch }, { title, description, id, price }) {
       dispatch('shared/clearError', null, { root: true });

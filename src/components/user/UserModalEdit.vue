@@ -14,7 +14,7 @@
         depressed
         v-on="on"
       >
-        Edit</v-btn
+        Редактирование</v-btn
       >
     </template>
 
@@ -25,7 +25,7 @@
         <v-row>
           <v-col class="col-12 py-0 teal darken-2">
             <v-card-title class="text-subtitle-1 text-sm-h5">
-              <h3 class="white--text">Change user settings</h3>
+              <h3 class="white--text">Изменение настроек пользователя</h3>
             </v-card-title>
           </v-col>
         </v-row>
@@ -43,7 +43,7 @@
                   :error-messages="editedNameErrors"
                   color="teal"
                   counter="30"
-                  label="User name"
+                  label="Имя"
                   name="name"
                   type="text"
                   @blur="$v.editedName.$touch()"
@@ -69,7 +69,7 @@
                   :error-messages="editedPasswordErrors"
                   color="teal"
                   counter
-                  label="New password"
+                  label="Новый пароль"
                   name="password"
                   type="password"
                   @blur="$v.editedPassword.$touch()"
@@ -82,7 +82,7 @@
                   :error-messages="editedConfirmPasswordErrors"
                   color="teal"
                   counter
-                  label="Confirm new password"
+                  label="Повторите новый пароль"
                   name="confirmPassword"
                   type="password"
                   @blur="$v.editedConfirmPassword.$touch()"
@@ -102,7 +102,7 @@
               <v-spacer></v-spacer>
 
               <!-- user edit dialog cancel button -->
-              <v-btn text @click="cancelEditing">Cancel</v-btn>
+              <v-btn text @click="cancelEditing">Отмена</v-btn>
 
               <!-- user edit dialog save button -->
               <v-btn
@@ -111,7 +111,7 @@
                 depressed
                 @click="saveChangesUser"
               >
-                Save
+                Сохранить
               </v-btn>
             </v-card-actions>
           </v-col>

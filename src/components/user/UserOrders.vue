@@ -11,7 +11,7 @@
     <v-row v-else-if="loadingOrders()">
       <v-col class="col-sm-8 col-lg-6 mx-auto">
         <!-- title -->
-        <h1 class="text--secondary mb-3">Orders</h1>
+        <h1 class="text--secondary mb-3">Заказы</h1>
         <v-list flat subheader two-line>
           <!-- orders list -->
           <v-list-item v-for="order in orders" :key="order.id">
@@ -39,7 +39,7 @@
               <!-- open this ad -->
               <v-list-item-action>
                 <v-btn :to="/ad/ + order.adId" class="teal white--text">
-                  Open
+                  Открыть
                 </v-btn>
               </v-list-item-action>
             </template>
@@ -49,7 +49,7 @@
     </v-row>
     <v-row v-else>
       <v-col>
-        <h1 class="text--secondary">You have no orders</h1>
+        <h1 class="text--secondary">У вас нет заказов</h1>
       </v-col>
     </v-row>
   </v-container>

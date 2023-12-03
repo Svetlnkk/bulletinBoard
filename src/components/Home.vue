@@ -35,7 +35,7 @@
                   rounded
                   text
                 >
-                  Open</v-btn
+                  Открыть</v-btn
                 >
               </div>
             </v-carousel-item>
@@ -83,7 +83,7 @@
             <!-- price of home page -->
             <v-card-text class="pb-1">
               <h3 class="text-subtitle-2 teal--text text--capitalize">
-                <span class="black--text">Price:</span>
+                <span class="black--text">Цена:</span>
                 {{ ad.price }}
               </h3>
             </v-card-text>
@@ -92,7 +92,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn :to="'/ad/' + ad.id" text color="teal">
-                Open
+                Открыть
               </v-btn>
               <app-ad-modal-buy :ad="ad"></app-ad-modal-buy>
             </v-card-actions>
@@ -111,7 +111,7 @@
           class="col-12 d-flex flex-column flex-sm-row my-4 mx-auto py-0 px-xl-6 px-lg-3 px-md-6"
         >
           <v-btn block class="green white--text " @click="increaseShownAds">
-            Load more ads
+            Показать больше объявлений
           </v-btn>
         </v-col>
       </v-row>

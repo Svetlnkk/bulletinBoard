@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col class="col-sm-8 col-lg-6 mx-auto">
-        <h1 class="text--secondary mb-3">Create new ad</h1>
+        <h1 class="text--secondary mb-3">Создать объявление</h1>
 
         <!-- form new ad -->
         <v-form>
@@ -12,7 +12,7 @@
             :error-messages="titleErrors"
             color="teal"
             counter="60"
-            label="Ad title"
+            label="Заголовок"
             name="title"
             type="text"
             @blur="$v.title.$touch()"
@@ -25,7 +25,7 @@
             :error-messages="descriptionErrors"
             color="teal"
             counter="1000"
-            label="Ad description"
+            label="Описание"
             name="description"
             type="text"
             @blur="$v.description.$touch()"
@@ -38,7 +38,7 @@
             :error-messages="priceErrors"
             color="teal"
             counter="20"
-            label="Price"
+            label="Цена"
             name="price"
             type="number"
             @blur="$v.price.$touch()"
@@ -55,7 +55,7 @@
               color="blue-grey"
               @click="triggerUpload"
             >
-              Upload
+              Добавить изображение
               <v-icon dark right>
                 mdi-cloud-upload
               </v-icon>
@@ -71,7 +71,7 @@
 
           <!-- switch promo of new ad -->
           <v-col>
-            <v-switch v-model="promo" color="teal" inset label="Add to promo?">
+            <v-switch v-model="promo" color="teal" inset label="Добавить в промо-акцию?">
             </v-switch>
           </v-col>
         </v-row>
@@ -100,7 +100,7 @@
               class="success"
               @click="submitAd"
             >
-              Create ad</v-btn
+              Создать</v-btn
             >
           </v-col>
         </v-row>
@@ -172,7 +172,7 @@ export default {
 
       if (file.size > 1024 * 1024) {
         await this.setError(
-          `Max upload image is 1 Mb. Your image is ${file.size / 1000} Kb`
+          `Максимальный размер загружаемого изображения составляет 1 Мб. Размер вашего изображения составляет ${file.size / 1000} Kb`
         );
         return;
       }

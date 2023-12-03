@@ -13,7 +13,7 @@
         <v-row>
           <v-col class="col-12 red darken-3">
             <v-card-title class="subtitle-1 white--text">
-              <h4>Enter <u>current</u> password</h4>
+              <h4>Введите <u>текущий</u> пароль</h4>
             </v-card-title>
           </v-col>
         </v-row>
@@ -39,7 +39,7 @@
             <v-card-actions class="px-0">
               <v-spacer></v-spacer>
 
-              <v-btn text @click="$emit('close')">Cancel</v-btn>
+              <v-btn text @click="$emit('close')">Отмена</v-btn>
 
               <!-- dialog old (current) save button -->
               <v-btn
@@ -47,7 +47,7 @@
                 class="red darken-3 white--text"
                 depressed
                 @click="checkPassword"
-                >Ok</v-btn
+                >Сохранить</v-btn
               >
             </v-card-actions>
           </v-col>

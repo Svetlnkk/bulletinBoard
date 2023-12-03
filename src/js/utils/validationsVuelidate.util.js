@@ -20,7 +20,7 @@ import {
 } from '../validators/password';
 
 /* -----------------------------
-Validation on 'Registration.vue' 
+Validation on 'Registration.vue'
 ------------------------------*/
 export const validationRegistration = {
   validations: {
@@ -54,12 +54,12 @@ export const validationRegistration = {
     emailErrors() {
       const errors = [];
       if (!this.$v.email.$dirty) return errors;
-      !this.$v.email.email && errors.push('Email must be valid');
+      !this.$v.email.email && errors.push('Email некорректный');
       !this.$v.email.maxLength &&
-        errors.push('Email must be equal or less than 30 characters');
+        errors.push("Email должен быть не более 30 символов");
       !this.$v.email.minLength &&
-        errors.push('Email must be equal or more than 3 characters');
-      !this.$v.email.required && errors.push('Email is required');
+        errors.push('Email должен быть не менее 3 символам');
+      !this.$v.email.required && errors.push('Введите Email');
       return errors;
     },
 
@@ -68,9 +68,9 @@ export const validationRegistration = {
       const errors = [];
       if (!this.$v.confirmPassword.$dirty) return errors;
       !this.$v.confirmPassword.sameAsPassword &&
-        errors.push('Passwords must match');
+        errors.push('Пароли не совпадают');
       !this.$v.confirmPassword.required &&
-        errors.push('Confirm password is required');
+        errors.push('Повтор пароля обязателен');
       return errors;
     },
 
@@ -78,12 +78,12 @@ export const validationRegistration = {
     nameErrors() {
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
-      !this.$v.name.alpha && errors.push('Name must be only letters');
+      !this.$v.name.alpha && errors.push('Должны быть символы');
       !this.$v.name.maxLength &&
-        errors.push('Name must be equal or less than 30 characters');
+        errors.push("Имя должно быть не более 30 символов");
       !this.$v.name.minLength &&
-        errors.push('Name must be equal or more than 3 characters');
-      !this.$v.name.required && errors.push('Name is required');
+        errors.push("Имя должно быть не менее 2 символов");
+      !this.$v.name.required && errors.push('Введите имя');
       return errors;
     },
 
@@ -92,22 +92,24 @@ export const validationRegistration = {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
       !this.$v.password.hasLowercaseLetter &&
-        errors.push('Need at least one latin letter with lowercase');
-      !this.$v.password.hasNumber && errors.push('Need at least one digit');
+        errors.push(
+          "Нужна хотя бы одна латинская строчная буква"
+        );
+      !this.$v.password.hasNumber && errors.push("Нужна хотя бы одна цифра");
       !this.$v.password.hasUppercaseLetter &&
-        errors.push('Need at least one latin letter with uppercase');
+        errors.push("Нужна хотя бы одна латинская заглавная буква");
       !this.$v.password.maxLength &&
-        errors.push('Password must be equal or less than 50 characters');
+        errors.push("Пароль должен быть не более 50 символов");
       !this.$v.password.minLength &&
-        errors.push('Password must be equal or more than 6 characters');
-      !this.$v.password.required && errors.push('Password is required');
+        errors.push("Пароль должен быть не менее 6 символов");
+      !this.$v.password.required && errors.push('Введите пароль');
       return errors;
     },
   },
 };
 
 /* -----------------------------
-Validation on 'AdFilters.vue' 
+Validation on 'AdFilters.vue'
 ------------------------------*/
 export const validationAdFilters = {
   validations: {
@@ -128,8 +130,8 @@ export const validationAdFilters = {
     searchBymaxPriceErrors() {
       const errors = [];
       if (!this.$v.maxPrice.$dirty) return errors;
-      !this.$v.maxPrice.maxLength && errors.push('Input max 20 digits');
-      !this.$v.maxPrice.hasMaxMoreMinPrice && errors.push('Error! max < min');
+      !this.$v.maxPrice.maxLength && errors.push("Ввод не более 20 цифр");
+      !this.$v.maxPrice.hasMaxMoreMinPrice && errors.push('Ошибка! max < min');
       return errors;
     },
 
@@ -137,8 +139,8 @@ export const validationAdFilters = {
     searchByminPriceErrors() {
       const errors = [];
       if (!this.$v.minPrice.$dirty) return errors;
-      !this.$v.minPrice.maxLength && errors.push('Input max 20 digits');
-      !this.$v.minPrice.hasMinLessMaxPrice && errors.push('Error! min > max');
+      !this.$v.minPrice.maxLength && errors.push("Ввод не более 20 цифр");
+      !this.$v.minPrice.hasMinLessMaxPrice && errors.push('Ошибка! min > max');
       return errors;
     },
 
@@ -148,7 +150,7 @@ export const validationAdFilters = {
       if (!this.$v.inputSearch.$dirty) return errors;
       !this.$v.inputSearch.maxLength &&
         errors.push(
-          'input search by word must be equal or less than 30 characters'
+          "вводимый поиск по слову должен содержать не более 30 символов"
         );
       return errors;
     },
@@ -156,7 +158,7 @@ export const validationAdFilters = {
 };
 
 /* -----------------------------
-Validation on 'AdModalEdit.vue' 
+Validation on 'AdModalEdit.vue'
 ------------------------------*/
 export const validationAdModalEdit = {
   validations: {
@@ -178,10 +180,10 @@ export const validationAdModalEdit = {
       const errors = [];
       if (!this.$v.editedTitle.$dirty) return errors;
       !this.$v.editedTitle.maxLength &&
-        errors.push('Title must be equal or less than 60 characters');
+        errors.push('Заголовок должен быть не более 60 символов');
       !this.$v.editedTitle.minLength &&
-        errors.push('Title must be equal or more than 4 characters');
-      !this.$v.editedTitle.required && errors.push('Title is required');
+        errors.push("Заголовок должен быть не менее 4 символов");
+      !this.$v.editedTitle.required && errors.push('Введите заголовок');
       return errors;
     },
 
@@ -190,11 +192,11 @@ export const validationAdModalEdit = {
       const errors = [];
       if (!this.$v.editedDescription.$dirty) return errors;
       !this.$v.editedDescription.maxLength &&
-        errors.push('Description must be equal or less than 1000 characters');
+        errors.push('Описание должно быть не более 1000 символов');
       !this.$v.editedDescription.minLength &&
-        errors.push('Description must be equal or more than 30 characters');
+        errors.push("Описание должно быть не менее 30 символов");
       !this.$v.editedDescription.required &&
-        errors.push('Description is required');
+        errors.push('Введите описание');
       return errors;
     },
 
@@ -203,16 +205,16 @@ export const validationAdModalEdit = {
       const errors = [];
       if (!this.$v.editedPrice.$dirty) return errors;
       !this.$v.editedPrice.maxLength &&
-        errors.push('Price must be equal or less than 20 digits');
-      !this.$v.editedPrice.numeric && errors.push('Price must be a number');
-      !this.$v.editedPrice.required && errors.push('Price is required');
+        errors.push('Цена должна быть не более 20 знаков');
+      !this.$v.editedPrice.numeric && errors.push('Введите число!');
+      !this.$v.editedPrice.required && errors.push('Введите цену');
       return errors;
     },
   },
 };
 
 /* -----------------------------
-Validation on 'AdNew.vue' 
+Validation on 'AdNew.vue'
 ------------------------------*/
 export const validationAdNew = {
   validations: {
@@ -234,10 +236,10 @@ export const validationAdNew = {
       const errors = [];
       if (!this.$v.description.$dirty) return errors;
       !this.$v.description.maxLength &&
-        errors.push('Description must be equal or less than 1000 characters');
+        errors.push("Описание должно быть не более 1000 символов");
       !this.$v.description.minLength &&
-        errors.push('Description must be equal or more than 30 characters');
-      !this.$v.description.required && errors.push('Description is required');
+        errors.push("Описание должно быть не менее 30 символов");
+      !this.$v.description.required && errors.push('Введите описание');
       return errors;
     },
     // error messages on price validation
@@ -245,9 +247,9 @@ export const validationAdNew = {
       const errors = [];
       if (!this.$v.price.$dirty) return errors;
       !this.$v.price.maxLength &&
-        errors.push('Price must be equal or less than 20 digits');
-      !this.$v.price.numeric && errors.push('Price must be a number');
-      !this.$v.price.required && errors.push('Price is required');
+        errors.push("Цена должна быть не более 20 знаков");
+      !this.$v.price.numeric && errors.push("Введите число!");
+      !this.$v.price.required && errors.push("Введите цену");
       return errors;
     },
 
@@ -256,17 +258,17 @@ export const validationAdNew = {
       const errors = [];
       if (!this.$v.title.$dirty) return errors;
       !this.$v.title.maxLength &&
-        errors.push('Title must be equal or less than 60 characters');
+        errors.push("Заголовок должен быть не более 60 символов");
       !this.$v.title.minLength &&
-        errors.push('Title must be equal or more than 4 characters');
-      !this.$v.title.required && errors.push('Title is required');
+        errors.push("Заголовок должен быть не менее 4 символов");
+      !this.$v.title.required && errors.push("Введите заголовок");
       return errors;
     },
   },
 };
 
 /* -----------------------------
-Validation on 'Login.vue' 
+Validation on 'Login.vue'
 ------------------------------*/
 export const validationLogin = {
   validations: {
@@ -283,12 +285,12 @@ export const validationLogin = {
     emailErrors() {
       const errors = [];
       if (!this.$v.email.$dirty) return errors;
-      !this.$v.email.email && errors.push('Must be valid email');
+      !this.$v.email.email && errors.push("Email некорректный");
       !this.$v.email.maxLength &&
-        errors.push('Email must be equal or less than 1000 characters');
+        errors.push("Email должен быть не более 100 символов");
       !this.$v.email.minLength &&
-        errors.push('Email must be equal or more than 3 characters');
-      !this.$v.email.required && errors.push('Email is required');
+        errors.push("Email должен быть не менее 3 символам");
+      !this.$v.email.required && errors.push("Введите Email");
       return errors;
     },
 
@@ -297,15 +299,15 @@ export const validationLogin = {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
       !this.$v.password.maxLength &&
-        errors.push('Password must be equal or less than 1000 characters');
-      !this.$v.password.required && errors.push('Password is required');
+        errors.push('Пароль должен быть не более 1000 символов');
+      !this.$v.password.required && errors.push('Введите пароль');
       return errors;
     },
   },
 };
 
 /* -----------------------------
-Validation on 'AdModalBuy.vue' 
+Validation on 'AdModalBuy.vue'
 ------------------------------*/
 export const validationAdModalBuy = {
   validations: {
@@ -327,12 +329,12 @@ export const validationAdModalBuy = {
     nameErrors() {
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
-      !this.$v.name.alpha && errors.push('Name must be only letters');
+      !this.$v.name.alpha && errors.push('Имя должно содержать только символы');
       !this.$v.name.maxLength &&
-        errors.push('Name must be equal or less than 60 characters');
+        errors.push('Имя должны быть не более 60 символов');
       !this.$v.name.minLength &&
-        errors.push('Name must be equal or more than 2 characters');
-      !this.$v.name.required && errors.push('Name is required');
+        errors.push("Имя должны быть не менее 2 символов");
+      !this.$v.name.required && errors.push('Введите имя');
       return errors;
     },
 
@@ -340,19 +342,20 @@ export const validationAdModalBuy = {
     phoneErrors() {
       const errors = [];
       if (!this.$v.phone.$dirty) return errors;
-      !this.$v.phone.numeric && errors.push('Phone number must be only digits');
+      !this.$v.phone.numeric &&
+        errors.push("Номер телефона должен состоять только из цифр");
       !this.$v.phone.maxLength &&
-        errors.push('Phone number must be equal or less than 30 digits');
+        errors.push('Номер телефона должен содержать не более 30 цифр');
       !this.$v.phone.minLength &&
-        errors.push('Phone number must be equal or more than 5 digits');
-      !this.$v.phone.required && errors.push('Phone number is required');
+        errors.push("Номер телефона должен содержать не менее 5 цифр");
+      !this.$v.phone.required && errors.push('Введите номер телефона');
       return errors;
     },
   },
 };
 
 /* -----------------------------
-Validation on 'UserModalEdit.vue' 
+Validation on 'UserModalEdit.vue'
 ------------------------------*/
 export const validationUserModalEdit = {
   validations: {
@@ -388,10 +391,10 @@ export const validationUserModalEdit = {
       if (!this.$v.editedConfirmPassword.$dirty) return errors;
       !this.$v.editedConfirmPassword.sameAsPassword &&
         this.editedPassword &&
-        errors.push('Passwords must match');
+        errors.push("Пароли должны совпадать");
       !this.$v.editedConfirmPassword.required &&
         this.editedPassword &&
-        errors.push('Confirm password is required');
+        errors.push('Введите пароль повторно');
       return errors;
     },
 
@@ -399,12 +402,12 @@ export const validationUserModalEdit = {
     editedEmailErrors() {
       const errors = [];
       if (!this.$v.editedEmail.$dirty) return errors;
-      !this.$v.editedEmail.email && errors.push('Email must be valid');
+      !this.$v.editedEmail.email && errors.push('Email некорректный');
       !this.$v.editedEmail.maxLength &&
-        errors.push('Email must be equal or less than 30 characters');
+        errors.push("Email должен быть не более 30 символов");
       !this.$v.editedEmail.minLength &&
-        errors.push('Email must be equal or more than 3 characters');
-      !this.$v.editedEmail.required && errors.push('Email is required');
+        errors.push("Email должен быть не менее 3 симвлов");
+      !this.$v.editedEmail.required && errors.push("Введите Email");
       return errors;
     },
 
@@ -412,12 +415,12 @@ export const validationUserModalEdit = {
     editedNameErrors() {
       const errors = [];
       if (!this.$v.editedName.$dirty) return errors;
-      !this.$v.editedName.alpha && errors.push('Name must be only letters');
+      !this.$v.editedName.alpha && errors.push('Имя должно состоять только из букв');
       !this.$v.editedName.maxLength &&
-        errors.push('Name must be equal or less than 30 characters');
+        errors.push("Имя должно быть не более 30 символов");
       !this.$v.editedName.minLength &&
-        errors.push('Name must be equal or more than 3 characters');
-      !this.$v.editedName.required && errors.push('Name is required');
+        errors.push("Имя должно быть не менее 2 символов");
+      !this.$v.editedName.required && errors.push("Введите имя");
       return errors;
     },
 
@@ -427,22 +430,22 @@ export const validationUserModalEdit = {
       if (!this.$v.editedPassword.$dirty) return errors;
       !this.$v.editedPassword.hasLowercaseLetter &&
         this.editedPassword &&
-        errors.push('Need at least one latin letter with lowercase');
+        errors.push("Нужна хотя бы одна латинская строчная буква");
       !this.$v.editedPassword.hasNumber &&
         this.editedPassword &&
-        errors.push('Need at least one digit');
+        errors.push("Нужна хотя бы одна цифра");
       !this.$v.editedPassword.hasUppercaseLetter &&
         this.editedPassword &&
-        errors.push('Need at least one latin letter with uppercase');
+        errors.push("Нужна хотя бы одна латинская заглавная буква");
       !this.$v.editedPassword.maxLength &&
         this.editedPassword &&
-        errors.push('Password must be equal or less than 50 characters');
+        errors.push("Пароль должен быть не более 50 символов");
       !this.$v.editedPassword.minLength &&
         this.editedPassword &&
-        errors.push('Password must be equal or more than 6 characters');
+        errors.push("Пароль должен быть не менее 6 символов");
       !this.$v.editedPassword.required &&
         this.editedPassword &&
-        errors.push('Password is required');
+        errors.push("Введите пароль");
       return errors;
     },
   },

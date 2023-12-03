@@ -8,7 +8,7 @@
     <!-- activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" class="red white--text mr-3" depressed v-on="on">
-        Delete
+        Удалить
       </v-btn>
     </template>
 
@@ -19,7 +19,7 @@
           <v-col class="col-xs-12 py-0 red">
             <!-- delete title -->
             <v-card-title class="white--text">
-              Delete this ad?
+              Удалить объявление?
             </v-card-title>
           </v-col>
         </v-row>
@@ -31,12 +31,12 @@
 
               <!-- delete "cancel" button -->
               <v-btn text @click="cancelDeleting">
-                Cancel
+                Отмена
               </v-btn>
 
               <!-- delete "ok" button -->
               <v-btn class="red white--text" depressed @click="deleteCurrentAd">
-                Ok
+                Удалить
               </v-btn>
             </v-card-actions>
           </v-col>

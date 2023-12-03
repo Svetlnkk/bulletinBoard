@@ -3,7 +3,7 @@
     <v-row v-if="loadingMyAds()">
       <v-col class="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-6 mx-auto">
         <h1 class="text--secondary text-h5 font-weight-medium mb-5 ml-3">
-          {{ `Ad List (${myAds.length})` }}
+          {{ `Список объявлений (${myAds.length})` }}
         </h1>
         <v-row>
           <!-- ad list -->
@@ -51,7 +51,7 @@
                     <v-icon class="ad-list__icon pr-1 mb-1" color="teal">
                       mdi-calendar-clock
                     </v-icon>
-                    Ad created:
+                    Созданные объявления:
                     <span class="text--secondary text-subtitle-2">
                       {{ ad.dateAdded }}
                     </span>
@@ -64,7 +64,7 @@
                     <v-icon class="ad-list__icon pr-1 mb-1" color="teal">
                       mdi-currency-usd
                     </v-icon>
-                    Price:
+                    Цена:
                     <span class="text--secondary text-subtitle-2">
                       {{ showAdPrice(ad) }}
                     </span>
@@ -78,7 +78,7 @@
                     :to="'/ad/' + ad.id"
                     class="ad-list__button teal white--text mr-sm-2"
                   >
-                    Open
+                    Открыть
                   </v-btn>
                 </v-col>
               </v-col>
@@ -100,7 +100,7 @@
                 class="green white--text "
                 @click="increaseQuantityShownAds"
               >
-                Load more
+                Показать больше
                 {{ `${showQuantityNotShownAds} ${showWordsQuantityShownAds}` }}
               </v-btn>
             </v-col>
@@ -112,7 +112,7 @@
     <!-- if no ads -->
     <v-row v-else-if="loadingEmptyMyAds()">
       <v-col class="col-12 col-sm-8 mx-auto">
-        <h1 class="text--secondary">You have no ads</h1>
+        <h1 class="text--secondary">У вас нет объявлений</h1>
       </v-col>
     </v-row>
 
@@ -156,8 +156,8 @@ export default {
     showWordsQuantityShownAds() {
       const word =
         this.myAds.length - this.currentQuantityShownAds === 1
-          ? 'ad...'
-          : 'ads';
+          ? 'объявление...'
+          : 'объявления';
       return word;
     },
   },
@@ -188,7 +188,7 @@ export default {
 
     // show current ad's price
     showAdPrice(ad) {
-      const adPrice = ad.price || 'not specified';
+      const adPrice = ad.price || 'не указан';
       return adPrice;
     },
   },

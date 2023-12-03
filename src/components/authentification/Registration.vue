@@ -5,7 +5,7 @@
         <v-card class="elevation-12">
           <!-- registration title -->
           <v-app-bar dark color="teal">
-            <v-toolbar-title>Registration form</v-toolbar-title>
+            <v-toolbar-title>Регистрация</v-toolbar-title>
           </v-app-bar>
 
           <!-- registration form -->
@@ -17,7 +17,7 @@
                 :error-messages="nameErrors"
                 color="teal"
                 counter="30"
-                label="Your name"
+                label="Имя"
                 name="name"
                 prepend-icon="mdi-account"
                 type="text"
@@ -47,7 +47,7 @@
                 :type="showPassword ? 'text' : 'password'"
                 color="teal"
                 counter
-                label="Password"
+                label="Пароль"
                 name="password"
                 prepend-icon="mdi-lock"
                 @blur="$v.password.$touch()"
@@ -63,7 +63,7 @@
                 :type="showConfirmPassword ? 'text' : 'password'"
                 color="teal"
                 counter
-                label="Confirm password"
+                label="Повторите пароль"
                 name="confirm-password"
                 prepend-icon="mdi-lock"
                 @blur="$v.confirmPassword.$touch()"
@@ -85,7 +85,7 @@
               text
               @click.prevent="onSubmit"
             >
-              Create account</v-btn
+              Создать аккаунт</v-btn
             >
           </v-card-actions>
         </v-card>
