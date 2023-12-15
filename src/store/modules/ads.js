@@ -1,5 +1,7 @@
-import * as firebase from 'firebase';
-import { Ad } from '../../js/entities/Ad';
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/database";
+import { Ad } from "../../js/entities/Ad";
 
 export default {
   namespaced: true,
@@ -31,19 +33,21 @@ export default {
   },
 
   actions: {
-    // create ad in state and firebase
     async createAd({ commit, dispatch, getters, rootState }, payload) {
-      // max ads of user (10)
       if (getters.myAds.length >= 10) {
-        dispatch('shared/clearError', null, { root: true });
-        dispatch('shared/setError', 'У вас может быть не больше 10 объявлений', {
-          root: true,
-        });
+        dispatch("shared/clearError", null, { root: true });
+        dispatch(
+          "shared/setError",
+          "У вас может быть не больше 10 объявлений",
+          {
+            root: true,
+          }
+        );
         return;
       }
 
-      dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/increaseLoading', null, { root: true });
+      dispatch("shared/clearError", null, { root: true });
+      dispatch("shared/increaseLoading", null, { root: true });
 
       const image = payload.image;
 
@@ -53,7 +57,7 @@ export default {
         const AdNew = new Ad({
           description: payload.description,
           id: null,
-          ownerId: rootState['user'].currentUser.id,
+          ownerId: rootState["user"].currentUser.id,
           price: payload.price,
           promo: payload.promo,
           title: payload.title,
@@ -61,10 +65,10 @@ export default {
 
         const ad = await firebase
           .database()
-          .ref('ads')
+          .ref("ads")
           .push(AdNew);
 
-        const imageExt = image.name.slice(image.name.lastIndexOf('.')).slice(1);
+        const imageExt = image.name.slice(image.name.lastIndexOf(".")).slice(1);
 
         // add image to firebase (storage)
         const fileData = await firebase
@@ -77,7 +81,7 @@ export default {
         // add ad to firebase (database)
         await firebase
           .database()
-          .ref('ads')
+          .ref("ads")
           .child(ad.key)
           .update({
             imageSrc,
@@ -86,31 +90,29 @@ export default {
         // add current date
         const date = new Date();
 
-        const hours =
-          date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
-        const minutes =
-          date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+        const hours = ("0" + date.getHours()).slice(-2);
+        const minutes = ("0" + date.getMinutes()).slice(-2);
         const dateAdded = `${date.getDate()}.${date.getMonth() +
           1}.${date.getFullYear()} ${hours}:${minutes}`;
         await firebase
           .database()
-          .ref('ads')
+          .ref("ads")
           .child(ad.key)
           .update({
             dateAdded,
           });
 
         // add ad in state
-        commit('ADD_AD', {
+        commit("ADD_AD", {
           ...AdNew,
           id: ad.key,
           imageSrc,
           dateAdded,
         });
-        dispatch('shared/decreaseLoading', null, { root: true });
+        dispatch("shared/decreaseLoading", null, { root: true });
       } catch (error) {
-        dispatch('shared/setError', error.message, { root: true });
-        dispatch('shared/decreaseLoading', null, { root: true });
+        dispatch("shared/setError", error.message, { root: true });
+        dispatch("shared/decreaseLoading", null, { root: true });
         throw error;
       }
     },
@@ -119,8 +121,8 @@ export default {
       @param adId - ad current ad in state.
       @param ImageSrc - image adress in firebase of current ad)*/
     async deleteAd({ commit, dispatch }, { adId, imageSrc }) {
-      dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/increaseLoading', null, { root: true });
+      dispatch("shared/clearError", null, { root: true });
+      dispatch("shared/increaseLoading", null, { root: true });
 
       const storage = await firebase.storage();
       const storageRef = storage.ref();
@@ -137,37 +139,37 @@ export default {
         //delete ad in database
         await firebase
           .database()
-          .ref('ads')
+          .ref("ads")
           .child(adId)
           .remove();
 
-        commit('DELETE_AD', adId);
+        commit("DELETE_AD", adId);
 
-        dispatch('shared/decreaseLoading', null, { root: true });
+        dispatch("shared/decreaseLoading", null, { root: true });
       } catch (error) {
-        dispatch('shared/setError', error.message, { root: true });
-        dispatch('shared/decreaseLoading', null, { root: true });
+        dispatch("shared/setError", error.message, { root: true });
+        dispatch("shared/decreaseLoading", null, { root: true });
         throw error;
       }
     },
 
     // fetch ads in firebase to state
     async fetchAds({ commit, dispatch }) {
-      dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/increaseLoading', null, { root: true });
+      dispatch("shared/clearError", null, { root: true });
+      dispatch("shared/increaseLoading", null, { root: true });
 
       const resultAds = [];
 
       try {
         const firebaseValue = await firebase
           .database()
-          .ref('ads')
-          .once('value');
+          .ref("ads")
+          .once("value");
 
         const ads = firebaseValue.val();
 
         if (!ads) {
-          dispatch('shared/decreaseLoading', null, { root: true });
+          dispatch("shared/decreaseLoading", null, { root: true });
           return;
         }
 
@@ -187,11 +189,11 @@ export default {
           );
         });
 
-        commit('SET_ALL_ADS', resultAds);
-        dispatch('shared/decreaseLoading', null, { root: true });
+        commit("SET_ALL_ADS", resultAds);
+        dispatch("shared/decreaseLoading", null, { root: true });
       } catch (error) {
-        dispatch('shared/setError', error.message, { root: true });
-        dispatch('shared/decreaseLoading', null, { root: true });
+        dispatch("shared/setError", error.message, { root: true });
+        dispatch("shared/decreaseLoading", null, { root: true });
         throw error;
       }
     },
@@ -203,28 +205,28 @@ export default {
       @param price - updatable price of current ad
     */
     async updateAd({ commit, dispatch }, { title, description, id, price }) {
-      dispatch('shared/clearError', null, { root: true });
-      dispatch('shared/increaseLoading', null, { root: true });
+      dispatch("shared/clearError", null, { root: true });
+      dispatch("shared/increaseLoading", null, { root: true });
       try {
         await firebase
           .database()
-          .ref('ads')
+          .ref("ads")
           .child(id)
           .update({
             description,
             price,
             title,
           });
-        commit('SET_AD', {
+        commit("SET_AD", {
           title,
           description,
           id,
           price,
         });
-        dispatch('shared/decreaseLoading', null, { root: true });
+        dispatch("shared/decreaseLoading", null, { root: true });
       } catch (error) {
-        dispatch('shared/setError', error.message, { root: true });
-        dispatch('shared/decreaseLoading', null, { root: true });
+        dispatch("shared/setError", error.message, { root: true });
+        dispatch("shared/decreaseLoading", null, { root: true });
         throw error;
       }
     },
@@ -243,7 +245,7 @@ export default {
     // array of ads, filtered by current user id
     myAds(state, getters, rootState) {
       return state.ads.filter((ad) => {
-        return ad.ownerId === rootState['user'].currentUser.id;
+        return ad.ownerId === rootState["user"].currentUser.id;
       });
     },
 

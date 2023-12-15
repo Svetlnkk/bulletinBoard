@@ -51,7 +51,7 @@
                     <v-icon class="ad-list__icon pr-1 mb-1" color="teal">
                       mdi-calendar-clock
                     </v-icon>
-                    Созданные объявления:
+                    Создано:
                     <span class="text--secondary text-subtitle-2">
                       {{ ad.dateAdded }}
                     </span>
@@ -62,7 +62,7 @@
                     class="ad-list__date mb-1 text-body-2 text-sm-subtitle-1"
                   >
                     <v-icon class="ad-list__icon pr-1 mb-1" color="teal">
-                      mdi-currency-usd
+                      mdi-currency-rub
                     </v-icon>
                     Цена:
                     <span class="text--secondary text-subtitle-2">

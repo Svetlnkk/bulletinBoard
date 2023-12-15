@@ -71,7 +71,7 @@
 
           <!-- switch promo of new ad -->
           <v-col>
-            <v-switch v-model="promo" color="teal" inset label="Добавить в промо-акцию?">
+            <v-switch v-model="promo" color="teal" inset label="Добавить в продвижение?">
             </v-switch>
           </v-col>
         </v-row>

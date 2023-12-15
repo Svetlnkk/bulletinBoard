@@ -2,7 +2,7 @@
   <v-dialog
     v-model="modal"
     eager
-    width="400"
+    width="529"
     @click:outside="cancelEditing"
     @keydown.esc="cancelEditing"
   >
@@ -25,7 +25,7 @@
         <v-row>
           <v-col class="col-12 py-0 teal darken-2">
             <v-card-title class="text-subtitle-1 text-sm-h5">
-              <h3 class="white--text">Изменение настроек пользователя</h3>
+              <h3 class="white--text">Изменение пользователя</h3>
             </v-card-title>
           </v-col>
         </v-row>

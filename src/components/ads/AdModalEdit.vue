@@ -2,14 +2,14 @@
   <v-dialog
     v-model="modal"
     eager
-    width="400"
+    width="529"
     @click:outside="cancelEditing"
     @keydown.esc="cancelEditing"
   >
     <!-- ad edit dialog activator -->
     <template v-slot:activator="{ on, attrs }">
-      <v-btn v-bind="attrs" class="orange white--text mr-3" depressed v-on="on">
-        Edit</v-btn
+      <v-btn v-bind="attrs" class="teal white--text mr-3" depressed v-on="on">
+        Изменить</v-btn
       >
     </template>
 
@@ -18,10 +18,10 @@
       <v-container>
         <!-- ad edit dialog title -->
         <v-row>
-          <v-col class="col-xs-12 py-0 orange">
+          <v-col class="col-xs-12 py-0 teal">
             <v-card-title>
-              <h1 class="text-h5 text-sm-h4 font-weight-bold">
-                Редактирование объявления
+              <h1 class="text-h5 text-sm-h4 font-weight-bold white--text">
+                Изменение объявления
               </h1>
             </v-card-title>
           </v-col>
@@ -40,7 +40,7 @@
                   :error-messages="titleErrors"
                   color="teal"
                   counter="60"
-                  label="Заголовок"
+                  label="Название"
                   name="title"
                   type="text"
                   @blur="$v.editedTitle.$touch()"
@@ -89,7 +89,7 @@
               <v-btn text @click="cancelEditing">Отмена</v-btn>
 
               <!-- save changes in this ad after editing -->
-              <v-btn class="orange white--text" depressed @click="saveChangesAd"
+              <v-btn class="teal white--text" depressed @click="saveChangesAd"
                 >Сохранить</v-btn
               >
             </v-card-actions>

@@ -4,7 +4,9 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import AdModalBuyComponent from "@/components/shared/AdModalBuy";
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import "firebase/auth";
+import "firebase/database";
 
 Vue.config.productionTip = false;
 Vue.component("app-ad-modal-buy", AdModalBuyComponent);
