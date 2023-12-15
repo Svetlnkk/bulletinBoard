@@ -6,7 +6,6 @@
           v-if="loadingAd()"
           class="ad-main__item col-12 col-sm-11 flex-column mx-auto"
         >
-          <!-- ad title -->
           <v-col class="pa-0 mb-1">
             <h1
               class="ad-main__title text--primary text-h5 text-sm-h4 font-weight-medium"
@@ -14,8 +13,6 @@
               {{ ad.title }}
             </h1>
           </v-col>
-
-          <!-- ad owner -->
           <v-col class="pt-0">
             <h3
               v-if="isOwner"
@@ -27,23 +24,20 @@
               Мое объявление
             </h3>
             <h3 v-else class="text-subtitle-2">
-              <span class="text-uppercase">Владелец:</span>
+              <span class="text-uppercase user">Владелец:</span>
               {{ ownerAdName }}
             </h3>
           </v-col>
 
-          <!-- ad image -->
           <v-col class="ad-main__wrapper col-auto pa-0">
             <img :alt="ad.title" :src="ad.imageSrc" class="ad-main__image" />
 
-            <!-- ad background image of main image -->
             <div
               :style="{ backgroundImage: `url('${ad.imageSrc}')` }"
               class="ad-main__background"
             ></div>
           </v-col>
 
-          <!-- ad price -->
           <v-col class="pa-2">
             <div class="ad-main__date text-body-2 text-sm-subtitle-1">
               <v-icon class="ad-main__icon pr-1 mb-1" color="teal">
@@ -58,7 +52,6 @@
 
           <v-divider></v-divider>
 
-          <!-- ad description -->
           <v-col>
             <p
               v-for="text in ad.description.split('\n')"
@@ -71,14 +64,13 @@
 
           <v-divider></v-divider>
 
-          <!-- ad date -->
           <v-col class="pa-2">
             <div class="ad-main__date text-body-2 text-sm-subtitle-1">
               <v-icon class="ad-main__icon pr-1 mb-1" color="teal">
                 mdi-calendar-clock
               </v-icon>
               Создано:
-              <span class="text--secondary text-subtitle-2">
+              <span class="text--secondary text-subtitle-2 date">
                 {{ ad.dateAdded }}
               </span>
             </div>
@@ -86,20 +78,15 @@
 
           <v-divider></v-divider>
 
-          <!-- ad actions -->
           <v-col class="d-flex justify-end">
-            <!-- modal to delete current ad -->
             <app-ad-modal-delete :ad="ad" v-if="isOwner"></app-ad-modal-delete>
 
-            <!-- modal to edit current ad -->
             <app-ad-modal-edit :ad="ad" v-if="isOwner"></app-ad-modal-edit>
 
-            <!-- modal to buy current ad -->
             <app-ad-modal-buy :ad="ad" v-if="!isOwner"></app-ad-modal-buy>
           </v-col>
         </v-row>
 
-        <!-- loading animation -->
         <v-container v-else>
           <v-row>
             <v-col class="col-xs-12 text-center pt-5">
@@ -139,27 +126,15 @@ export default {
     ...mapState('shared', ['loading']),
     ...mapState('user', ['currentUser']),
 
-    /**
-     * get ad by id
-     * @returns {Object}
-     */
     ad() {
       return this.adById(this.id);
     },
 
-    /**
-     * check. Whether the owner is the current user
-     * @returns {Object}
-     */
     isOwner() {
       if (!this.currentUser) return;
       return this.ad.ownerId === this.currentUser.id;
     },
 
-    /**
-     * get the owner name of this ad
-     * @returns {String}
-     */
     ownerAdName() {
       const ownerUser = this.userById(this.ad.ownerId);
       const ownerName = ownerUser.name || 'No name';
@@ -168,30 +143,17 @@ export default {
   },
 
   beforeUpdate() {
-    /**
-     * 404 page, if ad of this id was not found
-     * @params {Boolean}
-     */
+
     this.redirect404(!this.loading && !this.ad);
   },
   created() {
-    /**
-     * 404 page, if ad of this id was not found
-     * @params {Boolean}
-     */
+
     this.redirect404(!this.loading && !this.ad);
   },
   methods: {
-    /**
-     * 404 page, if ad of this id was not found
-     * @params {Boolean}
-     */
+
     redirect404,
 
-    /**
-     * checking to 'this.loading' and 'this.ad' for loading
-     * @returns {Boolean}
-     */
     loadingAd() {
       return !this.loading && this.ad;
     },

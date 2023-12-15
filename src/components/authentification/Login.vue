@@ -3,15 +3,12 @@
     <v-row class="align-center justify-center">
       <v-col class="col-xs-12 col-sm-8 col-md-4">
         <v-card class="elevation-12">
-          <!-- login title -->
           <v-app-bar dark color="teal">
             <v-toolbar-title>Вход</v-toolbar-title>
           </v-app-bar>
 
-          <!-- login form -->
           <v-card-text>
             <v-form>
-              <!-- login email input -->
               <v-text-field
                 v-model="email"
                 :error-messages="emailErrors"
@@ -25,7 +22,6 @@
               >
               </v-text-field>
 
-              <!-- login password input -->
               <v-text-field
                 v-model="password"
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
@@ -43,11 +39,9 @@
             </v-form>
           </v-card-text>
 
-          <!-- login actions -->
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <!-- log in button -->
             <v-btn
               :disabled="$v.$invalid || loadingButtonBoolean"
               :loading="loadingButtonBoolean"
@@ -82,11 +76,9 @@ export default {
   computed: {
     ...mapGetters('shared', ['loadingButtonBoolean']),
 
-    // VUETIFY. Validation errors
     ...validationLogin.errorMessages,
   },
 
-  // VUETIFY. Validations rules
   validations: validationLogin.validations,
 
   created() {
@@ -97,7 +89,6 @@ export default {
     ...mapActions('shared', ['setError']),
     ...mapActions('user', ['loginUser']),
 
-    // submit user login form
     onSubmit() {
       if (!this.$v.$invalid) {
         const user = {
@@ -113,7 +104,6 @@ export default {
       }
     },
 
-    // denying access without authorization
     denyAccess() {
       if (this.$route.query['loginError']) {
         this.setError('Пожалуйста, войдите в систему, чтобы получить доступ к этой странице');

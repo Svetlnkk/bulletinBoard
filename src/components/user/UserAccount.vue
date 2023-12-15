@@ -3,21 +3,19 @@
     <v-row>
       <v-col class="col-12 col-sm-8 mx-auto">
         <v-card v-if="!loading">
-          <!-- title -->
           <v-card-title class="teal darken-2">
             <span class="white--text">Настройки аккаунта</span>
             <v-spacer></v-spacer>
           </v-card-title>
 
           <v-list>
-            <!-- current user name -->
             <v-list-item>
               <v-list-item-action>
                 <v-icon>mdi-face</v-icon>
               </v-list-item-action>
 
               <v-list-item-content>
-                <v-list-item-title>
+                <v-list-item-title class="name-user">
                   {{ currentUser.name }}
                 </v-list-item-title>
               </v-list-item-content>
@@ -25,14 +23,13 @@
 
             <v-divider inset></v-divider>
 
-            <!-- current user email -->
             <v-list-item>
               <v-list-item-action>
                 <v-icon>mdi-email</v-icon>
               </v-list-item-action>
 
               <v-list-item-content>
-                <v-list-item-title>
+                <v-list-item-title class="email-user">
                   {{ currentUser.email }}
                 </v-list-item-title>
               </v-list-item-content>
@@ -40,7 +37,6 @@
 
             <v-divider inset></v-divider>
 
-            <!-- current user password -->
             <v-list-item>
               <v-list-item-action>
                 <v-icon>mdi-account-key-outline</v-icon>
@@ -54,9 +50,7 @@
             <v-divider inset></v-divider>
           </v-list>
 
-          <!-- current user actions -->
           <v-card-actions>
-            <!-- dialog to delete current user -->
             <app-user-modal-delete
               :loading="loading"
               :currentUser="currentUser"
@@ -64,7 +58,6 @@
 
             <v-spacer></v-spacer>
 
-            <!-- dialog to edit current user -->
             <app-user-modal-edit
               :loading="loading"
               :currentUser="currentUser"
@@ -72,7 +65,6 @@
           </v-card-actions>
         </v-card>
 
-        <!-- in loading progress -->
         <div v-else>
           <v-container>
             <v-row>

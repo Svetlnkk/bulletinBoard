@@ -3,15 +3,12 @@
     <v-row class="align-center justify-center">
       <v-col class="col-xs-12 col-sm-8 col-md-4">
         <v-card class="elevation-12">
-          <!-- registration title -->
           <v-app-bar dark color="teal">
             <v-toolbar-title>Регистрация</v-toolbar-title>
           </v-app-bar>
 
-          <!-- registration form -->
           <v-card-text>
             <v-form>
-              <!-- registration name input -->
               <v-text-field
                 v-model="name"
                 :error-messages="nameErrors"
@@ -25,7 +22,6 @@
               >
               </v-text-field>
 
-              <!-- registration email input -->
               <v-text-field
                 v-model="email"
                 :error-messages="emailErrors"
@@ -39,7 +35,6 @@
               >
               </v-text-field>
 
-              <!-- registration password input -->
               <v-text-field
                 v-model="password"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -55,7 +50,6 @@
               >
               </v-text-field>
 
-              <!-- registration confirm password input-->
               <v-text-field
                 v-model="confirmPassword"
                 :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -73,11 +67,9 @@
             </v-form>
           </v-card-text>
 
-          <!-- registration actions -->
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <!-- registration form submit button -->
             <v-btn
               :disabled="$v.$invalid || loadingButtonBoolean"
               :loading="loadingButtonBoolean"
@@ -116,17 +108,14 @@ export default {
   computed: {
     ...mapGetters('shared', ['loadingButtonBoolean']),
 
-    // VUETIFY. Validation errors
     ...validationRegistration.errorMessages,
   },
 
-  // VUETIFY. Validations rules
   validations: validationRegistration.validations,
 
   methods: {
     ...mapActions('user', ['registerUser']),
 
-    // submit new user on Firebase and Vuex
     onSubmit() {
       if (!this.$v.$invalid) {
         const user = {

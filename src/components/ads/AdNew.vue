@@ -4,9 +4,8 @@
       <v-col class="col-sm-8 col-lg-6 mx-auto">
         <h1 class="text--secondary mb-3">Создать объявление</h1>
 
-        <!-- form new ad -->
         <v-form>
-          <!-- input title of new ad -->
+
           <v-text-field
             v-model="title"
             :error-messages="titleErrors"
@@ -19,7 +18,6 @@
           >
           </v-text-field>
 
-          <!-- input description of new ad -->
           <v-textarea
             v-model="description"
             :error-messages="descriptionErrors"
@@ -31,8 +29,6 @@
             @blur="$v.description.$touch()"
           >
           </v-textarea>
-
-          <!-- input the price of new ad -->
           <v-text-field
             v-model="price"
             :error-messages="priceErrors"
@@ -45,10 +41,7 @@
           >
           </v-text-field>
         </v-form>
-
-        <!-- actions -->
         <v-row>
-          <!-- upload image -->
           <v-col>
             <v-btn
               class="my-2 white--text mt-3"
@@ -68,15 +61,11 @@
               @change="onFileChange"
             />
           </v-col>
-
-          <!-- switch promo of new ad -->
           <v-col>
             <v-switch v-model="promo" color="teal" inset label="Добавить в продвижение?">
             </v-switch>
           </v-col>
         </v-row>
-
-        <!-- show image of new ad -->
         <v-row>
           <v-col>
             <v-img
@@ -89,8 +78,6 @@
             ></v-img>
           </v-col>
         </v-row>
-
-        <!-- button create new ad -->
         <v-row>
           <v-col class="sm-12">
             <v-btn

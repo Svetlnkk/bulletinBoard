@@ -6,17 +6,13 @@
     @click:outside="cancelEditing"
     @keydown.esc="cancelEditing"
   >
-    <!-- ad edit dialog activator -->
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" class="teal white--text mr-3" depressed v-on="on">
         Изменить</v-btn
       >
     </template>
-
-    <!-- ad edit dialog dialog body -->
     <v-card>
       <v-container>
-        <!-- ad edit dialog title -->
         <v-row>
           <v-col class="col-xs-12 py-0 teal">
             <v-card-title>
